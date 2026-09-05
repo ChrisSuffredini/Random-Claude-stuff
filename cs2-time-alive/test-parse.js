@@ -57,6 +57,14 @@ check('dmg/round -> 87.3', () => assert.strictEqual(parsed.dmgPerRound, 87.3));
 check('kd -> 1.40', () => assert.strictEqual(parsed.kdRatio, 1.4));
 check('ign -> ZywOo', () => assert.strictEqual(parsed.ign, 'ZywOo'));
 
+// The ct/t rows are not noise to be filtered out — they are the per-side
+// breakdown, and must be readable alongside the combined value.
+console.log('\nper-side extraction (same fixture):');
+check('ct -> 69s', () => assert.strictEqual(parsed.timeAliveCtSec, 69));
+check('t -> 71s', () => assert.strictEqual(parsed.timeAliveTSec, 71));
+check('ct raw preserved', () => assert.strictEqual(parsed.timeAliveCtRaw, '1m 9s'));
+check('combined still 70s', () => assert.strictEqual(parsed.bySide.combined.seconds, 70));
+
 // Real attribute markup captured from a cached page (inspect-cache.js):
 // the score's number is a bare text node with "/100" in a child span, and
 // the title carries the tooltip as a child. Each attribute repeats per
@@ -81,6 +89,8 @@ check('entrying -> 77 (combined, not ct/t)', () => assert.strictEqual(attrs.entr
 check('clutching -> 73', () => assert.strictEqual(attrs.clutching, 73));
 check('firepower -> 68', () => assert.strictEqual(attrs.attributes.firepower, 68));
 check('tooltip prose excluded from name', () => assert.ok(!Object.keys(attrs.attributes).some((k) => k.includes(':'))));
+check('ct entrying -> 81', () => assert.strictEqual(attrs.attributesBySide.ct.entrying, 81));
+check('t entrying -> 61', () => assert.strictEqual(attrs.attributesBySide.t.entrying, 61));
 
 // Same data, but with the score as a SIBLING of the title wrapper rather
 // than inside it — the real nesting was not fully confirmed, so both must work.

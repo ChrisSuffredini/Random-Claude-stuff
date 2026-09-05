@@ -52,13 +52,27 @@ function parseStatsRows($) {
   return out;
 }
 
-// The attributes ("role") breakdown rows, both-sides variant.
-function parseRoleStats($) {
-  const out = {};
-  $('.role-stats-row.stats-side-combined .role-stats-top').each((_, el) => {
-    const title = $(el).find('.role-stats-title').text().replace(/\s+/g, ' ').trim().toLowerCase();
-    const data = $(el).find('.role-stats-data').text().replace(/\s+/g, ' ').trim();
-    if (title) out[title] = data;
+// Which side a row belongs to. Every stat is rendered three times —
+// combined, plus hidden ct and t copies — so the side lives in the class.
+function sideOf(className) {
+  const cls = className || '';
+  if (/stats-side-ct\b/.test(cls)) return 'ct';
+  if (/stats-side-t\b/.test(cls)) return 't';
+  if (/stats-side-combined\b/.test(cls)) return 'combined';
+  return undefined;
+}
+
+// The attributes ("role") breakdown rows, split by side.
+function parseRoleStatsBySide($) {
+  const out = { combined: {}, ct: {}, t: {} };
+  $('.role-stats-row').each((_, el) => {
+    const side = sideOf($(el).attr('class'));
+    if (!side) return;
+    $(el).find('.role-stats-top').each((__, top) => {
+      const title = $(top).find('.role-stats-title').text().replace(/\s+/g, ' ').trim().toLowerCase();
+      const data = $(top).find('.role-stats-data').text().replace(/\s+/g, ' ').trim();
+      if (title && out[side][title] === undefined) out[side][title] = data;
+    });
   });
   return out;
 }
@@ -76,15 +90,16 @@ function ownText($el) {
   return $el.clone().children().remove().end().text().replace(/\s+/g, ' ').trim();
 }
 
-function parseAttributes($) {
-  const out = {};
+function parseAttributesBySide($) {
+  const out = { combined: {}, ct: {}, t: {} };
 
   $('.row-stats-section-score').each((_, el) => {
     const $score = $(el);
     const m = $score.text().replace(/\s+/g, '').match(/^(\d{1,3})\/100$/);
     if (!m) return;
-    // Skip the per-side duplicates; keep both-sides numbers.
-    if ($score.closest('.hidden, .stats-side-ct, .stats-side-t').length) return;
+
+    const $sideEl = $score.closest('.stats-side-combined, .stats-side-ct, .stats-side-t');
+    const side = sideOf($sideEl.attr('class')) || 'combined';
 
     // Walk up to the section this score belongs to. Stop at the first
     // ancestor holding exactly one title — more than one means we have
@@ -94,8 +109,8 @@ function parseAttributes($) {
     for (let depth = 0; depth < 5 && $anc.length; depth++) {
       const $titles = $anc.find('.role-stats-section-title');
       if ($titles.length === 1) {
-        const name = ownText($titles.first());
-        if (name && out[name.toLowerCase()] === undefined) out[name.toLowerCase()] = Number(m[1]);
+        const name = ownText($titles.first()).toLowerCase();
+        if (name && out[side][name] === undefined) out[side][name] = Number(m[1]);
         return;
       }
       if ($titles.length > 1) return;
@@ -106,18 +121,32 @@ function parseAttributes($) {
   return out;
 }
 
+const TIME_ALIVE = 'time alive per round';
+
 function parsePlayerPage(html) {
   const $ = cheerio.load(html);
   const statsRows = parseStatsRows($);
-  const roleStats = parseRoleStats($);
-  const attributes = parseAttributes($);
+  const roleStatsBySide = parseRoleStatsBySide($);
+  const attributesBySide = parseAttributesBySide($);
 
-  const timeAliveRaw = roleStats['time alive per round'];
+  const roleStats = roleStatsBySide.combined;
+  const attributes = attributesBySide.combined;
+  const timeAliveRaw = roleStats[TIME_ALIVE];
+
+  const bySide = {};
+  for (const side of ['combined', 'ct', 't']) {
+    const raw = roleStatsBySide[side][TIME_ALIVE];
+    bySide[side] = { raw, seconds: parseDuration(raw), attributes: attributesBySide[side] };
+  }
 
   return {
     ign: $('.context-item-name').text().trim() || undefined,
     timeAliveRaw,
     timeAliveSec: parseDuration(timeAliveRaw),
+    timeAliveCtRaw: bySide.ct.raw,
+    timeAliveCtSec: bySide.ct.seconds,
+    timeAliveTRaw: bySide.t.raw,
+    timeAliveTSec: bySide.t.seconds,
     dpr: toNumber(statsRows['deaths / round']),
     kdRatio: toNumber(statsRows['k/d ratio']),
     dmgPerRound: toNumber(statsRows['damage / round']),
@@ -126,9 +155,18 @@ function parsePlayerPage(html) {
     entrying: attributes.entrying,
     clutching: attributes.clutching,
     attributes,
+    attributesBySide,
     statsRows,
     roleStats,
+    roleStatsBySide,
+    bySide,
   };
 }
 
-module.exports = { parsePlayerPage, parseDuration, parseAttributes, parseRoleStats, toNumber };
+module.exports = {
+  parsePlayerPage,
+  parseDuration,
+  parseAttributesBySide,
+  parseRoleStatsBySide,
+  toNumber,
+};
