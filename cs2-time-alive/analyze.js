@@ -109,6 +109,58 @@ for (const [label, cs2] of scopes) {
   teams.forEach((t) => console.log(`    ${t.team.padEnd(14)} ${t.avg.toFixed(1)}s  (${t.n} players)`));
 }
 
+// Era vs role. Time alive is largely death rate restated in seconds, so a
+// player only tells us something extra by sitting off that trend. Fit the
+// trend on players with little CS:GO history (career ≈ CS2), then measure
+// how far everyone else falls below it — and whether that gap tracks how
+// much CS:GO history they carry (era) or is specific to them (role).
+const paired = roster
+  .map((p) => ({ p, career: readCached(p.id, false), cs2: readCached(p.id, true) }))
+  .filter((r) => Number.isFinite(r.career?.timeAliveSec) && Number.isFinite(r.cs2?.timeAliveSec) && Number.isFinite(r.career?.dpr))
+  .map((r) => ({
+    name: r.p.name,
+    team: r.p.team,
+    careerSec: r.career.timeAliveSec,
+    careerDpr: r.career.dpr,
+    delta: r.cs2.timeAliveSec - r.career.timeAliveSec,
+  }));
+
+if (paired.length >= 10) {
+  const natives = paired.filter((r) => r.delta <= 1);
+  if (natives.length >= 5) {
+    // least squares of careerSec on careerDpr, fitted on CS2-native players
+    const xs = natives.map((r) => r.careerDpr);
+    const ys = natives.map((r) => r.careerSec);
+    const mx = mean(xs);
+    const my = mean(ys);
+    let num = 0;
+    let den = 0;
+    for (let i = 0; i < natives.length; i++) {
+      num += (xs[i] - mx) * (ys[i] - my);
+      den += (xs[i] - mx) ** 2;
+    }
+    const slope = num / den;
+    const intercept = my - slope * mx;
+
+    const withResid = paired.map((r) => ({ ...r, resid: r.careerSec - (intercept + slope * r.careerDpr) }));
+    const vets = withResid.filter((r) => r.delta >= 5).sort((a, b) => a.resid - b.resid);
+    const rest = withResid.filter((r) => r.delta < 5);
+
+    console.log('\n=== era vs role (career residual against the death-rate trend) ===');
+    console.log(`  trend fitted on ${natives.length} CS2-native players: seconds = ${intercept.toFixed(1)} ${slope.toFixed(1)}*dpr`);
+    const dr = correlate(withResid.map((r) => [r.delta, r.resid]));
+    console.log(`  CS:GO history (delta) vs residual: r=${dr.r.toFixed(2)} (n=${dr.n}) — ${describeR(dr.r)}`);
+    console.log(`  mean residual — veterans (delta>=5): ${vets.length ? mean(vets.map((v) => v.resid)).toFixed(1) : 'n/a'}s` +
+      `  |  everyone else: ${rest.length ? mean(rest.map((v) => v.resid)).toFixed(1) : 'n/a'}s`);
+    if (vets.length) {
+      console.log('  furthest below trend (role signature beyond the era effect):');
+      vets.slice(0, 8).forEach((v) =>
+        console.log(`    ${v.name.padEnd(11)} ${v.team.padEnd(14)} delta=+${String(v.delta).padStart(2)}s  residual=${v.resid.toFixed(1)}s`)
+      );
+    }
+  }
+}
+
 // Integrity check: if HLTV's attribute rows ignored the csVersion filter,
 // both scopes would return identical values and the comparison would be
 // meaningless. Worth knowing before drawing conclusions from the delta.

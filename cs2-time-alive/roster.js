@@ -1,6 +1,9 @@
-// Top-10 HLTV team ranking snapshot (source: HLTV world ranking, 2026-08-10).
-// NOTE: could not be re-verified against the live ranking page in this
-// environment — see README.md "Network limitation" section.
+// Fallback top-10 snapshot (HLTV world ranking, 2026-08-10). Used only
+// when roster.json is absent — run `node fetch-roster.js [topN]` to
+// capture the live ranking and lineups instead.
+const fs = require('fs');
+const path = require('path');
+
 const ROSTER = [
   { team: 'Falcons', rank: 1, players: [
     { name: 'karrigan', id: 429 },
@@ -74,9 +77,25 @@ const ROSTER = [
   ] },
 ];
 
+// roster.json, when present, is a live capture from HLTV's ranking page
+// (see fetch-roster.js) and supersedes the static snapshot above — it is
+// current, and can cover more than the top 10.
+function loadTeams() {
+  const jsonPath = path.join(__dirname, 'roster.json');
+  if (fs.existsSync(jsonPath)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      if (Array.isArray(data.teams) && data.teams.length) return data.teams;
+    } catch (err) {
+      console.log(`[roster] roster.json unreadable (${err.message}) — using the built-in snapshot`);
+    }
+  }
+  return ROSTER;
+}
+
 function flattenRoster() {
   const rows = [];
-  for (const { team, rank, players } of ROSTER) {
+  for (const { team, rank, players } of loadTeams()) {
     for (const p of players) {
       rows.push({ team, teamRank: rank, name: p.name, id: p.id });
     }
@@ -84,4 +103,4 @@ function flattenRoster() {
   return rows;
 }
 
-module.exports = { ROSTER, flattenRoster };
+module.exports = { ROSTER, loadTeams, flattenRoster };

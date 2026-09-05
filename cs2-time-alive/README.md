@@ -92,9 +92,11 @@ to check parsing without touching the network.
   restrict to CS2 (`?csVersion=CS2`).
 - Attribute scores may be absent for players with too few recent maps;
   those show `N/A` rather than failing the run.
-- The top-10 ranking in `roster.js` is the task's 2026-08-10 snapshot and
-  was not re-confirmed against the live ranking page — check
-  https://www.hltv.org/ranking/teams, since rosters and rankings drift.
+- **Roster**: `node fetch-roster.js [topN]` captures the live ranking and
+  each team's current five into `roster.json`, which everything else picks
+  up automatically. Without it, the built-in 2026-08-10 top-10 snapshot in
+  `roster.js` is used, which will drift as lineups change. Going past the
+  top 10 also gives the analysis a bigger sample.
 
 ## Usage
 
@@ -132,5 +134,27 @@ can be revised and re-run instantly without re-scraping HLTV. Use
 - `test-parse.js` — parser tests against real captured markup (offline).
 - `index.js` — fetches (with caching), parses, sorts, prints the report.
 - `probe.js` — dumps one player's parsed values (`node probe.js <id>`).
-- `discover.js`, `inspect-attr.js` — the discovery tools used to locate
-  the stat and its markup; kept for when HLTV's layout changes.
+- `fetch-roster.js` — captures the live ranking + lineups to `roster.json`.
+- `compare.js` — CS2 vs career side by side (offline, reads cache).
+- `analyze.js` — distribution stats, correlations, and the era-vs-role
+  decomposition (offline, reads cache).
+- `discover.js`, `inspect-attr.js`, `inspect-cache.js` — the discovery
+  tools used to locate the stat and its markup; kept for when HLTV's
+  layout changes. `inspect-cache.js` works offline against cache/.
+
+## What the data showed
+
+On the top 10 (n=50), time alive per round is largely death rate restated
+in seconds — r = -0.87 against DPR in CS2. Players are only interesting
+where they sit *off* that trend.
+
+Career spread (31s) looked much wider than CS2 (19s), but removing apEX
+and karrigan collapses it to 20s (SD 4.28s vs CS2's 4.23s) — the entire
+difference was those two. At the same death rate (~0.70 DPR) they posted
+48-49s where comparable players posted 59-62s: dying just as often but
+~15s earlier in the round, which is the entry/sacrificial signature.
+Roughly -6s of that is a general veteran/CS:GO-era effect (residual
+tracks CS:GO history at r = -0.86); the rest is specific to them. In CS2
+both sit on the trend, so the signature is gone.
+
+`node analyze.js` recomputes all of this from cache.
