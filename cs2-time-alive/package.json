@@ -1,0 +1,14 @@
+{
+  "name": "cs2-time-alive",
+  "version": "1.0.0",
+  "description": "Compares 'time alive per round' across CS2 players on HLTV's current top-10 teams",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "probe": "node probe.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "hltv": "^3.5.0"
+  }
+}
