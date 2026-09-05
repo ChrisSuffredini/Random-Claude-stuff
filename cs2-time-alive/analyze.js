@@ -1,24 +1,11 @@
-// Offline analysis of the cached pages: distribution stats per scope, and
-// whether time alive per round tracks the Entrying attribute (the "is this
-// role or era?" question). Reads cache/ only — no requests.
+// Analysis of the scraped data: distribution stats per scope, and whether
+// time alive per round tracks the Entrying attribute (the "is this role or
+// era?" question). Prefers results.json (see export.js) when present,
+// otherwise falls back to cache/*.html — either way, no requests.
 //
 //   node analyze.js
-const fs = require('fs');
-const path = require('path');
 const { flattenRoster } = require('./roster');
-const { parsePlayerPage } = require('./parse');
-
-const CACHE_DIR = path.join(__dirname, 'cache');
-
-function readCached(id, cs2) {
-  const file = path.join(CACHE_DIR, `${id}${cs2 ? '-cs2' : ''}.html`);
-  if (!fs.existsSync(file)) return undefined;
-  try {
-    return parsePlayerPage(fs.readFileSync(file, 'utf8'));
-  } catch {
-    return undefined;
-  }
-}
+const { readCached, source } = require('./data');
 
 const mean = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
 
@@ -64,6 +51,7 @@ function describeR(r, res) {
   return `${strength} ${r < 0 ? 'negative' : 'positive'}`;
 }
 
+console.log(`[data source: ${source()}]`);
 const roster = flattenRoster();
 const scopes = [
   ['CAREER (incl. CS:GO)', false],

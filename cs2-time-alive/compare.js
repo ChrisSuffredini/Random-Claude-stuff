@@ -1,24 +1,10 @@
 // Side-by-side of career (all-time, includes CS:GO) vs CS2-only time
-// alive per round. Purely offline — reads the HTML already cached by
-// `node index.js` and `node index.js --cs2`, so it costs no requests.
+// alive per round. Prefers results.json (see export.js) when present,
+// otherwise falls back to cache/*.html — either way, no requests.
 //
 //   node compare.js
-const fs = require('fs');
-const path = require('path');
 const { flattenRoster } = require('./roster');
-const { parsePlayerPage } = require('./parse');
-
-const CACHE_DIR = path.join(__dirname, 'cache');
-
-function readCached(id, cs2) {
-  const file = path.join(CACHE_DIR, `${id}${cs2 ? '-cs2' : ''}.html`);
-  if (!fs.existsSync(file)) return undefined;
-  try {
-    return parsePlayerPage(fs.readFileSync(file, 'utf8'));
-  } catch {
-    return undefined;
-  }
-}
+const { readCached, source } = require('./data');
 
 function fmt(n, digits = 1) {
   return typeof n === 'number' && Number.isFinite(n) ? n.toFixed(digits) : 'N/A';
@@ -29,6 +15,7 @@ function signed(n) {
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}`;
 }
 
+console.log(`[data source: ${source()}]`);
 const rows = [];
 let missingCareer = 0;
 let missingCs2 = 0;

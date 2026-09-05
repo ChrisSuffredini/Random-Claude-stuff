@@ -126,6 +126,28 @@ players (~800ms between requests). It prints:
 can be revised and re-run instantly without re-scraping HLTV. Use
 `--refresh` to force fresh fetches.
 
+## Sharing results without pasting terminal output
+
+`cache/*.html` is gitignored (each page is ~650KB, not worth committing),
+so by default the only way to hand off what got scraped is pasting
+console output. Instead:
+
+```bash
+node export.js
+git add results.json
+git commit -m "update HLTV results"
+git push
+```
+
+`export.js` packages every parsed value from `cache/` (both scopes, all
+sides, attribute scores) into one small `results.json` — tens of KB, not
+hundreds — that IS tracked. `analyze.js`, `sides.js`, and `compare.js` all
+check for `results.json` first via `data.js`, falling back to `cache/`
+only if it's absent, and each prints `[data source: ...]` so it's obvious
+which one is in play. Whoever pulls `results.json` can rerun the exact
+same analysis with no cache directory and no browser at all — just
+`node analyze.js`.
+
 ## Files
 
 - `roster.js` — the 10 teams / 50 players and their HLTV player IDs.
@@ -135,9 +157,12 @@ can be revised and re-run instantly without re-scraping HLTV. Use
 - `index.js` — fetches (with caching), parses, sorts, prints the report.
 - `probe.js` — dumps one player's parsed values (`node probe.js <id>`).
 - `fetch-roster.js` — captures the live ranking + lineups to `roster.json`.
-- `compare.js` — CS2 vs career side by side (offline, reads cache).
+- `data.js` — shared loader: results.json if present, else cache/*.html.
+- `export.js` — packages cache/ into the committable results.json.
+- `compare.js` — CS2 vs career side by side.
 - `analyze.js` — distribution stats, correlations, and the era-vs-role
-  decomposition (offline, reads cache).
+  decomposition.
+- `sides.js` — CT vs T breakdown of time alive.
 - `discover.js`, `inspect-attr.js`, `inspect-cache.js` — the discovery
   tools used to locate the stat and its markup; kept for when HLTV's
   layout changes. `inspect-cache.js` works offline against cache/.

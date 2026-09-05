@@ -1,26 +1,14 @@
-// CT vs T breakdown of time alive per round. Entirely offline: every
-// cached page already carries all three side variants (combined, plus
-// hidden ct and t), so this costs no requests.
+// CT vs T breakdown of time alive per round. Every scraped page already
+// carries all three side variants (combined, plus hidden ct and t).
+// Prefers results.json (see export.js) when present, otherwise falls back
+// to cache/*.html — either way, no requests.
 //
-//   node sides.js            CS2 scope if cached, else career
+//   node sides.js            CS2 scope if available, else career
 //   node sides.js --career   force the career scope
-const fs = require('fs');
-const path = require('path');
 const { flattenRoster } = require('./roster');
-const { parsePlayerPage } = require('./parse');
+const { readCached, source } = require('./data');
 
-const CACHE_DIR = path.join(__dirname, 'cache');
 const FORCE_CAREER = process.argv.includes('--career');
-
-function readCached(id, cs2) {
-  const file = path.join(CACHE_DIR, `${id}${cs2 ? '-cs2' : ''}.html`);
-  if (!fs.existsSync(file)) return undefined;
-  try {
-    return parsePlayerPage(fs.readFileSync(file, 'utf8'));
-  } catch {
-    return undefined;
-  }
-}
 
 const mean = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
 function stdev(xs) {
@@ -47,6 +35,7 @@ function correlate(pairs) {
 }
 const signed = (n) => (Number.isFinite(n) ? `${n > 0 ? '+' : ''}${n.toFixed(1)}` : 'N/A');
 
+console.log(`[data source: ${source()}]`);
 const roster = flattenRoster();
 const useCs2 = !FORCE_CAREER && roster.some((p) => readCached(p.id, true));
 const scope = useCs2 ? 'CS2 ONLY' : 'CAREER (incl. CS:GO)';
