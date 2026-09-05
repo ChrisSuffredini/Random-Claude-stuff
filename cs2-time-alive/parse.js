@@ -63,31 +63,46 @@ function parseRoleStats($) {
   return out;
 }
 
-// Attribute scores render as "80/100" next to the attribute's name.
-// Matched structurally rather than by a guessed class name.
+// Attribute scores (Entrying, Clutching, ...), verified structure:
+//
+//   <div class="role-stats-section-title">Entrying<div class="hidden">…tooltip…</div></div>
+//   <div class="row-stats-section-score">77<span class="row-stats-section-score-100">/100</span></div>
+//
+// Two traps: the score's number is a bare text node on the div with "/100"
+// in a child span (so the div's text is "77/100" but it is not a leaf), and
+// the title holds the tooltip as a child, so its text is not just the name.
+// Each attribute also repeats per side — combined, plus hidden ct and t.
+function ownText($el) {
+  return $el.clone().children().remove().end().text().replace(/\s+/g, ' ').trim();
+}
+
 function parseAttributes($) {
   const out = {};
-  $('*').each((_, el) => {
-    const $el = $(el);
-    if ($el.children().length > 0) return;
-    const text = $el.text().replace(/\s+/g, ' ').trim();
-    const score = text.match(/^(\d{1,3})\s*\/\s*100$/);
-    if (!score) return;
 
-    // The attribute's name sits alongside the score; widen the search up
-    // to the grandparent if the immediate parent doesn't carry it.
-    // Plain substring match, not \b...\b — adjacent elements concatenate
-    // into "49/100Entrying", where there's no word boundary after "100".
-    for (const $scope of [$el.parent(), $el.parent().parent()]) {
-      const context = $scope.text().replace(/\s+/g, ' ').toLowerCase();
-      const name = ATTRIBUTE_NAMES.find((n) => context.includes(n.toLowerCase()));
-      if (name) {
-        const key = name.toLowerCase();
-        if (out[key] === undefined) out[key] = Number(score[1]);
+  $('.row-stats-section-score').each((_, el) => {
+    const $score = $(el);
+    const m = $score.text().replace(/\s+/g, '').match(/^(\d{1,3})\/100$/);
+    if (!m) return;
+    // Skip the per-side duplicates; keep both-sides numbers.
+    if ($score.closest('.hidden, .stats-side-ct, .stats-side-t').length) return;
+
+    // Walk up to the section this score belongs to. Stop at the first
+    // ancestor holding exactly one title — more than one means we have
+    // climbed into a container of several sections and can no longer say
+    // which name this score goes with, so report nothing rather than guess.
+    let $anc = $score.parent();
+    for (let depth = 0; depth < 5 && $anc.length; depth++) {
+      const $titles = $anc.find('.role-stats-section-title');
+      if ($titles.length === 1) {
+        const name = ownText($titles.first());
+        if (name && out[name.toLowerCase()] === undefined) out[name.toLowerCase()] = Number(m[1]);
         return;
       }
+      if ($titles.length > 1) return;
+      $anc = $anc.parent();
     }
   });
+
   return out;
 }
 

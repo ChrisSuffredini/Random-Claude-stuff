@@ -50,10 +50,14 @@ function correlate(pairs) {
     dx += (xs[i] - mx) ** 2;
     dy += (ys[i] - my) ** 2;
   }
+  // Zero variance on either side means the correlation is undefined —
+  // report that rather than letting NaN read as "not enough data".
+  if (dx === 0 || dy === 0) return { r: NaN, n: usable.length, degenerate: true };
   return { r: num / Math.sqrt(dx * dy), n: usable.length };
 }
 
-function describeR(r) {
+function describeR(r, res) {
+  if (res && res.degenerate) return 'undefined (all values identical)';
   if (!Number.isFinite(r)) return 'not enough data';
   const a = Math.abs(r);
   const strength = a >= 0.7 ? 'strong' : a >= 0.4 ? 'moderate' : a >= 0.2 ? 'weak' : 'negligible';
@@ -88,8 +92,12 @@ for (const [label, cs2] of scopes) {
   // mean less time alive.
   const vsEntrying = correlate(rows.map((r) => [r.entrying, r.timeAliveSec]));
   const vsDpr = correlate(rows.map((r) => [r.dpr, r.timeAliveSec]));
-  console.log(`  time alive vs entrying : r=${vsEntrying.r.toFixed(2)} (n=${vsEntrying.n}) — ${describeR(vsEntrying.r)}`);
-  console.log(`  time alive vs dpr      : r=${vsDpr.r.toFixed(2)} (n=${vsDpr.n}) — ${describeR(vsDpr.r)}`);
+  const vsClutching = correlate(rows.map((r) => [r.clutching, r.timeAliveSec]));
+  console.log(`  time alive vs entrying : r=${vsEntrying.r.toFixed(2)} (n=${vsEntrying.n}) — ${describeR(vsEntrying.r, vsEntrying)}`);
+  console.log(`  time alive vs dpr      : r=${vsDpr.r.toFixed(2)} (n=${vsDpr.n}) — ${describeR(vsDpr.r, vsDpr)}`);
+  // Near-circular: HLTV says the clutching score is built partly from time
+  // alive per round, so a high r here confirms the wiring, not a finding.
+  console.log(`  time alive vs clutching: r=${vsClutching.r.toFixed(2)} (n=${vsClutching.n}) — ${describeR(vsClutching.r, vsClutching)} [partly circular]`);
 
   const sorted = [...rows].sort((a, b) => a.timeAliveSec - b.timeAliveSec);
   const line = (r) =>
@@ -149,7 +157,7 @@ if (paired.length >= 10) {
     console.log('\n=== era vs role (career residual against the death-rate trend) ===');
     console.log(`  trend fitted on ${natives.length} CS2-native players: seconds = ${intercept.toFixed(1)} ${slope.toFixed(1)}*dpr`);
     const dr = correlate(withResid.map((r) => [r.delta, r.resid]));
-    console.log(`  CS:GO history (delta) vs residual: r=${dr.r.toFixed(2)} (n=${dr.n}) — ${describeR(dr.r)}`);
+    console.log(`  CS:GO history (delta) vs residual: r=${dr.r.toFixed(2)} (n=${dr.n}) — ${describeR(dr.r, dr)}`);
     console.log(`  mean residual — veterans (delta>=5): ${vets.length ? mean(vets.map((v) => v.resid)).toFixed(1) : 'n/a'}s` +
       `  |  everyone else: ${rest.length ? mean(rest.map((v) => v.resid)).toFixed(1) : 'n/a'}s`);
     if (vets.length) {

@@ -24,8 +24,10 @@ check('"1:10" -> 70', () => assert.strictEqual(parseDuration('1:10'), 70));
 check('"70" -> 70', () => assert.strictEqual(parseDuration('70'), 70));
 check('undefined -> undefined', () => assert.strictEqual(parseDuration(undefined), undefined));
 
-// Real markup, including the irregular whitespace in the class attribute
-// and the hidden per-side duplicates that must NOT be picked up.
+// Time-alive and overview rows, verbatim from the live page — including the
+// irregular whitespace in the class attribute and the hidden per-side
+// duplicates that must NOT be picked up. (Attributes are covered below,
+// against their own verified markup.)
 const FIXTURE = `
 <html><body>
   <div class="context-item-name">ZywOo</div>
@@ -44,11 +46,6 @@ const FIXTURE = `
   <div class="stats-row"><span>Damage / Round</span><span>87.3</span></div>
   <div class="stats-row"><span>K/D Ratio</span><span>1.40</span></div>
   <div class="stats-row"><span>Maps played</span><span>1696</span></div>
-
-  <div class="role-attribute"><div class="role-score">80/100</div><div class="role-name">Clutching</div>
-    <div class="hidden"><div class="tooltip-box tooltip-attributes"><b>Clutching: </b>The late round players…</div></div></div>
-  <div class="role-attribute"><div class="role-score">49/100</div><div class="role-name">Entrying</div>
-    <div class="hidden"><div class="tooltip-box tooltip-attributes"><b>Entrying: </b>How likely a player is…</div></div></div>
 </body></html>`;
 
 console.log('\nparsePlayerPage (real markup fixture):');
@@ -58,20 +55,64 @@ check('time alive -> 70 seconds', () => assert.strictEqual(parsed.timeAliveSec, 
 check('dpr -> 0.60', () => assert.strictEqual(parsed.dpr, 0.6));
 check('dmg/round -> 87.3', () => assert.strictEqual(parsed.dmgPerRound, 87.3));
 check('kd -> 1.40', () => assert.strictEqual(parsed.kdRatio, 1.4));
-check('entrying attribute -> 49', () => assert.strictEqual(parsed.entrying, 49));
-check('clutching attribute -> 80', () => assert.strictEqual(parsed.clutching, 80));
 check('ign -> ZywOo', () => assert.strictEqual(parsed.ign, 'ZywOo'));
 
-// Adjacent elements concatenate with no separator, so "49/100Entrying" has
-// no word boundary after "100" — this broke attribute matching once.
-console.log('\nattributes with concatenated text (no whitespace/tooltip):');
-const CONCAT = `<html><body>
-  <div class="attr"><div>49/100</div><div>Entrying</div></div>
-  <div class="attr"><div>80/100</div><div>Clutching</div></div>
+// Real attribute markup captured from a cached page (inspect-cache.js):
+// the score's number is a bare text node with "/100" in a child span, and
+// the title carries the tooltip as a child. Each attribute repeats per
+// side, with ct/t hidden — only the combined value should be taken.
+console.log('\nattributes (verified markup, score nested in the section):');
+const section = (name, score, sideClass) => `
+  <div class="role-stats-section-title-wrapper ${sideClass}">
+    <div class="role-stats-section-title">${name}
+      <div class="hidden"><div class="tooltip-box tooltip-attributes"><b>${name}: </b>prose…</div></div>
+    </div>
+    <div class="row-stats-section-score">${score}<span class="row-stats-section-score-100">/100</span></div>
+  </div>`;
+const ATTRS = `<html><body>
+  ${section('Entrying', 77, 'stats-side-combined')}
+  ${section('Entrying', 81, 'stats-side-ct hidden')}
+  ${section('Entrying', 61, 'stats-side-t hidden')}
+  ${section('Clutching', 73, 'stats-side-combined')}
+  ${section('Firepower', 68, 'stats-side-combined')}
 </body></html>`;
-const concat = parsePlayerPage(CONCAT);
-check('entrying -> 49', () => assert.strictEqual(concat.entrying, 49));
-check('clutching -> 80', () => assert.strictEqual(concat.clutching, 80));
+const attrs = parsePlayerPage(ATTRS);
+check('entrying -> 77 (combined, not ct/t)', () => assert.strictEqual(attrs.entrying, 77));
+check('clutching -> 73', () => assert.strictEqual(attrs.clutching, 73));
+check('firepower -> 68', () => assert.strictEqual(attrs.attributes.firepower, 68));
+check('tooltip prose excluded from name', () => assert.ok(!Object.keys(attrs.attributes).some((k) => k.includes(':'))));
+
+// Same data, but with the score as a SIBLING of the title wrapper rather
+// than inside it — the real nesting was not fully confirmed, so both must work.
+console.log('\nattributes (score as sibling of the title):');
+const sibling = `<html><body>
+  <div class="role-stats-section">
+    <div class="role-stats-section-title-wrapper stats-side-combined">
+      <div class="role-stats-section-title">Entrying<div class="hidden">tip</div></div>
+    </div>
+    <div class="row-stats-section-score">49<span class="row-stats-section-score-100">/100</span></div>
+  </div>
+  <div class="role-stats-section">
+    <div class="role-stats-section-title-wrapper stats-side-combined">
+      <div class="role-stats-section-title">Clutching<div class="hidden">tip</div></div>
+    </div>
+    <div class="row-stats-section-score">88<span class="row-stats-section-score-100">/100</span></div>
+  </div>
+</body></html>`;
+const sib = parsePlayerPage(sibling);
+check('entrying -> 49', () => assert.strictEqual(sib.entrying, 49));
+check('clutching -> 88', () => assert.strictEqual(sib.clutching, 88));
+
+// Ambiguity guard: one container holding several titles must yield nothing
+// rather than pairing a score with the wrong attribute.
+console.log('\nambiguous nesting is reported as missing, not guessed:');
+const ambiguous = `<html><body><div class="blob">
+  <div class="role-stats-section-title">Entrying</div>
+  <div class="role-stats-section-title">Clutching</div>
+  <div class="row-stats-section-score">50<span class="row-stats-section-score-100">/100</span></div>
+</div></body></html>`;
+const amb = parsePlayerPage(ambiguous);
+check('no attribute guessed', () => assert.strictEqual(Object.keys(amb.attributes).length, 0));
 
 console.log(failures === 0 ? '\nAll parsing tests passed.' : `\n${failures} test(s) failed.`);
 process.exit(failures === 0 ? 0 : 1);
