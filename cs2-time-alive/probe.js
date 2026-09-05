@@ -1,25 +1,36 @@
-// Diagnostic: dumps every stat-row label on one player's HLTV clutching
-// page, so you can confirm the real "time alive per round" wording
-// before trusting index.js's automatic parsing. Uses the same
-// browser-backed loader as index.js since HLTV's Cloudflare protection
-// rejects plain HTTP requests.
-const { HLTVScraper } = require('hltv/lib/scraper');
-const { fetchPage, generateRandomSuffix } = require('hltv/lib/utils');
+// Single-player check: fetches one player's stats-overview page and prints
+// everything the parser extracts. Use this to sanity-check before the full
+// 50-player run.
+//
+//   HLTV_CDP_URL=http://127.0.0.1:9222 node probe.js [playerId]
+const { generateRandomSuffix } = require('hltv/lib/utils');
+const { parsePlayerPage } = require('./parse');
 const { loadPageWithBrowser, closeBrowser } = require('./browser');
 
 async function main() {
-  const id = process.argv[2] ? Number(process.argv[2]) : 11893; // default: ZywOo
-  const url = `https://www.hltv.org/stats/players/clutching/${id}/${generateRandomSuffix()}`;
+  const id = process.argv[2] ? Number(process.argv[2]) : 11893; // ZywOo
+  const url = `https://www.hltv.org/stats/players/${id}/${generateRandomSuffix()}`;
   console.log('Fetching', url);
+
   try {
-    const root = await fetchPage(url, loadPageWithBrowser);
-    console.log('HTML length:', root.html().length);
-    const $ = HLTVScraper(root);
-    const rows = $('.stats-row').toArray();
-    console.log(`Found ${rows.length} stats-row elements on clutching page for id=${id}`);
-    rows.forEach((row) => {
-      console.log(row.text().replace(/\s+/g, ' ').trim());
-    });
+    const html = await loadPageWithBrowser(url);
+    console.log('HTML length:', html.length);
+
+    const stats = parsePlayerPage(html);
+    console.log('\nign            :', stats.ign);
+    console.log('time alive raw :', stats.timeAliveRaw);
+    console.log('time alive sec :', stats.timeAliveSec);
+    console.log('deaths / round :', stats.dpr);
+    console.log('damage / round :', stats.dmgPerRound);
+    console.log('maps played    :', stats.mapsPlayed);
+    console.log('attributes     :', stats.attributes);
+
+    console.log('\nAll role-stat rows (both sides):');
+    Object.entries(stats.roleStats).forEach(([k, v]) => console.log(`  ${k}: ${v}`));
+
+    if (stats.timeAliveSec === undefined) {
+      console.log('\nWARNING: no "time alive per round" row parsed — selectors in parse.js need updating.');
+    }
   } finally {
     await closeBrowser();
   }

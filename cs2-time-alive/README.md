@@ -53,86 +53,84 @@ If Chromium isn't installed: `sudo pacman -S chromium` (Arch), and see
 [puppeteer's troubleshooting docs](https://pptr.dev/troubleshooting) for
 launch problems in the fallback path.
 
-This was built and syntax-checked in a sandboxed cloud environment whose
-network egress proxy blocks `www.hltv.org` entirely, so:
+## Where the data actually comes from
 
-- **It has not been run end-to-end against live HLTV data.** The
-  request/error-handling loop (including the browser-backed loader) was
-  verified to run cleanly through all 50 players — including opening and
-  closing a real headless Chromium instance — and produce a correct
-  summary/failure report when every navigation is blocked by the sandbox
-  (which is what happens here).
-- **The "time alive per round" field's exact page markup is unverified.**
-  `HLTV.getPlayerStats({ id })` (the package's documented endpoint) only
-  scrapes the Overview, Individual, and Matches pages — confirmed by
-  reading `node_modules/hltv/lib/endpoints/getPlayerStats.js`. It does
-  **not** include "time alive per round"; that stat lives on a separate,
-  undocumented endpoint the package doesn't wrap:
-  `https://www.hltv.org/stats/players/clutching/{id}`. `clutching.js`
-  scrapes that page directly.
-- Because that page couldn't be fetched from here, the label-matching in
-  `clutching.js` (`TIME_ALIVE_LABEL_PATTERNS`) is a best-effort guess at
-  HLTV's actual wording, not confirmed against the live HTML.
-- The top-10 ranking in `roster.js` also could not be re-confirmed
-  against the live ranking page for the same reason — it's taken as
-  given from the task's 2026-08-10 snapshot.
+Found by inspecting the live site (`discover.js`, `inspect-attr.js`):
+**everything needed is on the player's stats-overview page**,
+`https://www.hltv.org/stats/players/{id}/{slug}` — so this makes **one
+request per player**, not four.
 
-**Before trusting a real run**, run the probe first (with attach mode set
-up as above):
+- **Time alive per round** is *not* a `.stats-row` and *not* on any
+  `/clutching/` URL (that path 404s). It lives in HLTV's attributes
+  ("role") section:
 
-```bash
-npm install
-HLTV_CDP_URL=http://127.0.0.1:9222 node probe.js
-# dumps every stat-row label on ZywOo's clutching page — confirm the
-# exact "time alive" label text
-```
+  ```html
+  <div class="role-stats-row   stats-side-combined">
+    <div class="role-stats-top">
+      <div class="role-stats-title">Time alive per round</div>
+      <div class="role-stats-data">1m 10s</div>
+    </div>
+  </div>
+  ```
 
-`index.js` also does this automatically for the first player it
-successfully fetches — it prints every row label from that player's
-clutching page plus whatever value it parsed for time-alive-per-round, so
-you can sanity-check the very first real run before trusting the rest.
-If the label patterns in `clutching.js` don't match what you see, add the
-real label to `TIME_ALIVE_LABEL_PATTERNS` — no other code needs to
-change. Also confirm the current top-10 lineup against
-https://www.hltv.org/ranking/teams before running, since rosters and
-rankings both drift.
+  The row repeats as `stats-side-ct` / `stats-side-t` (hidden); we read
+  `stats-side-combined` for both sides. Values are formatted `"1m 10s"`,
+  not decimals, so `parse.js` converts to seconds (70).
+- **DPR** comes from the overview `.stats-row` "Deaths / round".
+- **Entrying** is HLTV's attribute score out of 100 (e.g. ZywOo
+  `Entrying 49/100`), matched structurally by finding an `NN/100` value
+  next to the attribute's name.
+
+`parse.js` is pure (HTML in, values out) and covered by `test-parse.js`
+using markup copied verbatim from the live page — run `node test-parse.js`
+to check parsing without touching the network.
+
+### Caveats
+
+- **Scope**: with no filters the page covers a player's whole career,
+  which for veterans **includes CS:GO**, not just CS2. Pass `--cs2` to
+  restrict to CS2 (`?csVersion=CS2`).
+- Attribute scores may be absent for players with too few recent maps;
+  those show `N/A` rather than failing the run.
+- The top-10 ranking in `roster.js` is the task's 2026-08-10 snapshot and
+  was not re-confirmed against the live ranking page — check
+  https://www.hltv.org/ranking/teams, since rosters and rankings drift.
 
 ## Usage
 
 ```bash
 npm install
-HLTV_CDP_URL=http://127.0.0.1:9222 node index.js
+node test-parse.js                                   # offline parser check
+HLTV_CDP_URL=http://127.0.0.1:9222 node probe.js     # one player
+HLTV_CDP_URL=http://127.0.0.1:9222 node index.js     # all 50
 ```
+
+Flags: `--cs2` (CS2-only stats), `--refresh` (ignore cache, re-fetch).
 
 Leave the browser window from step 1 open (and solve a Cloudflare
 challenge in it if one reappears) while the script works through all 50
-players sequentially (with a ~750ms pause between every request — each
-player needs 4 page loads: 3 from `getPlayerStats` + 1 from the
-clutching page). It prints:
+players (~800ms between requests). It prints:
 
-- a per-player `OK`/`FAIL` log line as it goes,
-- a one-time debug dump of the first successfully-fetched player's
-  clutching-page stat labels (see above),
-- a final table (`player`, `team`, `time_alive_per_round_s`, `dpr`,
-  `entry_rating`) sorted descending by time alive per round,
-- explicit max/min call-outs,
-- a fetch-success count and a list of any per-player failures (a failed
-  player is logged and skipped, not fatal to the run).
+- a per-player `OK`/`FAIL` line as it goes,
+- a one-time debug dump of the first player's parsed values, so a parsing
+  regression is visible before the other 49 are trusted,
+- a table (`player`, `team`, `time_alive`, `seconds`, `dpr`, `entrying`)
+  sorted descending by time alive per round,
+- explicit MAX / MIN call-outs plus the spread,
+- a success count and any per-player failures (logged and skipped, never
+  fatal to the run).
 
-`dpr` = deaths per round (`overviewStatistics.deathsPerRound`).
-`entry_rating` = HLTV's opening-kill rating
-(`individualStatistics.openingKillRating`), used as the closest available
-stand-in for "entrying score" since the package doesn't expose a stat
-literally named that.
+**Pages are cached** to `cache/<id>.html`. Re-runs reuse them, so parsing
+can be revised and re-run instantly without re-scraping HLTV. Use
+`--refresh` to force fresh fetches.
 
 ## Files
 
 - `roster.js` — the 10 teams / 50 players and their HLTV player IDs.
-- `browser.js` — real-browser-backed `loadPage` replacement, to get past
-  HLTV's Cloudflare protection.
-- `clutching.js` — scrapes `/stats/players/clutching/{id}` for time alive
-  per round (not covered by the `hltv` package's own endpoints).
-- `index.js` — fetches everything, merges, sorts, prints the report.
-- `probe.js` — standalone diagnostic: dumps raw clutching-page stat rows
-  for one player ID (`node probe.js <id>`, defaults to ZywOo), for
-  verifying label wording.
+- `browser.js` — attach-mode `loadPage` (connects to your real browser).
+- `parse.js` — pure parsing of a stats-overview page.
+- `test-parse.js` — parser tests against real captured markup (offline).
+- `index.js` — fetches (with caching), parses, sorts, prints the report.
+- `probe.js` — dumps one player's parsed values (`node probe.js <id>`).
+- `discover.js`, `inspect-attr.js` — the discovery tools used to locate
+  the stat and its markup; kept for when HLTV's layout changes.

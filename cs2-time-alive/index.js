@@ -1,36 +1,123 @@
-const { HLTV } = require('hltv');
-const { sleep } = require('hltv/lib/utils');
+// Compares "time alive per round" across the 50 players on HLTV's top-10
+// teams. Everything needed (time alive, DPR, attribute scores) lives on
+// each player's stats-overview page, so this makes ONE request per player.
+//
+// Pages are cached to cache/<id>.html, so a re-run costs nothing and
+// parsing can be revised without re-scraping.
+//
+//   HLTV_CDP_URL=http://127.0.0.1:9222 node index.js [--cs2] [--refresh]
+const fs = require('fs');
+const path = require('path');
+const { generateRandomSuffix } = require('hltv/lib/utils');
 const { flattenRoster } = require('./roster');
-const { getClutchingStats } = require('./clutching');
+const { parsePlayerPage } = require('./parse');
 const { loadPageWithBrowser, closeBrowser } = require('./browser');
 
-// Route every request through a real (stealth) browser tab instead of the
-// package's default plain-HTTP loader — see browser.js for why.
-const hltv = HLTV.createInstance({ loadPage: loadPageWithBrowser });
+const CACHE_DIR = path.join(__dirname, 'cache');
+const DELAY_MS = 800;
+const MIN_REAL_CONTENT = 50000; // a real stats page is ~650KB
+const CS2_ONLY = process.argv.includes('--cs2');
+const REFRESH = process.argv.includes('--refresh');
 
-const DELAY_MS = 750;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function fmtNum(n, digits = 2) {
-  return typeof n === 'number' && !Number.isNaN(n) ? n.toFixed(digits) : 'N/A';
+function fmt(n, digits = 2) {
+  return typeof n === 'number' && Number.isFinite(n) ? n.toFixed(digits) : 'N/A';
 }
 
-async function fetchOne(player) {
-  // getPlayerStats() alone makes 3 requests (overview/individual/matches);
-  // the clutching page is a 4th. Run them one after another (not in
-  // parallel) and pace every player with a delay to stay polite to HLTV.
-  const overview = await hltv.getPlayerStats({ id: player.id });
-  await sleep(DELAY_MS);
-  const clutching = await getClutchingStats(player.id, loadPageWithBrowser);
+function cacheFile(id) {
+  return path.join(CACHE_DIR, `${id}${CS2_ONLY ? '-cs2' : ''}.html`);
+}
 
-  return {
-    name: player.name,
-    team: player.team,
-    id: player.id,
-    timeAliveSec: clutching.timeAlivePerRound,
-    dpr: overview.overviewStatistics?.deathsPerRound,
-    entryRating: overview.individualStatistics?.openingKillRating,
-    rawLabels: clutching.rawLabels,
-  };
+async function getPlayerHtml(player) {
+  const file = cacheFile(player.id);
+  if (!REFRESH && fs.existsSync(file)) {
+    const html = fs.readFileSync(file, 'utf8');
+    if (html.length >= MIN_REAL_CONTENT) return { html, cached: true };
+  }
+
+  const query = CS2_ONLY ? '?csVersion=CS2' : '';
+  const url = `https://www.hltv.org/stats/players/${player.id}/${generateRandomSuffix()}${query}`;
+  const html = await loadPageWithBrowser(url);
+  if (html.length < MIN_REAL_CONTENT) {
+    throw new Error(`page too small (${html.length} chars) — blocked or 404`);
+  }
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+  fs.writeFileSync(file, html);
+  return { html, cached: false };
+}
+
+async function run() {
+  const roster = flattenRoster();
+  const results = [];
+  const failures = [];
+  let debugged = false;
+
+  console.log(
+    `Scope: ${CS2_ONLY ? 'CS2 only' : 'career, all maps, both sides, no filters (includes CS:GO history)'}\n`
+  );
+
+  for (const player of roster) {
+    try {
+      const { html, cached } = await getPlayerHtml(player);
+      const stats = parsePlayerPage(html);
+
+      if (!debugged) {
+        // One-time sanity dump on the first player, so a parsing
+        // regression is obvious before the other 49 are trusted.
+        console.log(`[debug] ${player.name}: time alive raw=${JSON.stringify(stats.timeAliveRaw)} ` +
+          `-> ${stats.timeAliveSec}s | dpr=${stats.dpr} | attributes=${JSON.stringify(stats.attributes)}`);
+        if (stats.timeAliveSec === undefined) {
+          console.log('[debug] WARNING: no "time alive per round" row found — check parse.js selectors');
+          console.log(`[debug] role stat rows seen: ${JSON.stringify(Object.keys(stats.roleStats))}`);
+        }
+        console.log('');
+        debugged = true;
+      }
+
+      results.push({ ...player, ...stats });
+      console.log(
+        `OK   ${player.team.padEnd(15)} ${player.name.padEnd(11)} ` +
+        `${(stats.timeAliveRaw || 'N/A').padStart(7)}${cached ? '  (cached)' : ''}`
+      );
+    } catch (err) {
+      failures.push({ player, error: err.message });
+      console.log(`FAIL ${player.team.padEnd(15)} ${player.name.padEnd(11)} — ${err.message}`);
+    }
+    await sleep(DELAY_MS);
+  }
+
+  const ranked = results.filter((r) => typeof r.timeAliveSec === 'number');
+  const unranked = results.filter((r) => typeof r.timeAliveSec !== 'number');
+  ranked.sort((a, b) => b.timeAliveSec - a.timeAliveSec);
+
+  console.log('\n\n=== TIME ALIVE PER ROUND — CS2 TOP-10 TEAMS ===\n');
+  const head = ['#', 'player', 'team', 'time_alive', 'seconds', 'dpr', 'entrying'];
+  const widths = [3, 11, 15, 10, 8, 6, 8];
+  const row = (cells) => cells.map((c, i) => String(c).padEnd(widths[i])).join(' ');
+  console.log(row(head));
+  console.log(widths.map((w) => '-'.repeat(w)).join(' '));
+  ranked.forEach((r, i) => {
+    console.log(row([i + 1, r.name, r.team, r.timeAliveRaw, fmt(r.timeAliveSec, 1), fmt(r.dpr), fmt(r.entrying, 0)]));
+  });
+
+  if (unranked.length) {
+    console.log('\n(no time-alive value parsed — excluded from ranking)');
+    unranked.forEach((r) => console.log(row(['-', r.name, r.team, 'N/A', 'N/A', fmt(r.dpr), fmt(r.entrying, 0)])));
+  }
+
+  if (ranked.length) {
+    const max = ranked[0];
+    const min = ranked[ranked.length - 1];
+    console.log(`\nMAX: ${max.name} (${max.team}) — ${max.timeAliveRaw} = ${fmt(max.timeAliveSec, 1)}s`);
+    console.log(`MIN: ${min.name} (${min.team}) — ${min.timeAliveRaw} = ${fmt(min.timeAliveSec, 1)}s`);
+    console.log(`Spread: ${fmt(max.timeAliveSec - min.timeAliveSec, 1)}s`);
+  } else {
+    console.log('\nNo time-alive values parsed — nothing to rank.');
+  }
+
+  console.log(`\n${results.length}/${roster.length} players fetched (${failures.length} failed).`);
+  failures.forEach((f) => console.log(`  - ${f.player.team} ${f.player.name} (${f.player.id}): ${f.error}`));
 }
 
 async function main() {
@@ -38,72 +125,6 @@ async function main() {
     await run();
   } finally {
     await closeBrowser();
-  }
-}
-
-async function run() {
-  const roster = flattenRoster();
-  const results = [];
-  const failures = [];
-  let firstSuccessLogged = false;
-
-  for (const player of roster) {
-    try {
-      const row = await fetchOne(player);
-
-      if (!firstSuccessLogged) {
-        // One-time sanity dump so a human can confirm the "time alive per
-        // round" label/selector actually matched something sane before
-        // trusting the rest of the run.
-        console.log(`\n[debug] Clutching-page stat rows for ${player.name} (id ${player.id}):`);
-        row.rawLabels.forEach((l) => console.log(`  - ${l}`));
-        console.log(
-          row.timeAliveSec !== undefined
-            ? `[debug] Parsed time_alive_per_round = ${row.timeAliveSec}s\n`
-            : `[debug] WARNING: could not find/parse "time alive per round" on this page — check labels above and update clutching.js\n`
-        );
-        firstSuccessLogged = true;
-      }
-
-      results.push(row);
-      console.log(`OK   ${player.team.padEnd(16)} ${player.name}`);
-    } catch (err) {
-      failures.push({ player, error: err.message });
-      console.log(`FAIL ${player.team.padEnd(16)} ${player.name} — ${err.message}`);
-    }
-    await sleep(DELAY_MS);
-  }
-
-  const withTimeAlive = results.filter((r) => typeof r.timeAliveSec === 'number');
-  const withoutTimeAlive = results.filter((r) => typeof r.timeAliveSec !== 'number');
-  withTimeAlive.sort((a, b) => b.timeAliveSec - a.timeAliveSec);
-
-  console.log('\n=== Time Alive Per Round — CS2 Top-10 Teams ===\n');
-  const header = ['player', 'team', 'time_alive_per_round_s', 'dpr', 'entry_rating'];
-  console.log(header.join('\t'));
-  for (const r of withTimeAlive) {
-    console.log([r.name, r.team, fmtNum(r.timeAliveSec, 1), fmtNum(r.dpr), fmtNum(r.entryRating)].join('\t'));
-  }
-  if (withoutTimeAlive.length) {
-    console.log('\n(no time_alive_per_round parsed — shown with N/A, excluded from ranking/max/min)');
-    for (const r of withoutTimeAlive) {
-      console.log([r.name, r.team, 'N/A', fmtNum(r.dpr), fmtNum(r.entryRating)].join('\t'));
-    }
-  }
-
-  if (withTimeAlive.length) {
-    const max = withTimeAlive[0];
-    const min = withTimeAlive[withTimeAlive.length - 1];
-    console.log(`\nMax time alive per round: ${max.name} (${max.team}) — ${fmtNum(max.timeAliveSec, 1)}s`);
-    console.log(`Min time alive per round: ${min.name} (${min.team}) — ${fmtNum(min.timeAliveSec, 1)}s`);
-  } else {
-    console.log('\nNo player yielded a parsable time_alive_per_round value — nothing to rank.');
-  }
-
-  console.log(`\nFetched ${results.length}/${roster.length} players successfully (${failures.length} failed).`);
-  if (failures.length) {
-    console.log('Failures:');
-    failures.forEach((f) => console.log(`  - ${f.player.team} ${f.player.name} (id ${f.player.id}): ${f.error}`));
   }
 }
 
