@@ -14,7 +14,10 @@ const { parsePlayerPage } = require('./parse');
 const { loadPageWithBrowser, closeBrowser } = require('./browser');
 
 const CACHE_DIR = path.join(__dirname, 'cache');
-const DELAY_MS = 800;
+// Overridable so the retry flow can be exercised quickly in a test.
+const DELAY_MS = Number(process.env.HLTV_DELAY_MS || 800);
+const RETRY_ROUNDS = Number(process.env.HLTV_RETRY_ROUNDS || 3);
+const RETRY_BASE_DELAY_MS = Number(process.env.HLTV_RETRY_DELAY_MS || 3000); // grows: 3s, 6s, 9s
 const MIN_REAL_CONTENT = 50000; // a real stats page is ~650KB
 const CS2_ONLY = process.argv.includes('--cs2');
 const REFRESH = process.argv.includes('--refresh');
@@ -29,9 +32,9 @@ function cacheFile(id) {
   return path.join(CACHE_DIR, `${id}${CS2_ONLY ? '-cs2' : ''}.html`);
 }
 
-async function getPlayerHtml(player) {
+async function getPlayerHtml(player, { forceFetch = false } = {}) {
   const file = cacheFile(player.id);
-  if (!REFRESH && fs.existsSync(file)) {
+  if (!REFRESH && !forceFetch && fs.existsSync(file)) {
     const html = fs.readFileSync(file, 'utf8');
     if (html.length >= MIN_REAL_CONTENT) return { html, cached: true };
   }
@@ -47,10 +50,24 @@ async function getPlayerHtml(player) {
   return { html, cached: false };
 }
 
+// Fetches and parses one player. Throws on anything retryable: a failed
+// fetch, or a page that came back without even the basic stats table
+// (which means we got a Cloudflare interstitial or the wrong page, not a
+// player who genuinely has no attribute rows).
+async function fetchPlayer(player, { forceFetch = false } = {}) {
+  const { html, cached } = await getPlayerHtml(player, { forceFetch });
+  const stats = parsePlayerPage(html);
+
+  if (Object.keys(stats.statsRows).length === 0) {
+    throw new Error('no stats rows on page — wrong page or interstitial');
+  }
+  return { row: { ...player, ...stats }, cached, stats };
+}
+
 async function run() {
   const roster = flattenRoster();
   const results = [];
-  const failures = [];
+  let pending = [];
   let debugged = false;
 
   console.log(
@@ -59,8 +76,7 @@ async function run() {
 
   for (const player of roster) {
     try {
-      const { html, cached } = await getPlayerHtml(player);
-      const stats = parsePlayerPage(html);
+      const { row, cached, stats } = await fetchPlayer(player);
 
       if (!debugged) {
         // One-time sanity dump on the first player, so a parsing
@@ -75,17 +91,48 @@ async function run() {
         debugged = true;
       }
 
-      results.push({ ...player, ...stats });
+      results.push(row);
       console.log(
         `OK   ${player.team.padEnd(15)} ${player.name.padEnd(11)} ` +
         `${(stats.timeAliveRaw || 'N/A').padStart(7)}${cached ? '  (cached)' : ''}`
       );
     } catch (err) {
-      failures.push({ player, error: err.message });
+      pending.push({ player, error: err.message });
       console.log(`FAIL ${player.team.padEnd(15)} ${player.name.padEnd(11)} — ${err.message}`);
     }
     await sleep(DELAY_MS);
   }
+
+  // Retry anything that failed, a few times, with a growing pause — these
+  // failures are usually transient blocking rather than a missing player.
+  // Always re-fetch (never trust a cached page for a retry).
+  for (let round = 1; round <= RETRY_ROUNDS && pending.length > 0; round++) {
+    const waitMs = RETRY_BASE_DELAY_MS * round;
+    console.log(
+      `\nRetry ${round}/${RETRY_ROUNDS} for ${pending.length} player(s): ` +
+      `${pending.map((f) => f.player.name).join(', ')} (waiting ${waitMs / 1000}s first)`
+    );
+    await sleep(waitMs);
+
+    const stillFailing = [];
+    for (const { player } of pending) {
+      try {
+        const { row, stats } = await fetchPlayer(player, { forceFetch: true });
+        results.push(row);
+        console.log(
+          `OK   ${player.team.padEnd(15)} ${player.name.padEnd(11)} ` +
+          `${(stats.timeAliveRaw || 'N/A').padStart(7)}  (retry ${round})`
+        );
+      } catch (err) {
+        stillFailing.push({ player, error: err.message });
+        console.log(`FAIL ${player.team.padEnd(15)} ${player.name.padEnd(11)} — ${err.message}`);
+      }
+      await sleep(waitMs);
+    }
+    pending = stillFailing;
+  }
+
+  const failures = pending;
 
   const ranked = results.filter((r) => typeof r.timeAliveSec === 'number');
   const unranked = results.filter((r) => typeof r.timeAliveSec !== 'number');
