@@ -9,6 +9,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "hltv": "^3.5.0"
+    "hltv": "^3.5.0",
+    "puppeteer": "^25.10.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   }
 }

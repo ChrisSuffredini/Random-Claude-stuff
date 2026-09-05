@@ -2,6 +2,11 @@ const { HLTV } = require('hltv');
 const { sleep } = require('hltv/lib/utils');
 const { flattenRoster } = require('./roster');
 const { getClutchingStats } = require('./clutching');
+const { loadPageWithBrowser, closeBrowser } = require('./browser');
+
+// Route every request through a real (stealth) browser tab instead of the
+// package's default plain-HTTP loader — see browser.js for why.
+const hltv = HLTV.createInstance({ loadPage: loadPageWithBrowser });
 
 const DELAY_MS = 750;
 
@@ -13,9 +18,9 @@ async function fetchOne(player) {
   // getPlayerStats() alone makes 3 requests (overview/individual/matches);
   // the clutching page is a 4th. Run them one after another (not in
   // parallel) and pace every player with a delay to stay polite to HLTV.
-  const overview = await HLTV.getPlayerStats({ id: player.id });
+  const overview = await hltv.getPlayerStats({ id: player.id });
   await sleep(DELAY_MS);
-  const clutching = await getClutchingStats(player.id);
+  const clutching = await getClutchingStats(player.id, loadPageWithBrowser);
 
   return {
     name: player.name,
@@ -29,6 +34,14 @@ async function fetchOne(player) {
 }
 
 async function main() {
+  try {
+    await run();
+  } finally {
+    await closeBrowser();
+  }
+}
+
+async function run() {
   const roster = flattenRoster();
   const results = [];
   const failures = [];

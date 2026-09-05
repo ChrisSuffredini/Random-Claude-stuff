@@ -35,10 +35,14 @@ function parseTimeAliveValue(text) {
  * "time alive per round" (seconds). Returns { timeAlivePerRound, rawLabels }.
  * rawLabels is included so callers/tools can inspect actual page wording
  * if the label patterns above ever stop matching.
+ *
+ * `loadPage` defaults to the package's plain HTTP loader, but callers can
+ * pass a browser-backed one (see browser.js) when HLTV's Cloudflare
+ * protection rejects plain requests.
  */
-async function getClutchingStats(id) {
+async function getClutchingStats(id, loadPage = defaultConfig.loadPage) {
   const url = `https://www.hltv.org/stats/players/clutching/${id}/${generateRandomSuffix()}`;
-  const root = await fetchPage(url, defaultConfig.loadPage);
+  const root = await fetchPage(url, loadPage);
   const $ = HLTVScraper(root);
 
   const rows = $('.stats-row').toArray();
