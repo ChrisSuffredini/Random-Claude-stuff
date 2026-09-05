@@ -14,23 +14,44 @@ the package (see [gigobyte/HLTV#43](https://github.com/gigobyte/HLTV/issues/43)
 and other scrapers having moved to real/stealth-browser rendering for
 HLTV specifically).
 
-**Fix applied:** `browser.js` replaces the package's `loadPage` with a
-real Chromium tab (via `puppeteer-extra` + the stealth plugin, reused
-across the whole run so a solved Cloudflare session carries over between
-requests). `index.js` and `probe.js` both use it automatically — no
-extra setup beyond `npm install`.
+A Puppeteer-**launched** browser doesn't solve this either: Cloudflare
+flags the automated browser itself and re-issues the challenge forever,
+so clicking the checkbox by hand in that window does nothing (observed
+in practice — ~10 manual clicks, challenge never cleared).
 
-- The browser window opens **visibly** by default. If HLTV shows a
-  Cloudflare checkbox/challenge, solve it by hand in that window once —
-  the console will print `[waiting] Cloudflare check is on screen...` if
-  it's stuck on one. Subsequent requests reuse the same tab/session.
-- Once you've confirmed it passes reliably, you can run headless with
-  `HLTV_HEADLESS=true node index.js` (no visible window, but no way to
-  manually solve a challenge if one appears).
-- If Chromium fails to launch with a missing-library error, install a
-  system Chromium (`sudo pacman -S chromium`) and see
-  [puppeteer's troubleshooting docs](https://pptr.dev/troubleshooting)
-  for pointing it at that binary via `executablePath`.
+**Fix applied — attach mode.** `browser.js` connects to a normal
+Chrome/Chromium **you** start and solve the Cloudflare check in with
+your own mouse, then drives navigation inside that already-trusted
+session. Nothing about the browser looks automated, and the
+`cf_clearance` cookie earned by your real click carries into every
+subsequent fetch.
+
+```bash
+# 1. Start a browser with remote debugging on a throwaway profile
+#    (leaves your normal browsing untouched). Use google-chrome-stable
+#    instead of chromium if that's what you have.
+chromium --remote-debugging-port=9222 --user-data-dir=/tmp/hltv-profile &
+
+# 2. In THAT window, visit https://www.hltv.org and clear any
+#    "verify you are human" check yourself, until the real site loads.
+
+# 3. Leave it open, and point the script at it:
+HLTV_CDP_URL=http://127.0.0.1:9222 node probe.js
+HLTV_CDP_URL=http://127.0.0.1:9222 node index.js
+```
+
+The script never closes that window (it disconnects rather than
+quitting), so you can re-run against the same solved session. If HLTV
+re-challenges mid-run, the console prints `[waiting] Cloudflare check is
+on screen...` — solve it in the window and the run continues.
+
+Without `HLTV_CDP_URL`, `browser.js` falls back to launching its own
+browser (visible by default, `HLTV_HEADLESS=true` for headless). That
+path only works where Cloudflare isn't actively challenging.
+
+If Chromium isn't installed: `sudo pacman -S chromium` (Arch), and see
+[puppeteer's troubleshooting docs](https://pptr.dev/troubleshooting) for
+launch problems in the fallback path.
 
 This was built and syntax-checked in a sandboxed cloud environment whose
 network egress proxy blocks `www.hltv.org` entirely, so:
@@ -56,12 +77,14 @@ network egress proxy blocks `www.hltv.org` entirely, so:
   against the live ranking page for the same reason — it's taken as
   given from the task's 2026-08-10 snapshot.
 
-**Before trusting a real run**, run the probe first:
+**Before trusting a real run**, run the probe first (with attach mode set
+up as above):
 
 ```bash
 npm install
-node probe.js         # dumps every stat-row label on ZywOo's clutching
-                       # page — confirm the exact "time alive" label text
+HLTV_CDP_URL=http://127.0.0.1:9222 node probe.js
+# dumps every stat-row label on ZywOo's clutching page — confirm the
+# exact "time alive" label text
 ```
 
 `index.js` also does this automatically for the first player it
@@ -78,11 +101,11 @@ rankings both drift.
 
 ```bash
 npm install
-node index.js
+HLTV_CDP_URL=http://127.0.0.1:9222 node index.js
 ```
 
-A Chromium window will open — leave it alone (or solve a Cloudflare
-challenge in it if one appears) while the script works through all 50
+Leave the browser window from step 1 open (and solve a Cloudflare
+challenge in it if one reappears) while the script works through all 50
 players sequentially (with a ~750ms pause between every request — each
 player needs 4 page loads: 3 from `getPlayerStats` + 1 from the
 clutching page). It prints:
