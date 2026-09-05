@@ -1,0 +1,150 @@
+#   player        team            ct       t        t-ct
+1   bLitz         The MongolZ     1m 2s    1m 9s    +7.0
+2   saffee        paiN            1m 11s   1m 17s   +6.0
+3   Jame          PARIVISION      1m 18s   1m 23s   +5.0
+4   dgt           9z              1m 9s    1m 14s   +5.0
+5   sh1ro         Spirit          1m 16s   1m 21s   +5.0
+6   Spinx         MOUZ            1m 10s   1m 15s   +5.0
+7   MartinezSa    HEROIC          1m 9s    1m 14s   +5.0
+8   mo0N          magic           1m 6s    1m 11s   +5.0
+9   ropz          Vitality        1m 11s   1m 15s   +4.0
+10  torzsi        MOUZ            1m 13s   1m 17s   +4.0
+11  w0nderful     Natus Vincere   1m 13s   1m 17s   +4.0
+12  910           The MongolZ     1m 7s    1m 11s   +4.0
+13  zweih         PARIVISION      1m 7s    1m 11s   +4.0
+14  molodoy       FURIA           1m 12s   1m 16s   +4.0
+15  frontales     HOTU            1m 8s    1m 12s   +4.0
+16  woxic         Aurora          1m 15s   1m 18s   +3.0
+17  FL1T          PARIVISION      1m 13s   1m 16s   +3.0
+18  iM            Natus Vincere   1m 7s    1m 10s   +3.0
+19  zorte         BETBOOM         1m 8s    1m 11s   +3.0
+20  phzy          Astralis        1m 8s    1m 11s   +3.0
+21  b1t           Natus Vincere   1m 10s   1m 13s   +3.0
+22  m0NESY        Falcons         1m 15s   1m 18s   +3.0
+23  nqz           MIBR            1m 15s   1m 18s   +3.0
+24  try           Legacy          1m 9s    1m 12s   +3.0
+25  zont1x        Spirit          1m 11s   1m 14s   +3.0
+26  Kursy         3DMAX           1m 7s    1m 10s   +3.0
+27  Neityu        FaZe            1m 6s    1m 9s    +3.0
+28  sFade8        magic           1m 0s    1m 3s    +3.0
+29  AW            magic           1m 8s    1m 11s   +3.0
+30  JBOEN         FaZe            1m 7s    1m 10s   +3.0
+31  tenzy         magic           1m 3s    1m 6s    +3.0
+32  NiKo          Falcons         1m 11s   1m 13s   +2.0
+33  apEX          Vitality        1m 8s    1m 10s   +2.0
+34  ZywOo         Vitality        1m 14s   1m 16s   +2.0
+35  meyern        9z              1m 10s   1m 12s   +2.0
+36  z4KR          Lynn Vision     1m 10s   1m 12s   +2.0
+37  nilo          HEROIC          1m 7s    1m 9s    +2.0
+38  donk          Spirit          1m 7s    1m 9s    +2.0
+39  hypex         GamerLegion     1m 11s   1m 13s   +2.0
+40  s1zzi         B8              1m 6s    1m 8s    +2.0
+41  huNter-       G2              1m 12s   1m 13s   +1.0
+42  frozen        FaZe            1m 10s   1m 11s   +1.0
+43  max           9z              1m 7s    1m 8s    +1.0
+44  Maka          3DMAX           1m 10s   1m 11s   +1.0
+45  Lucky         3DMAX           1m 8s    1m 9s    +1.0
+46  YEKINDAR      FURIA           1m 5s    1m 6s    +1.0
+47  flameZ        Vitality        1m 9s    1m 10s   +1.0
+48  m1N1          JiJieHao        1m 9s    1m 10s   +1.0
+49  biguzera      paiN            1m 9s    1m 10s   +1.0
+50  Bibu          JiJieHao        1m 8s    1m 9s    +1.0
+51  magixx        Spirit          1m 15s   1m 16s   +1.0
+52  mezii         Vitality        1m 13s   1m 14s   +1.0
+53  piriajr       paiN            1m 5s    1m 6s    +1.0
+54  CacaNito      JiJieHao        1m 3s    1m 4s    +1.0
+55  kyxsan        Aurora          1m 10s   1m 11s   +1.0
+56  MaSvAl        magic           1m 8s    1m 9s    +1.0
+57  FL4MUS        GamerLegion     1m 4s    1m 5s    +1.0
+58  Wicadia       Aurora          1m 9s    1m 10s   +1.0
+59  mizu          HOTU            1m 4s    1m 5s    +1.0
+60  Chr1zN        HEROIC          1m 4s    1m 5s    +1.0
+61  PR            MOUZ            1m 8s    1m 9s    +1.0
+62  HUASOPEEK     9z              1m 8s    1m 9s    +1.0
+63  gr1ks         BIG             1m 11s   1m 12s   +1.0
+64  Jorko         Liquid          1m 7s    1m 8s    +1.0
+65  FalleN        FURIA           1m 13s   1m 13s   0.0
+66  tabseN        BIG             1m 5s    1m 5s    0.0
+67  REZ           GamerLegion     1m 7s    1m 7s    0.0
+68  Aleksib       Natus Vincere   1m 12s   1m 12s   0.0
+69  Boombl4       BETBOOM         1m 6s    1m 6s    0.0
+70  TeSeS         Falcons         1m 10s   1m 10s   0.0
+71  Brollan       HEROIC          1m 7s    1m 7s    0.0
+72  faveN         BIG             1m 9s    1m 9s    0.0
+73  blameF        BIG             1m 10s   1m 10s   0.0
+74  KSCERATO      FURIA           1m 15s   1m 15s   0.0
+75  Westmelon     Lynn Vision     1m 5s    1m 5s    0.0
+76  n0rb3r7       HOTU            1m 9s    1m 9s    0.0
+77  kade0         HOTU            1m 4s    1m 4s    0.0
+78  Jimpphat      Aurora          1m 14s   1m 14s   0.0
+79  headtr1ck     Inner Circle    1m 10s   1m 10s   0.0
+80  Starry        Lynn Vision     1m 8s    1m 8s    0.0
+81  r1nkle        G2              1m 7s    1m 7s    0.0
+82  HeavyGod      G2              1m 13s   1m 13s   0.0
+83  insani        MIBR            1m 7s    1m 7s    0.0
+84  n0te          Ninjas in Pyjamas1m 2s    1m 2s    0.0
+85  dwushka       HOTU            1m 5s    1m 5s    0.0
+86  C4LLM3SU3     Lynn Vision     1m 9s    1m 9s    0.0
+87  xelex         MOUZ            1m 7s    1m 7s    0.0
+88  slaxejezzz    PARIVISION      1m 4s    1m 4s    0.0
+89  NAF           Liquid          1m 11s   1m 10s   -1.0
+90  EliGE         Liquid          1m 4s    1m 3s    -1.0
+91  malbsMd       Liquid          1m 5s    1m 4s    -1.0
+92  yuurih        FURIA           1m 16s   1m 15s   -1.0
+93  misutaaa      3DMAX           1m 4s    1m 3s    -1.0
+94  JDC           BIG             1m 4s    1m 3s    -1.0
+95  vsm           paiN            1m 7s    1m 6s    -1.0
+96  sinnopsyy     JiJieHao        0m 59s   0m 58s   -1.0
+97  latto         Legacy          1m 11s   1m 10s   -1.0
+98  xfl0ud        FUT             1m 2s    1m 1s    -1.0
+99  alex666       B8              1m 6s    1m 5s    -1.0
+100 Techno        The MongolZ     1m 7s    1m 6s    -1.0
+101 MATYS         G2              1m 6s    1m 5s    -1.0
+102 susp          HEROIC          1m 6s    1m 5s    -1.0
+103 Magnojez      BETBOOM         1m 2s    1m 1s    -1.0
+104 Graviti       3DMAX           1m 4s    1m 3s    -1.0
+105 Krabeni       FUT             1m 0s    0m 59s   -1.0
+106 0SAMAS        JiJieHao        1m 4s    1m 3s    -1.0
+107 kensizor      B8              1m 4s    1m 3s    -1.0
+108 kyousuke      Falcons         1m 2s    1m 1s    -1.0
+109 karrigan      Falcons         1m 6s    1m 4s    -2.0
+110 XANTARES      Aurora          1m 11s   1m 9s    -2.0
+111 NertZ         G2              1m 7s    1m 5s    -2.0
+112 Twistzz       FaZe            1m 10s   1m 8s    -2.0
+113 stavn         Ninjas in Pyjamas1m 10s   1m 8s    -2.0
+114 JT            Liquid          1m 5s    1m 3s    -2.0
+115 arT           Legacy          1m 3s    1m 1s    -2.0
+116 sjuush        Ninjas in Pyjamas1m 7s    1m 5s    -2.0
+117 cptkurtka023  Inner Circle    1m 1s    0m 59s   -2.0
+118 n1ssim        Legacy          1m 11s   1m 9s    -2.0
+119 snow          paiN            1m 11s   1m 9s    -2.0
+120 Tauson        GamerLegion     1m 9s    1m 7s    -2.0
+121 xertioN       MOUZ            1m 7s    1m 5s    -2.0
+122 d1Ledez       BETBOOM         1m 6s    1m 4s    -2.0
+123 luchov        9z              1m 2s    1m 0s    -2.0
+124 ryu           Astralis        1m 7s    1m 5s    -2.0
+125 npl           B8              1m 3s    1m 1s    -2.0
+126 jcobbb        FaZe            1m 5s    1m 3s    -2.0
+127 tomaszin      MIBR            1m 5s    1m 3s    -2.0
+128 xKacpersky    Ninjas in Pyjamas1m 1s    0m 59s   -2.0
+129 zeRRoFIX      Inner Circle    1m 6s    1m 4s    -2.0
+130 Snax          GamerLegion     1m 10s   1m 7s    -3.0
+131 dumau         Legacy          1m 8s    1m 5s    -3.0
+132 jabbi         Astralis        1m 11s   1m 8s    -3.0
+133 S1ren         BETBOOM         1m 9s    1m 6s    -3.0
+134 LNZ           MIBR            1m 6s    1m 3s    -3.0
+135 tN1R          Spirit          1m 6s    1m 3s    -3.0
+136 xiELO         PARIVISION      1m 3s    1m 0s    -3.0
+137 cmtry         FUT             1m 7s    1m 4s    -3.0
+138 EmiliaQAQ     Lynn Vision     1m 9s    1m 6s    -3.0
+139 esenthial     B8              1m 7s    1m 4s    -3.0
+140 onic          Inner Circle    1m 4s    1m 1s    -3.0
+141 tikuak        The MongolZ     1m 6s    1m 3s    -3.0
+142 dem0n         FUT             1m 6s    1m 2s    -4.0
+143 venomzera     MIBR            1m 9s    1m 5s    -4.0
+144 makazze       Natus Vincere   1m 1s    0m 57s   -4.0
+145 Dawy          Inner Circle    1m 1s    0m 57s   -4.0
+146 HooXi         Astralis        1m 11s   1m 6s    -5.0
+147 Staehr        Astralis        1m 11s   1m 6s    -5.0
+148 dziugss       FUT             1m 7s    1m 2s    -5.0
+149 DarkMeister   The MongolZ     1m 7s    1m 1s    -6.0
