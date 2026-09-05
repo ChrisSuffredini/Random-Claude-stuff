@@ -63,23 +63,44 @@ function looksLikeChallenge(html) {
   return CHALLENGE_MARKERS.some((marker) => html.includes(marker));
 }
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// A real HLTV page is tens of KB; anything this small is a blank
+// in-between document (or an empty error response), not real content.
+const MIN_REAL_CONTENT = 1000;
+
 // Reuses one tab across the whole run so a solved Cloudflare session
 // carries over between requests.
 async function loadPageWithBrowser(url) {
   const page = await getPage();
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
-  let html = await page.content();
   const interactive = Boolean(cdpUrl()) || !isHeadless();
-  const deadline = Date.now() + (interactive ? 90000 : 20000);
+  let html = await page.content();
   let warned = false;
-  while (looksLikeChallenge(html) && Date.now() < deadline) {
+
+  // Phase 1: wait out (or let the user solve) a Cloudflare challenge.
+  const challengeDeadline = Date.now() + (interactive ? 90000 : 20000);
+  while (looksLikeChallenge(html) && Date.now() < challengeDeadline) {
     if (interactive && !warned) {
       console.log('  [waiting] Cloudflare check is on screen — solve it in the browser window with your own mouse...');
       warned = true;
     }
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await sleep(2000);
     html = await page.content();
+  }
+
+  // Phase 2: once the challenge clears, the browser navigates on to the
+  // real page — reading immediately catches the blank document in
+  // between, so wait for it to settle into actual content.
+  const settleDeadline = Date.now() + 15000;
+  while (Date.now() < settleDeadline && (html.length < MIN_REAL_CONTENT || looksLikeChallenge(html))) {
+    await sleep(500);
+    html = await page.content();
+  }
+
+  if (html.length < MIN_REAL_CONTENT) {
+    console.log(`  [warn] page returned only ${html.length} chars — likely a 404 or empty response: ${url}`);
   }
   return html;
 }
