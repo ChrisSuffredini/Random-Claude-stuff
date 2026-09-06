@@ -1,0 +1,357 @@
+<title>Time Alive Per Round</title>
+<meta name="description" content="Sortable stats and charts for time alive per round across 149 CS2 pros, split by CT and T side.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#fafaf8; --panel:#ffffff; --border:#e3e0d8; --border-strong:#cbc7ba;
+    --ink:#211f1a; --ink-soft:#57534a; --ink-mute:#8a8577;
+    --ct:#3B82F6; --ct-fill:#3B82F61a; --t:#F59E0B; --t-fill:#F59E0B1a;
+    --accent:#7c6a54; --grid:#eae7de; --row-hover:#f3f1ea;
+    --font-display:'Manrope',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#171613; --panel:#211f1b; --border:#38352d; --border-strong:#4a463b;
+      --ink:#f1efe8; --ink-soft:#c9c4b6; --ink-mute:#8f8a7a;
+      --ct:#4A8DE8; --ct-fill:#4A8DE826; --t:#C6862A; --t-fill:#C6862A26;
+      --accent:#b8a688; --grid:#2c2a24; --row-hover:#2a2823;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#171613; --panel:#211f1b; --border:#38352d; --border-strong:#4a463b;
+    --ink:#f1efe8; --ink-soft:#c9c4b6; --ink-mute:#8f8a7a;
+    --ct:#4A8DE8; --ct-fill:#4A8DE826; --t:#C6862A; --t-fill:#C6862A26;
+    --accent:#b8a688; --grid:#2c2a24; --row-hover:#2a2823;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-display);}
+  .wrap{max-width:1160px;margin:0 auto;padding:36px 20px 80px;}
+  h1{font-size:26px;font-weight:800;letter-spacing:-0.01em;margin:0 0 6px;text-wrap:balance;}
+  .sub{color:var(--ink-soft);font-size:14.5px;margin:0 0 28px;max-width:64ch;line-height:1.5;}
+  .sub b{color:var(--ink);font-weight:700;}
+  code{font-family:var(--font-mono);background:var(--grid);padding:1px 5px;border-radius:4px;font-size:0.92em;}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:32px;}
+  .stat{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+  .stat .v{font-family:var(--font-mono);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .stat .l{font-size:11.5px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
+
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  @media (max-width:760px){.panels{grid-template-columns:1fr;}}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px 16px;}
+  .panel.full{grid-column:1/-1;}
+  .panel h2{font-size:14px;font-weight:700;margin:0 0 2px;}
+  .panel p.note{font-size:12px;color:var(--ink-mute);margin:0 0 12px;line-height:1.4;}
+  .legend{display:flex;gap:16px;font-size:12px;color:var(--ink-soft);margin-bottom:10px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:10px;height:10px;border-radius:3px;display:inline-block;}
+
+  svg{display:block;overflow:visible;font-family:var(--font-mono);}
+  .axis-line{stroke:var(--border-strong);stroke-width:1;}
+  .grid-line{stroke:var(--grid);stroke-width:1;}
+  .axis-label{fill:var(--ink-mute);font-size:10px;}
+  .tick-label{fill:var(--ink-mute);font-size:9.5px;}
+  .ref-line{stroke:var(--ink-mute);stroke-width:1;stroke-dasharray:3 3;}
+
+  .dot{fill:var(--accent);fill-opacity:.55;stroke:var(--panel);stroke-width:1;cursor:pointer;}
+  .dot:hover,.dot.hi{fill-opacity:1;stroke:var(--ink);stroke-width:1.5;}
+  .bar-ct{fill:var(--ct);}
+  .bar-t{fill:var(--t);}
+  .bar-ct:hover,.bar-t:hover{filter:brightness(1.12);}
+  .hist-bar{fill:var(--accent);fill-opacity:.75;}
+  .hist-bar:hover{fill-opacity:1;}
+
+  #tooltip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--font-mono);
+    font-size:12px;padding:7px 10px;border-radius:7px;line-height:1.5;opacity:0;transition:opacity .08s;z-index:20;
+    box-shadow:0 6px 20px rgba(0,0,0,.25);}
+  #tooltip b{color:var(--bg);}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead th{position:sticky;top:0;background:var(--panel);text-align:right;font-weight:600;color:var(--ink-soft);
+    font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:9px 10px;border-bottom:1px solid var(--border-strong);
+    cursor:pointer;user-select:none;white-space:nowrap;}
+  thead th:first-child,thead th:nth-child(2),thead th:nth-child(3){text-align:left;}
+  thead th .arrow{opacity:0;font-size:9px;margin-left:3px;}
+  thead th.sorted .arrow{opacity:1;color:var(--ink);}
+  thead th:hover{color:var(--ink);}
+  tbody td{padding:7px 10px;text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;
+    border-bottom:1px solid var(--grid);white-space:nowrap;}
+  tbody td:first-child{text-align:left;font-family:var(--font-display);font-weight:600;color:var(--ink-mute);}
+  tbody td:nth-child(2){text-align:left;font-family:var(--font-display);font-weight:600;}
+  tbody td:nth-child(3){text-align:left;font-family:var(--font-display);color:var(--ink-soft);font-size:12.5px;}
+  tbody tr:hover{background:var(--row-hover);}
+  .table-wrap{max-height:560px;overflow:auto;border:1px solid var(--border);border-radius:12px;}
+  .table-wrap table{margin:0;}
+
+  .foot{margin-top:28px;font-size:12px;color:var(--ink-mute);line-height:1.6;}
+</style>
+
+<div class="wrap">
+  <h1>Time Alive Per Round</h1>
+  <p class="sub">149 CS2 pros, HLTV career &amp; CS2-only stats, split by <b style="color:var(--ct)">CT</b> and
+  <b style="color:var(--t)">T</b> side. Click any column header in the table to sort. Hover a point or bar for details.</p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="panels">
+    <div class="panel">
+      <h2>Deaths/round vs. time alive (CS2)</h2>
+      <p class="note">Time alive is mostly death rate restated in seconds — the outliers off this line are the interesting ones.</p>
+      <svg id="scatterDpr" viewBox="0 0 480 320" width="100%"></svg>
+    </div>
+    <div class="panel">
+      <h2>Distribution of time alive (CS2)</h2>
+      <p class="note">Where the 149 players cluster, in 2-second bins.</p>
+      <svg id="histogram" viewBox="0 0 480 320" width="100%"></svg>
+    </div>
+    <div class="panel full">
+      <h2>Team averages — CT vs. T (CS2)</h2>
+      <p class="note">Sorted by combined average, descending.</p>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--ct)"></i>CT side</span>
+        <span><i class="swatch" style="background:var(--t)"></i>T side</span>
+      </div>
+      <svg id="teamBars" viewBox="0 0 1080 340" width="100%"></svg>
+    </div>
+    <div class="panel full">
+      <h2>CT time alive vs. T time alive</h2>
+      <p class="note">Dashed line is CT = T. Above it: survives longer on T. Below it: survives longer on CT.</p>
+      <svg id="scatterSides" viewBox="0 0 1080 380" width="100%"></svg>
+    </div>
+  </div>
+
+  <div class="panel full" style="margin-top:16px;padding-bottom:8px;">
+    <h2 style="margin-bottom:10px;">Full data — sortable</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr id="theadRow"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="foot">Source: HLTV.org stats pages, scraped 2026-09. <code>career</code> includes CS:GO history where a
+  player has it; <code>cs2</code> is CS2 matches only. Blank cells mean that stat wasn't available for that player/scope.</p>
+</div>
+<div id="tooltip"></div>
+
+<script>
+const DATA = __DATA__;
+
+const rows = DATA.filter(r => r.cs2Sec != null || r.careerSec != null);
+const withSides = rows.filter(r => r.cs2Ct != null && r.cs2T != null);
+const withDpr = rows.filter(r => r.cs2Sec != null && r.dpr != null);
+
+const mean = a => a.reduce((x,y)=>x+y,0)/a.length;
+function corr(pairs){
+  const mx=mean(pairs.map(p=>p[0])), my=mean(pairs.map(p=>p[1]));
+  let n=0,dx=0,dy=0;
+  for(const [x,y] of pairs){ n+=(x-mx)*(y-my); dx+=(x-mx)**2; dy+=(y-my)**2; }
+  return n/Math.sqrt(dx*dy);
+}
+function fmtSec(s){ if(s==null) return '—'; const m=Math.floor(s/60), r=Math.round(s%60); return m? m+'m '+r+'s' : r+'s'; }
+
+// ---- headline stats ----
+const r1 = corr(withSides.map(r=>[r.cs2Ct, r.cs2T]));
+const r2 = corr(withDpr.map(r=>[r.dpr, r.cs2Sec]));
+const ctVals = withSides.map(r=>r.cs2Ct), tVals = withSides.map(r=>r.cs2T);
+document.getElementById('stats').innerHTML = [
+  ['149','players'],
+  [withSides.length,'with CT/T split'],
+  [mean(ctVals).toFixed(1)+'s','avg CT time alive'],
+  [mean(tVals).toFixed(1)+'s','avg T time alive'],
+  [r1.toFixed(2),'CT↔T correlation'],
+  [r2.toFixed(2),'DPR↔time alive'],
+].map(([v,l])=>`<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+
+// ---- tooltip ----
+const tip = document.getElementById('tooltip');
+function showTip(evt, html){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const x = evt.clientX, y = evt.clientY;
+  tip.style.left = Math.min(x+14, window.innerWidth-220) + 'px';
+  tip.style.top = Math.max(y-14, 8) + 'px';
+}
+function hideTip(){ tip.style.opacity = 0; }
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// ---- scatter: DPR vs time alive ----
+(function(){
+  const svg = document.getElementById('scatterDpr');
+  const W=480,H=320,pad={l:38,r:14,t:10,b:32};
+  const xs = withDpr.map(r=>r.dpr), ys = withDpr.map(r=>r.cs2Sec);
+  const x0=Math.min(...xs)-0.02, x1=Math.max(...xs)+0.02;
+  const y0=Math.min(...ys)-3, y1=Math.max(...ys)+3;
+  const X = v => pad.l + (v-x0)/(x1-x0) * (W-pad.l-pad.r);
+  const Y = v => H-pad.b - (v-y0)/(y1-y0) * (H-pad.t-pad.b);
+  for(let i=0;i<=4;i++){
+    const gy = y0 + (y1-y0)*i/4;
+    svg.appendChild(el('line',{class:'grid-line',x1:pad.l,x2:W-pad.r,y1:Y(gy),y2:Y(gy)}));
+    svg.appendChild(el('text',{class:'tick-label',x:pad.l-6,y:Y(gy)+3,'text-anchor':'end'})).textContent = Math.round(gy)+'s';
+  }
+  for(let i=0;i<=4;i++){
+    const gx = x0 + (x1-x0)*i/4;
+    svg.appendChild(el('text',{class:'tick-label',x:X(gx),y:H-pad.b+16,'text-anchor':'middle'})).textContent = gx.toFixed(2);
+  }
+  svg.appendChild(el('line',{class:'axis-line',x1:pad.l,x2:W-pad.r,y1:H-pad.b,y2:H-pad.b}));
+  svg.appendChild(el('line',{class:'axis-line',x1:pad.l,x2:pad.l,y1:pad.t,y2:H-pad.b}));
+  svg.appendChild(el('text',{class:'axis-label',x:(pad.l+W-pad.r)/2,y:H-2,'text-anchor':'middle'})).textContent = 'deaths / round';
+  withDpr.forEach(r=>{
+    const c = svg.appendChild(el('circle',{class:'dot',cx:X(r.dpr),cy:Y(r.cs2Sec),r:4}));
+    c.addEventListener('mousemove', e=>showTip(e, `<b>${r.name}</b> · ${r.team}<br>dpr ${r.dpr.toFixed(2)} · ${fmtSec(r.cs2Sec)}`));
+    c.addEventListener('mouseleave', hideTip);
+  });
+})();
+
+// ---- histogram ----
+(function(){
+  const svg = document.getElementById('histogram');
+  const W=480,H=320,pad={l:30,r:10,t:10,b:32};
+  const vals = withDpr.map(r=>r.cs2Sec);
+  const lo = Math.floor(Math.min(...vals)/2)*2, hi = Math.ceil(Math.max(...vals)/2)*2;
+  const binW = 2, nBins = (hi-lo)/binW;
+  const bins = new Array(nBins).fill(0);
+  vals.forEach(v => { let i = Math.floor((v-lo)/binW); if(i>=nBins) i=nBins-1; bins[i]++; });
+  const maxC = Math.max(...bins);
+  const X = i => pad.l + i/(nBins) * (W-pad.l-pad.r);
+  const Y = c => H-pad.b - c/maxC * (H-pad.t-pad.b);
+  const bw = (W-pad.l-pad.r)/nBins;
+  for(let i=0;i<=4;i++){
+    const gc = maxC*i/4;
+    svg.appendChild(el('line',{class:'grid-line',x1:pad.l,x2:W-pad.r,y1:Y(gc),y2:Y(gc)}));
+    svg.appendChild(el('text',{class:'tick-label',x:pad.l-5,y:Y(gc)+3,'text-anchor':'end'})).textContent = Math.round(gc);
+  }
+  svg.appendChild(el('line',{class:'axis-line',x1:pad.l,x2:W-pad.r,y1:H-pad.b,y2:H-pad.b}));
+  bins.forEach((c,i)=>{
+    if(c===0) return;
+    const b = svg.appendChild(el('rect',{class:'hist-bar',x:X(i)+1,y:Y(c),width:Math.max(bw-2,1),height:H-pad.b-Y(c),rx:2}));
+    b.addEventListener('mousemove', e=>showTip(e, `<b>${lo+i*binW}–${lo+(i+1)*binW}s</b><br>${c} player${c===1?'':'s'}`));
+    b.addEventListener('mouseleave', hideTip);
+    if(i % 3 === 0) svg.appendChild(el('text',{class:'tick-label',x:X(i),y:H-pad.b+14,'text-anchor':'middle'})).textContent = lo+i*binW;
+  });
+  svg.appendChild(el('text',{class:'axis-label',x:(pad.l+W-pad.r)/2,y:H-2,'text-anchor':'middle'})).textContent = 'time alive per round (s)';
+})();
+
+// ---- team bars ----
+(function(){
+  const svg = document.getElementById('teamBars');
+  const byTeam = new Map();
+  withSides.forEach(r=>{
+    if(!byTeam.has(r.team)) byTeam.set(r.team, {ct:[],t:[]});
+    byTeam.get(r.team).ct.push(r.cs2Ct); byTeam.get(r.team).t.push(r.cs2T);
+  });
+  const teams = [...byTeam.entries()].map(([team,v])=>({team, ct:mean(v.ct), t:mean(v.t)}))
+    .sort((a,b)=>(b.ct+b.t)-(a.ct+a.t));
+
+  const W=1080,H=340,pad={l:34,r:10,t:10,b:70};
+  const maxV = Math.max(...teams.flatMap(t=>[t.ct,t.t])) * 1.08;
+  const Y = v => H-pad.b - v/maxV * (H-pad.t-pad.b);
+  const groupW = (W-pad.l-pad.r)/teams.length;
+  const barW = Math.min(groupW*0.34, 16);
+  for(let i=0;i<=4;i++){
+    const gv = maxV*i/4;
+    svg.appendChild(el('line',{class:'grid-line',x1:pad.l,x2:W-pad.r,y1:Y(gv),y2:Y(gv)}));
+    svg.appendChild(el('text',{class:'tick-label',x:pad.l-6,y:Y(gv)+3,'text-anchor':'end'})).textContent = Math.round(gv)+'s';
+  }
+  svg.appendChild(el('line',{class:'axis-line',x1:pad.l,x2:W-pad.r,y1:H-pad.b,y2:H-pad.b}));
+  teams.forEach((t,i)=>{
+    const cx = pad.l + groupW*i + groupW/2;
+    const bCt = svg.appendChild(el('rect',{class:'bar-ct',x:cx-barW-1,y:Y(t.ct),width:barW,height:H-pad.b-Y(t.ct),rx:3}));
+    const bT = svg.appendChild(el('rect',{class:'bar-t',x:cx+1,y:Y(t.t),width:barW,height:H-pad.b-Y(t.t),rx:3}));
+    bCt.addEventListener('mousemove', e=>showTip(e, `<b>${t.team}</b> CT<br>${t.ct.toFixed(1)}s avg`));
+    bT.addEventListener('mousemove', e=>showTip(e, `<b>${t.team}</b> T<br>${t.t.toFixed(1)}s avg`));
+    bCt.addEventListener('mouseleave', hideTip); bT.addEventListener('mouseleave', hideTip);
+    const lbl = svg.appendChild(el('text',{class:'tick-label',x:cx,y:H-pad.b+14,'text-anchor':'end',transform:`rotate(-40 ${cx} ${H-pad.b+14})`}));
+    lbl.textContent = t.team;
+  });
+})();
+
+// ---- CT vs T scatter ----
+(function(){
+  const svg = document.getElementById('scatterSides');
+  const W=1080,H=380,pad={l:42,r:16,t:14,b:36};
+  const all = withSides.flatMap(r=>[r.cs2Ct,r.cs2T]);
+  const lo=Math.min(...all)-2, hi=Math.max(...all)+2;
+  const X = v => pad.l + (v-lo)/(hi-lo) * (W-pad.l-pad.r);
+  const Y = v => H-pad.b - (v-lo)/(hi-lo) * (H-pad.t-pad.b);
+  for(let i=0;i<=6;i++){
+    const g = lo + (hi-lo)*i/6;
+    svg.appendChild(el('line',{class:'grid-line',x1:pad.l,x2:W-pad.r,y1:Y(g),y2:Y(g)}));
+    svg.appendChild(el('line',{class:'grid-line',x1:X(g),x2:X(g),y1:pad.t,y2:H-pad.b}));
+    svg.appendChild(el('text',{class:'tick-label',x:pad.l-6,y:Y(g)+3,'text-anchor':'end'})).textContent = Math.round(g);
+    svg.appendChild(el('text',{class:'tick-label',x:X(g),y:H-pad.b+14,'text-anchor':'middle'})).textContent = Math.round(g);
+  }
+  svg.appendChild(el('line',{class:'ref-line',x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi)}));
+  svg.appendChild(el('line',{class:'axis-line',x1:pad.l,x2:W-pad.r,y1:H-pad.b,y2:H-pad.b}));
+  svg.appendChild(el('line',{class:'axis-line',x1:pad.l,x2:pad.l,y1:pad.t,y2:H-pad.b}));
+  svg.appendChild(el('text',{class:'axis-label',x:(pad.l+W-pad.r)/2,y:H-4,'text-anchor':'middle',fill:'var(--ct)'})).textContent = 'CT time alive (s)';
+  const yl = svg.appendChild(el('text',{class:'axis-label',x:14,y:(pad.t+H-pad.b)/2,'text-anchor':'middle',fill:'var(--t)',transform:`rotate(-90 14 ${(pad.t+H-pad.b)/2})`}));
+  yl.textContent = 'T time alive (s)';
+  withSides.forEach(r=>{
+    const c = svg.appendChild(el('circle',{class:'dot',cx:X(r.cs2Ct),cy:Y(r.cs2T),r:4.2}));
+    c.addEventListener('mousemove', e=>showTip(e, `<b>${r.name}</b> · ${r.team}<br>CT ${fmtSec(r.cs2Ct)} · T ${fmtSec(r.cs2T)}`));
+    c.addEventListener('mouseleave', hideTip);
+  });
+})();
+
+// ---- sortable table ----
+const cols = [
+  {k:'name', l:'Player', type:'str'},
+  {k:'team', l:'Team', type:'str'},
+  {k:'cs2Ct', l:'CT (s)', type:'num'},
+  {k:'cs2T', l:'T (s)', type:'num'},
+  {k:'sideGap', l:'T−CT', type:'num'},
+  {k:'cs2Sec', l:'CS2 (s)', type:'num'},
+  {k:'careerSec', l:'Career (s)', type:'num'},
+  {k:'dpr', l:'DPR', type:'num'},
+  {k:'kdRatio', l:'K/D', type:'num'},
+  {k:'entrying', l:'Entrying', type:'num'},
+  {k:'clutching', l:'Clutching', type:'num'},
+];
+const tableRows = rows.map(r => ({...r, sideGap: (r.cs2T!=null && r.cs2Ct!=null) ? r.cs2T-r.cs2Ct : null}));
+
+const thead = document.getElementById('theadRow');
+cols.forEach(c=>{
+  const th = document.createElement('th');
+  th.innerHTML = c.l + '<span class="arrow">▾</span>';
+  th.dataset.key = c.k; th.dataset.type = c.type;
+  th.addEventListener('click', ()=> sortBy(c.k, c.type, th));
+  thead.appendChild(th);
+});
+
+let sortState = {key:'cs2Sec', dir:-1};
+function renderTable(){
+  const tbody = document.getElementById('tbody');
+  const sorted = [...tableRows].sort((a,b)=>{
+    let av=a[sortState.key], bv=b[sortState.key];
+    if(av==null) return 1; if(bv==null) return -1;
+    if(typeof av === 'string') return av.localeCompare(bv) * sortState.dir;
+    return (av-bv) * sortState.dir;
+  });
+  tbody.innerHTML = sorted.map(r => `<tr>
+    <td>${r.name}</td><td>${r.team}</td>
+    <td>${r.cs2Ct ?? '—'}</td><td>${r.cs2T ?? '—'}</td>
+    <td>${r.sideGap!=null ? (r.sideGap>0?'+':'')+r.sideGap : '—'}</td>
+    <td>${r.cs2Sec ?? '—'}</td><td>${r.careerSec ?? '—'}</td>
+    <td>${r.dpr!=null ? r.dpr.toFixed(2) : '—'}</td>
+    <td>${r.kdRatio!=null ? r.kdRatio.toFixed(2) : '—'}</td>
+    <td>${r.entrying ?? '—'}</td><td>${r.clutching ?? '—'}</td>
+  </tr>`).join('');
+  [...thead.children].forEach(th=>{
+    th.classList.toggle('sorted', th.dataset.key===sortState.key);
+    th.querySelector('.arrow').textContent = (th.dataset.key===sortState.key && sortState.dir===1) ? '▴' : '▾';
+  });
+}
+function sortBy(key, type, th){
+  if(sortState.key===key) sortState.dir *= -1;
+  else sortState = {key, dir: type==='str' ? 1 : -1};
+  renderTable();
+}
+renderTable();
+</script>
