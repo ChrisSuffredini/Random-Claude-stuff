@@ -2,3 +2,9 @@ node_modules/
 __pycache__/
 *.pyc
 data/cache/
+# uploads are unpacked into data/raw by model/unpack.py
+hltv-data*.tar.gz
+hltv-data*.json.gz
+# regenerable from data/raw (python3 model/parse.py); outputs are kept
+data/parsed/*.csv
+data/parsed/events.json

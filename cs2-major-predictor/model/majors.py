@@ -47,6 +47,15 @@ def discover(m, min_year=2024):
         for key, ev in evs.items():
             sub = m.iloc[sorted(by_event[ev])]
             if key == "playoffs":
+                sub = sub.sort_values(["t", "id"])
+                if len(sub) >= 40:
+                    # HLTV files the last Swiss stage and the playoffs under the bare name:
+                    # 33 Swiss matches, then the 7-match bracket.
+                    last = "elimination stage" if "opening stage" in evs else "stage 3"
+                    st = swiss_stage(base, ev, last, sub.iloc[:-7])
+                    if st:
+                        stages.append(st)
+                    sub = sub.iloc[-7:]
                 st = playoff_stage(base, ev, sub)
             else:
                 st = swiss_stage(base, ev, key, sub)

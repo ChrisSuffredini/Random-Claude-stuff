@@ -186,8 +186,11 @@ def main():
         ev_slug = norm(events.get(v, {}).get("title", ""))
         lst = []
         for u in events.get(v, {}).get("upcoming", []):
-            if u["id"] in seen:
+            # HLTV's match list ignores the event filter: keep this stage's matches only
+            if u["id"] in seen or not (ev_slug and norm(u.get("slug", "")).endswith(ev_slug)):
                 continue
+            if "-vs-" not in u.get("slug", ""):
+                continue  # placeholder for a later Swiss round
             teams = u.get("teams", [])
             if len(teams) < 2 and "-vs-" in u.get("slug", ""):
                 # fall back to the match URL: heroic-vs-imperial-pgl-major-singapore-2026-stage-1
@@ -231,7 +234,11 @@ def main():
     seeds1 = seed_stage(s1, r1, hints, pts)
     inv2 = sorted(s2_inv, key=lambda k: -pts.get(k, 0))
     inv3 = sorted(s3_inv, key=lambda k: -pts.get(k, 0))
-    all_bo3_s3 = bool(cfg.get("stage3_all_bo3", True))
+    # Stage 3 format: copy the most recent Major's Stage 3 (all Bo3 or Bo1 + Bo3 deciders)
+    past_s3 = [st for st in discover(m) if st["kind"] == "swiss" and st["stage"].lower() == "stage 3"]
+    all_bo3_s3 = past_s3[-1]["all_bo3"] if past_s3 else bool(cfg.get("stage3_all_bo3", True))
+    print(f"Stage 3 format: {'all Bo3' if all_bo3_s3 else 'Bo1 with Bo3 deciders'}"
+          f"{' (as at ' + past_s3[-1]['major'] + ')' if past_s3 else ' (config default)'}")
 
     rng = np.random.default_rng(1)
     gi = {k: i for i, k in enumerate(all_teams)}
