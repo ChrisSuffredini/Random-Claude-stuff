@@ -284,7 +284,8 @@ def main():
       <li>Every CS2-era HLTV result since 2023 feeds a Glicko rating per team on a per-map scale, one over all matches and one over LAN only. Rating uncertainty grows with inactivity and after lineup changes.</li>
       <li>Each team's features (both ratings, HLTV ranking points, roster continuity, recent form, player ratings of the current five) go through a small neural net and a logistic model to give one strength number; the ensemble averages them with Glicko.</li>
       <li>Stages are simulated with Valve's Swiss rules: 1v9 opening round, Buchholz-then-seed pairing, no rematches, Bo1 with Bo3 deciders. Each simulated Major gives every team a shared "form" shock so results correlate.</li>
-      <li>The Pick'Em card is searched to maximise the chance of 5+ correct over the simulated outcomes.</li>
+      <li>The Pick'Em card is searched to maximise the chance of 5+ correct over the simulated outcomes. It scores the whole card at once, so it prefers 3-0 picks that are unlikely to meet early.</li>
+      <li>Player ratings (each of the current five over the last 6 months, including time on previous teams) improved held-out predictions more than anything else. Map-specific strengths with a simulated veto were also tested; they made no measurable difference, so they are left out.</li>
       <li>CS is noisy, Bo1s especially. Even a perfect model misses often; use the probabilities, not just the picks.</li>
     </ul>
   </section>

@@ -7,9 +7,9 @@
   "lan_c2": 0.001
  },
  "map_params": {
-  "half_life": 180.0,
-  "ridge": 6.0,
-  "scale": 1.0
+  "half_life": 90.0,
+  "ridge": 12.0,
+  "scale": 0.5
  },
  "chosen": {
   "model": "mlp",
@@ -29,49 +29,75 @@
    "n": "4725"
   },
   "linear": {
-   "map_ll": 0.6546157987454503,
-   "series_ll": 0.6277084957943554,
-   "acc": 0.6503703703703704,
+   "map_ll": 0.653620144567285,
+   "series_ll": 0.6254937049365901,
+   "acc": 0.6493121693121693,
    "n": "4725"
   },
   "mlp": {
-   "map_ll": 0.6541332744194438,
-   "series_ll": 0.6266497263466981,
-   "acc": 0.6505820105820106,
+   "map_ll": 0.6527605133215042,
+   "series_ll": 0.6237332087336163,
+   "acc": 0.6533333333333333,
    "n": "4725"
   },
   "ensemble": {
-   "map_ll": 0.6543745887948881,
-   "series_ll": 0.6268862983131177,
-   "acc": 0.652063492063492,
+   "map_ll": 0.6533876342131916,
+   "series_ll": 0.6248009797519766,
+   "acc": 0.6526984126984127,
    "n": "4725"
   }
  },
  "summary": {
   "ensemble": {
-   "match_ll": 0.6411408754940373,
-   "match_acc": 0.6142241379310345,
+   "match_ll": 0.6417308707897607,
+   "match_acc": 0.6099137931034483,
    "seed_card_mean": 3.8461538461538463,
    "seed_card_pass_rate": 0.3076923076923077,
-   "bracket_mean": 3.4,
+   "bracket_mean": 3.2,
    "n_swiss": 13,
    "s0.0": {
-    "rec_ll": 1.633645038474228,
-    "pickem_mean": 4.615384615384615,
-    "pickem_pass_rate": 0.6153846153846154,
-    "model_expected_pass": 0.3391634615384615
+    "rec_ll": 1.632097543819653,
+    "pickem_mean": 4.461538461538462,
+    "pickem_pass_rate": 0.5384615384615384,
+    "model_expected_pass": 0.356
    },
    "s0.25": {
-    "rec_ll": 1.6358859242654988,
-    "pickem_mean": 4.384615384615385,
-    "pickem_pass_rate": 0.46153846153846156,
-    "model_expected_pass": 0.3199326923076923
+    "rec_ll": 1.6334240105611484,
+    "pickem_mean": 4.461538461538462,
+    "pickem_pass_rate": 0.5384615384615384,
+    "model_expected_pass": 0.3356826923076923
    },
    "s0.5": {
-    "rec_ll": 1.6458110544767275,
-    "pickem_mean": 4.230769230769231,
+    "rec_ll": 1.644322486894682,
+    "pickem_mean": 4.3076923076923075,
     "pickem_pass_rate": 0.5384615384615384,
-    "model_expected_pass": 0.2734326923076923
+    "model_expected_pass": 0.2868173076923077
+   }
+  },
+  "ensemble+maps": {
+   "match_ll": 0.6417627998585359,
+   "match_acc": 0.6120689655172413,
+   "seed_card_mean": 3.8461538461538463,
+   "seed_card_pass_rate": 0.3076923076923077,
+   "bracket_mean": 3.2,
+   "n_swiss": 13,
+   "s0.0": {
+    "rec_ll": 1.632391949556601,
+    "pickem_mean": 4.153846153846154,
+    "pickem_pass_rate": 0.46153846153846156,
+    "model_expected_pass": 0.3552692307692308
+   },
+   "s0.25": {
+    "rec_ll": 1.6329044057869437,
+    "pickem_mean": 4.461538461538462,
+    "pickem_pass_rate": 0.5384615384615384,
+    "model_expected_pass": 0.33531730769230766
+   },
+   "s0.5": {
+    "rec_ll": 1.643608695150737,
+    "pickem_mean": 4.384615384615385,
+    "pickem_pass_rate": 0.5384615384615384,
+    "model_expected_pass": 0.2866634615384615
    }
   },
   "glicko": {
@@ -127,55 +153,55 @@
    }
   },
   "linear": {
-   "match_ll": 0.6414079647116787,
-   "match_acc": 0.6185344827586207,
-   "seed_card_mean": 3.8461538461538463,
-   "seed_card_pass_rate": 0.3076923076923077,
-   "bracket_mean": 3.8,
-   "n_swiss": 13,
-   "s0.0": {
-    "rec_ll": 1.6345055715228087,
-    "pickem_mean": 4.384615384615385,
-    "pickem_pass_rate": 0.6153846153846154,
-    "model_expected_pass": 0.37293269230769227
-   },
-   "s0.25": {
-    "rec_ll": 1.63505765112597,
-    "pickem_mean": 4.6923076923076925,
-    "pickem_pass_rate": 0.6153846153846154,
-    "model_expected_pass": 0.3513173076923077
-   },
-   "s0.5": {
-    "rec_ll": 1.6401936620045368,
-    "pickem_mean": 4.230769230769231,
-    "pickem_pass_rate": 0.5384615384615384,
-    "model_expected_pass": 0.29893269230769226
-   }
-  },
-  "mlp": {
-   "match_ll": 0.6403193017909804,
+   "match_ll": 0.6415025065371786,
    "match_acc": 0.6142241379310345,
    "seed_card_mean": 3.8461538461538463,
    "seed_card_pass_rate": 0.3076923076923077,
-   "bracket_mean": 3.8,
+   "bracket_mean": 3.2,
    "n_swiss": 13,
    "s0.0": {
-    "rec_ll": 1.6343348172162708,
-    "pickem_mean": 4.538461538461538,
-    "pickem_pass_rate": 0.6153846153846154,
-    "model_expected_pass": 0.35189423076923076
+    "rec_ll": 1.6297088661028558,
+    "pickem_mean": 4.230769230769231,
+    "pickem_pass_rate": 0.46153846153846156,
+    "model_expected_pass": 0.3987307692307693
    },
    "s0.25": {
-    "rec_ll": 1.634816913623626,
-    "pickem_mean": 4.769230769230769,
-    "pickem_pass_rate": 0.6923076923076923,
-    "model_expected_pass": 0.33040384615384616
+    "rec_ll": 1.6322553870346965,
+    "pickem_mean": 4.3076923076923075,
+    "pickem_pass_rate": 0.5384615384615384,
+    "model_expected_pass": 0.3759134615384615
    },
    "s0.5": {
-    "rec_ll": 1.6430139233851122,
+    "rec_ll": 1.6377587339550588,
+    "pickem_mean": 4.538461538461538,
+    "pickem_pass_rate": 0.6153846153846154,
+    "model_expected_pass": 0.3209711538461538
+   }
+  },
+  "mlp": {
+   "match_ll": 0.642949324461295,
+   "match_acc": 0.6185344827586207,
+   "seed_card_mean": 3.8461538461538463,
+   "seed_card_pass_rate": 0.3076923076923077,
+   "bracket_mean": 3.2,
+   "n_swiss": 13,
+   "s0.0": {
+    "rec_ll": 1.6336946438883473,
+    "pickem_mean": 4.076923076923077,
+    "pickem_pass_rate": 0.46153846153846156,
+    "model_expected_pass": 0.3747788461538461
+   },
+   "s0.25": {
+    "rec_ll": 1.6365171914474392,
     "pickem_mean": 4.384615384615385,
     "pickem_pass_rate": 0.6153846153846154,
-    "model_expected_pass": 0.2822596153846154
+    "model_expected_pass": 0.3543365384615385
+   },
+   "s0.5": {
+    "rec_ll": 1.6441794292641314,
+    "pickem_mean": 4.6923076923076925,
+    "pickem_pass_rate": 0.6153846153846154,
+    "model_expected_pass": 0.3009326923076923
    }
   }
  },
@@ -364,97 +390,7 @@
    "major": "PGL CS2 Major Copenhagen 2024",
    "stage": "Opening Stage",
    "model": "linear",
-   "match_ll": 0.6634328609987874,
-   "match_acc": 0.6363636363636364,
-   "n_matches": 33,
-   "seed_card_correct": 4,
-   "actual": {
-    "ENCE": "1-3",
-    "Cloud9": "3-0",
-    "Eternal Fire": "3-1",
-    "HEROIC": "3-0",
-    "Apeks": "1-3",
-    "GamerLegion": "2-3",
-    "FURIA": "3-2",
-    "SAW": "2-3",
-    "Imperial": "3-2",
-    "ECSTATIC": "3-1",
-    "The MongolZ": "3-2",
-    "Lynn Vision": "1-3",
-    "paiN": "3-1",
-    "AMKAL": "0-3",
-    "Legacy": "2-3",
-    "KOI": "0-3"
-   },
-   "rec_ll_s0.0": 1.6729829742596036,
-   "picks_s0.0": 5,
-   "p_pass_s0.0": 0.285125,
-   "card_s0.0": {
-    "3-0": [
-     "Cloud9",
-     "HEROIC"
-    ],
-    "adv": [
-     "ENCE",
-     "Eternal Fire",
-     "Apeks",
-     "GamerLegion",
-     "FURIA",
-     "SAW"
-    ],
-    "0-3": [
-     "Lynn Vision",
-     "AMKAL"
-    ]
-   },
-   "rec_ll_s0.25": 1.6805363141054444,
-   "picks_s0.25": 5,
-   "p_pass_s0.25": 0.271,
-   "card_s0.25": {
-    "3-0": [
-     "Cloud9",
-     "HEROIC"
-    ],
-    "adv": [
-     "ENCE",
-     "Eternal Fire",
-     "Apeks",
-     "GamerLegion",
-     "FURIA",
-     "SAW"
-    ],
-    "0-3": [
-     "Lynn Vision",
-     "AMKAL"
-    ]
-   },
-   "rec_ll_s0.5": 1.6781977512338908,
-   "picks_s0.5": 4,
-   "p_pass_s0.5": 0.232875,
-   "card_s0.5": {
-    "3-0": [
-     "ENCE",
-     "Cloud9"
-    ],
-    "adv": [
-     "Eternal Fire",
-     "HEROIC",
-     "Apeks",
-     "GamerLegion",
-     "FURIA",
-     "SAW"
-    ],
-    "0-3": [
-     "Lynn Vision",
-     "AMKAL"
-    ]
-   }
-  },
-  {
-   "major": "PGL CS2 Major Copenhagen 2024",
-   "stage": "Opening Stage",
-   "model": "mlp",
-   "match_ll": 0.6667250853669586,
+   "match_ll": 0.6605311136810481,
    "match_acc": 0.6060606060606061,
    "n_matches": 33,
    "seed_card_correct": 4,
@@ -476,9 +412,9 @@
     "Legacy": "2-3",
     "KOI": "0-3"
    },
-   "rec_ll_s0.0": 1.685780185512571,
+   "rec_ll_s0.0": 1.667104366563552,
    "picks_s0.0": 4,
-   "p_pass_s0.0": 0.25475,
+   "p_pass_s0.0": 0.291125,
    "card_s0.0": {
     "3-0": [
      "Cloud9",
@@ -497,9 +433,9 @@
      "Legacy"
     ]
    },
-   "rec_ll_s0.25": 1.6879503980343262,
-   "picks_s0.25": 5,
-   "p_pass_s0.25": 0.24175,
+   "rec_ll_s0.25": 1.675295756445113,
+   "picks_s0.25": 4,
+   "p_pass_s0.25": 0.2805,
    "card_s0.25": {
     "3-0": [
      "Cloud9",
@@ -515,12 +451,102 @@
     ],
     "0-3": [
      "Lynn Vision",
-     "AMKAL"
+     "Legacy"
     ]
    },
-   "rec_ll_s0.5": 1.6855536474195276,
+   "rec_ll_s0.5": 1.6716183276495176,
    "picks_s0.5": 4,
-   "p_pass_s0.5": 0.212125,
+   "p_pass_s0.5": 0.245125,
+   "card_s0.5": {
+    "3-0": [
+     "Cloud9",
+     "HEROIC"
+    ],
+    "adv": [
+     "ENCE",
+     "Eternal Fire",
+     "Apeks",
+     "GamerLegion",
+     "FURIA",
+     "SAW"
+    ],
+    "0-3": [
+     "Lynn Vision",
+     "Legacy"
+    ]
+   }
+  },
+  {
+   "major": "PGL CS2 Major Copenhagen 2024",
+   "stage": "Opening Stage",
+   "model": "mlp",
+   "match_ll": 0.6593091892210114,
+   "match_acc": 0.6363636363636364,
+   "n_matches": 33,
+   "seed_card_correct": 4,
+   "actual": {
+    "ENCE": "1-3",
+    "Cloud9": "3-0",
+    "Eternal Fire": "3-1",
+    "HEROIC": "3-0",
+    "Apeks": "1-3",
+    "GamerLegion": "2-3",
+    "FURIA": "3-2",
+    "SAW": "2-3",
+    "Imperial": "3-2",
+    "ECSTATIC": "3-1",
+    "The MongolZ": "3-2",
+    "Lynn Vision": "1-3",
+    "paiN": "3-1",
+    "AMKAL": "0-3",
+    "Legacy": "2-3",
+    "KOI": "0-3"
+   },
+   "rec_ll_s0.0": 1.6704368328747017,
+   "picks_s0.0": 3,
+   "p_pass_s0.0": 0.262,
+   "card_s0.0": {
+    "3-0": [
+     "Cloud9",
+     "FURIA"
+    ],
+    "adv": [
+     "ENCE",
+     "Eternal Fire",
+     "HEROIC",
+     "Apeks",
+     "SAW",
+     "The MongolZ"
+    ],
+    "0-3": [
+     "Lynn Vision",
+     "Legacy"
+    ]
+   },
+   "rec_ll_s0.25": 1.6788509497244195,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.250125,
+   "card_s0.25": {
+    "3-0": [
+     "Cloud9",
+     "HEROIC"
+    ],
+    "adv": [
+     "ENCE",
+     "Eternal Fire",
+     "Apeks",
+     "FURIA",
+     "SAW",
+     "The MongolZ"
+    ],
+    "0-3": [
+     "Lynn Vision",
+     "Legacy"
+    ]
+   },
+   "rec_ll_s0.5": 1.681656631744814,
+   "picks_s0.5": 4,
+   "p_pass_s0.5": 0.21825,
    "card_s0.5": {
     "3-0": [
      "Cloud9",
@@ -544,7 +570,7 @@
    "major": "PGL CS2 Major Copenhagen 2024",
    "stage": "Opening Stage",
    "model": "ensemble",
-   "match_ll": 0.6595713091698099,
+   "match_ll": 0.6558433761366961,
    "match_acc": 0.5757575757575758,
    "n_matches": 33,
    "seed_card_correct": 4,
@@ -566,9 +592,9 @@
     "Legacy": "2-3",
     "KOI": "0-3"
    },
-   "rec_ll_s0.0": 1.667471854813517,
+   "rec_ll_s0.0": 1.6610468825440217,
    "picks_s0.0": 6,
-   "p_pass_s0.0": 0.226625,
+   "p_pass_s0.0": 0.234,
    "card_s0.0": {
     "3-0": [
      "Cloud9",
@@ -587,9 +613,9 @@
      "Legacy"
     ]
    },
-   "rec_ll_s0.25": 1.678056513705401,
+   "rec_ll_s0.25": 1.668975381734114,
    "picks_s0.25": 4,
-   "p_pass_s0.25": 0.218875,
+   "p_pass_s0.25": 0.224625,
    "card_s0.25": {
     "3-0": [
      "HEROIC",
@@ -608,9 +634,99 @@
      "Legacy"
     ]
    },
-   "rec_ll_s0.5": 1.6832816323844084,
+   "rec_ll_s0.5": 1.6757908597546676,
    "picks_s0.5": 5,
-   "p_pass_s0.5": 0.19775,
+   "p_pass_s0.5": 0.2035,
+   "card_s0.5": {
+    "3-0": [
+     "Cloud9",
+     "HEROIC"
+    ],
+    "adv": [
+     "ENCE",
+     "Eternal Fire",
+     "Apeks",
+     "FURIA",
+     "SAW",
+     "The MongolZ"
+    ],
+    "0-3": [
+     "Lynn Vision",
+     "Legacy"
+    ]
+   }
+  },
+  {
+   "major": "PGL CS2 Major Copenhagen 2024",
+   "stage": "Opening Stage",
+   "model": "ensemble+maps",
+   "match_ll": 0.6560418420632753,
+   "match_acc": 0.5757575757575758,
+   "n_matches": 33,
+   "seed_card_correct": 4,
+   "actual": {
+    "ENCE": "1-3",
+    "Cloud9": "3-0",
+    "Eternal Fire": "3-1",
+    "HEROIC": "3-0",
+    "Apeks": "1-3",
+    "GamerLegion": "2-3",
+    "FURIA": "3-2",
+    "SAW": "2-3",
+    "Imperial": "3-2",
+    "ECSTATIC": "3-1",
+    "The MongolZ": "3-2",
+    "Lynn Vision": "1-3",
+    "paiN": "3-1",
+    "AMKAL": "0-3",
+    "Legacy": "2-3",
+    "KOI": "0-3"
+   },
+   "rec_ll_s0.0": 1.6591278771108044,
+   "picks_s0.0": 4,
+   "p_pass_s0.0": 0.235,
+   "card_s0.0": {
+    "3-0": [
+     "Cloud9",
+     "SAW"
+    ],
+    "adv": [
+     "ENCE",
+     "Eternal Fire",
+     "HEROIC",
+     "Apeks",
+     "FURIA",
+     "The MongolZ"
+    ],
+    "0-3": [
+     "Lynn Vision",
+     "Legacy"
+    ]
+   },
+   "rec_ll_s0.25": 1.6695359179877163,
+   "picks_s0.25": 4,
+   "p_pass_s0.25": 0.22525,
+   "card_s0.25": {
+    "3-0": [
+     "HEROIC",
+     "Apeks"
+    ],
+    "adv": [
+     "ENCE",
+     "Cloud9",
+     "Eternal Fire",
+     "FURIA",
+     "SAW",
+     "The MongolZ"
+    ],
+    "0-3": [
+     "Lynn Vision",
+     "Legacy"
+    ]
+   },
+   "rec_ll_s0.5": 1.6764405687755084,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.20425,
    "card_s0.5": {
     "3-0": [
      "Cloud9",
@@ -814,7 +930,7 @@
    "major": "PGL CS2 Major Copenhagen 2024",
    "stage": "Elimination Stage",
    "model": "linear",
-   "match_ll": 0.5999322438979523,
+   "match_ll": 0.5971943230345191,
    "match_acc": 0.6060606060606061,
    "n_matches": 33,
    "seed_card_correct": 4,
@@ -836,10 +952,142 @@
     "Imperial": "1-3",
     "paiN": "2-3"
    },
-   "rec_ll_s0.0": 1.498282614873958,
+   "rec_ll_s0.0": 1.4932562910384477,
    "picks_s0.0": 5,
-   "p_pass_s0.0": 0.384125,
+   "p_pass_s0.0": 0.403125,
    "card_s0.0": {
+    "3-0": [
+     "FaZe",
+     "Spirit"
+    ],
+    "adv": [
+     "Vitality",
+     "MOUZ",
+     "G2",
+     "Natus Vincere",
+     "Virtus.pro",
+     "Cloud9"
+    ],
+    "0-3": [
+     "Imperial",
+     "paiN"
+    ]
+   },
+   "rec_ll_s0.25": 1.502249209585989,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.374375,
+   "card_s0.25": {
+    "3-0": [
+     "FaZe",
+     "Spirit"
+    ],
+    "adv": [
+     "Vitality",
+     "MOUZ",
+     "G2",
+     "Natus Vincere",
+     "Virtus.pro",
+     "Cloud9"
+    ],
+    "0-3": [
+     "Imperial",
+     "paiN"
+    ]
+   },
+   "rec_ll_s0.5": 1.5235630593979508,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.321375,
+   "card_s0.5": {
+    "3-0": [
+     "FaZe",
+     "Spirit"
+    ],
+    "adv": [
+     "Vitality",
+     "MOUZ",
+     "G2",
+     "Natus Vincere",
+     "Virtus.pro",
+     "Cloud9"
+    ],
+    "0-3": [
+     "Imperial",
+     "paiN"
+    ]
+   }
+  },
+  {
+   "major": "PGL CS2 Major Copenhagen 2024",
+   "stage": "Elimination Stage",
+   "model": "mlp",
+   "match_ll": 0.5999661248049624,
+   "match_acc": 0.6363636363636364,
+   "n_matches": 33,
+   "seed_card_correct": 4,
+   "actual": {
+    "FaZe": "3-2",
+    "Spirit": "3-0",
+    "Vitality": "3-1",
+    "MOUZ": "3-0",
+    "G2": "3-2",
+    "Natus Vincere": "3-2",
+    "Virtus.pro": "2-3",
+    "Complexity": "2-3",
+    "HEROIC": "1-3",
+    "Cloud9": "3-1",
+    "Eternal Fire": "3-1",
+    "ECSTATIC": "1-3",
+    "FURIA": "0-3",
+    "The MongolZ": "0-3",
+    "Imperial": "1-3",
+    "paiN": "2-3"
+   },
+   "rec_ll_s0.0": 1.513064227354857,
+   "picks_s0.0": 3,
+   "p_pass_s0.0": 0.358375,
+   "card_s0.0": {
+    "3-0": [
+     "FaZe",
+     "Vitality"
+    ],
+    "adv": [
+     "Spirit",
+     "MOUZ",
+     "G2",
+     "Natus Vincere",
+     "Virtus.pro",
+     "Cloud9"
+    ],
+    "0-3": [
+     "ECSTATIC",
+     "Imperial"
+    ]
+   },
+   "rec_ll_s0.25": 1.518069234637617,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.33,
+   "card_s0.25": {
+    "3-0": [
+     "FaZe",
+     "Spirit"
+    ],
+    "adv": [
+     "Vitality",
+     "MOUZ",
+     "G2",
+     "Natus Vincere",
+     "Virtus.pro",
+     "Cloud9"
+    ],
+    "0-3": [
+     "ECSTATIC",
+     "paiN"
+    ]
+   },
+   "rec_ll_s0.5": 1.5468507049659492,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.28775,
+   "card_s0.5": {
     "3-0": [
      "FaZe",
      "Spirit"
@@ -856,146 +1104,14 @@
      "ECSTATIC",
      "Imperial"
     ]
-   },
-   "rec_ll_s0.25": 1.5047839265961527,
-   "picks_s0.25": 5,
-   "p_pass_s0.25": 0.366875,
-   "card_s0.25": {
-    "3-0": [
-     "FaZe",
-     "MOUZ"
-    ],
-    "adv": [
-     "Spirit",
-     "Vitality",
-     "G2",
-     "Natus Vincere",
-     "Virtus.pro",
-     "Cloud9"
-    ],
-    "0-3": [
-     "ECSTATIC",
-     "Imperial"
-    ]
-   },
-   "rec_ll_s0.5": 1.5320925303896717,
-   "picks_s0.5": 5,
-   "p_pass_s0.5": 0.317,
-   "card_s0.5": {
-    "3-0": [
-     "FaZe",
-     "MOUZ"
-    ],
-    "adv": [
-     "Spirit",
-     "Vitality",
-     "G2",
-     "Natus Vincere",
-     "Virtus.pro",
-     "Cloud9"
-    ],
-    "0-3": [
-     "ECSTATIC",
-     "paiN"
-    ]
-   }
-  },
-  {
-   "major": "PGL CS2 Major Copenhagen 2024",
-   "stage": "Elimination Stage",
-   "model": "mlp",
-   "match_ll": 0.6046779793681129,
-   "match_acc": 0.6060606060606061,
-   "n_matches": 33,
-   "seed_card_correct": 4,
-   "actual": {
-    "FaZe": "3-2",
-    "Spirit": "3-0",
-    "Vitality": "3-1",
-    "MOUZ": "3-0",
-    "G2": "3-2",
-    "Natus Vincere": "3-2",
-    "Virtus.pro": "2-3",
-    "Complexity": "2-3",
-    "HEROIC": "1-3",
-    "Cloud9": "3-1",
-    "Eternal Fire": "3-1",
-    "ECSTATIC": "1-3",
-    "FURIA": "0-3",
-    "The MongolZ": "0-3",
-    "Imperial": "1-3",
-    "paiN": "2-3"
-   },
-   "rec_ll_s0.0": 1.524372522157594,
-   "picks_s0.0": 5,
-   "p_pass_s0.0": 0.342,
-   "card_s0.0": {
-    "3-0": [
-     "FaZe",
-     "MOUZ"
-    ],
-    "adv": [
-     "Spirit",
-     "Vitality",
-     "G2",
-     "Natus Vincere",
-     "Virtus.pro",
-     "Cloud9"
-    ],
-    "0-3": [
-     "ECSTATIC",
-     "Imperial"
-    ]
-   },
-   "rec_ll_s0.25": 1.5193978006814244,
-   "picks_s0.25": 5,
-   "p_pass_s0.25": 0.326625,
-   "card_s0.25": {
-    "3-0": [
-     "FaZe",
-     "MOUZ"
-    ],
-    "adv": [
-     "Spirit",
-     "Vitality",
-     "G2",
-     "Natus Vincere",
-     "Virtus.pro",
-     "Cloud9"
-    ],
-    "0-3": [
-     "ECSTATIC",
-     "Imperial"
-    ]
-   },
-   "rec_ll_s0.5": 1.5520299374851734,
-   "picks_s0.5": 5,
-   "p_pass_s0.5": 0.2795,
-   "card_s0.5": {
-    "3-0": [
-     "FaZe",
-     "MOUZ"
-    ],
-    "adv": [
-     "Spirit",
-     "Vitality",
-     "G2",
-     "Natus Vincere",
-     "Virtus.pro",
-     "Cloud9"
-    ],
-    "0-3": [
-     "ECSTATIC",
-     "paiN"
-    ]
    }
   },
   {
    "major": "PGL CS2 Major Copenhagen 2024",
    "stage": "Elimination Stage",
    "model": "ensemble",
-   "match_ll": 0.610630270873545,
-   "match_acc": 0.6060606060606061,
+   "match_ll": 0.6078135248563165,
+   "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 4,
    "actual": {
@@ -1016,9 +1132,9 @@
     "Imperial": "1-3",
     "paiN": "2-3"
    },
-   "rec_ll_s0.0": 1.542974347626113,
+   "rec_ll_s0.0": 1.5352300836415833,
    "picks_s0.0": 5,
-   "p_pass_s0.0": 0.305875,
+   "p_pass_s0.0": 0.31175,
    "card_s0.0": {
     "3-0": [
      "FaZe",
@@ -1037,9 +1153,9 @@
      "Imperial"
     ]
    },
-   "rec_ll_s0.25": 1.5420385276616724,
+   "rec_ll_s0.25": 1.5341733750147957,
    "picks_s0.25": 5,
-   "p_pass_s0.25": 0.294125,
+   "p_pass_s0.25": 0.296125,
    "card_s0.25": {
     "3-0": [
      "FaZe",
@@ -1058,16 +1174,106 @@
      "Imperial"
     ]
    },
-   "rec_ll_s0.5": 1.5733421114885704,
+   "rec_ll_s0.5": 1.5691095857549198,
    "picks_s0.5": 5,
-   "p_pass_s0.5": 0.250875,
+   "p_pass_s0.5": 0.255,
    "card_s0.5": {
+    "3-0": [
+     "FaZe",
+     "Spirit"
+    ],
+    "adv": [
+     "Vitality",
+     "MOUZ",
+     "G2",
+     "Natus Vincere",
+     "Virtus.pro",
+     "Cloud9"
+    ],
+    "0-3": [
+     "ECSTATIC",
+     "Imperial"
+    ]
+   }
+  },
+  {
+   "major": "PGL CS2 Major Copenhagen 2024",
+   "stage": "Elimination Stage",
+   "model": "ensemble+maps",
+   "match_ll": 0.6065771884182605,
+   "match_acc": 0.6363636363636364,
+   "n_matches": 33,
+   "seed_card_correct": 4,
+   "actual": {
+    "FaZe": "3-2",
+    "Spirit": "3-0",
+    "Vitality": "3-1",
+    "MOUZ": "3-0",
+    "G2": "3-2",
+    "Natus Vincere": "3-2",
+    "Virtus.pro": "2-3",
+    "Complexity": "2-3",
+    "HEROIC": "1-3",
+    "Cloud9": "3-1",
+    "Eternal Fire": "3-1",
+    "ECSTATIC": "1-3",
+    "FURIA": "0-3",
+    "The MongolZ": "0-3",
+    "Imperial": "1-3",
+    "paiN": "2-3"
+   },
+   "rec_ll_s0.0": 1.5349719186492052,
+   "picks_s0.0": 5,
+   "p_pass_s0.0": 0.31075,
+   "card_s0.0": {
     "3-0": [
      "FaZe",
      "MOUZ"
     ],
     "adv": [
      "Spirit",
+     "Vitality",
+     "G2",
+     "Natus Vincere",
+     "Virtus.pro",
+     "Cloud9"
+    ],
+    "0-3": [
+     "ECSTATIC",
+     "Imperial"
+    ]
+   },
+   "rec_ll_s0.25": 1.5324042858578069,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.296,
+   "card_s0.25": {
+    "3-0": [
+     "FaZe",
+     "MOUZ"
+    ],
+    "adv": [
+     "Spirit",
+     "Vitality",
+     "G2",
+     "Natus Vincere",
+     "Virtus.pro",
+     "Cloud9"
+    ],
+    "0-3": [
+     "ECSTATIC",
+     "Imperial"
+    ]
+   },
+   "rec_ll_s0.5": 1.5655559466371054,
+   "picks_s0.5": 7,
+   "p_pass_s0.5": 0.254125,
+   "card_s0.5": {
+    "3-0": [
+     "Spirit",
+     "MOUZ"
+    ],
+    "adv": [
+     "FaZe",
      "Vitality",
      "G2",
      "Natus Vincere",
@@ -1146,73 +1352,11 @@
    "major": "PGL CS2 Major Copenhagen 2024",
    "stage": "Playoffs",
    "model": "linear",
-   "match_ll": 0.7201182258222679,
-   "match_acc": 0.5714285714285714,
-   "n_matches": 7,
-   "bracket_correct": 4,
-   "bracket_expected": 3.14875,
-   "bracket_picks": [
-    "Vitality",
-    "FaZe",
-    "Natus Vincere",
-    "MOUZ",
-    "FaZe",
-    "MOUZ",
-    "FaZe"
-   ],
-   "actual": [
-    "Vitality",
-    "FaZe",
-    "Natus Vincere",
-    "G2",
-    "FaZe",
-    "Natus Vincere",
-    "Natus Vincere"
-   ],
-   "champion_pick": "FaZe",
-   "champion_actual": "Natus Vincere",
-   "p_actual_champion": 0.086
-  },
-  {
-   "major": "PGL CS2 Major Copenhagen 2024",
-   "stage": "Playoffs",
-   "model": "mlp",
-   "match_ll": 0.7112602493983479,
-   "match_acc": 0.5714285714285714,
-   "n_matches": 7,
-   "bracket_correct": 4,
-   "bracket_expected": 3.00875,
-   "bracket_picks": [
-    "Vitality",
-    "FaZe",
-    "Natus Vincere",
-    "MOUZ",
-    "FaZe",
-    "MOUZ",
-    "FaZe"
-   ],
-   "actual": [
-    "Vitality",
-    "FaZe",
-    "Natus Vincere",
-    "G2",
-    "FaZe",
-    "Natus Vincere",
-    "Natus Vincere"
-   ],
-   "champion_pick": "FaZe",
-   "champion_actual": "Natus Vincere",
-   "p_actual_champion": 0.096875
-  },
-  {
-   "major": "PGL CS2 Major Copenhagen 2024",
-   "stage": "Playoffs",
-   "model": "ensemble",
-   "match_ll": 0.7171562493085469,
+   "match_ll": 0.7147531696959197,
    "match_acc": 0.42857142857142855,
    "n_matches": 7,
    "bracket_correct": 2,
-   "bracket_expected": 3.047375,
+   "bracket_expected": 3.1655,
    "bracket_picks": [
     "Vitality",
     "Spirit",
@@ -1233,7 +1377,100 @@
    ],
    "champion_pick": "Spirit",
    "champion_actual": "Natus Vincere",
-   "p_actual_champion": 0.096875
+   "p_actual_champion": 0.087875
+  },
+  {
+   "major": "PGL CS2 Major Copenhagen 2024",
+   "stage": "Playoffs",
+   "model": "mlp",
+   "match_ll": 0.7173816910438177,
+   "match_acc": 0.42857142857142855,
+   "n_matches": 7,
+   "bracket_correct": 2,
+   "bracket_expected": 3.13475,
+   "bracket_picks": [
+    "Vitality",
+    "Spirit",
+    "Natus Vincere",
+    "MOUZ",
+    "Spirit",
+    "MOUZ",
+    "Spirit"
+   ],
+   "actual": [
+    "Vitality",
+    "FaZe",
+    "Natus Vincere",
+    "G2",
+    "FaZe",
+    "Natus Vincere",
+    "Natus Vincere"
+   ],
+   "champion_pick": "Spirit",
+   "champion_actual": "Natus Vincere",
+   "p_actual_champion": 0.093625
+  },
+  {
+   "major": "PGL CS2 Major Copenhagen 2024",
+   "stage": "Playoffs",
+   "model": "ensemble",
+   "match_ll": 0.7174986968174407,
+   "match_acc": 0.42857142857142855,
+   "n_matches": 7,
+   "bracket_correct": 2,
+   "bracket_expected": 3.117,
+   "bracket_picks": [
+    "Vitality",
+    "Spirit",
+    "Natus Vincere",
+    "MOUZ",
+    "Spirit",
+    "MOUZ",
+    "Spirit"
+   ],
+   "actual": [
+    "Vitality",
+    "FaZe",
+    "Natus Vincere",
+    "G2",
+    "FaZe",
+    "Natus Vincere",
+    "Natus Vincere"
+   ],
+   "champion_pick": "Spirit",
+   "champion_actual": "Natus Vincere",
+   "p_actual_champion": 0.096375
+  },
+  {
+   "major": "PGL CS2 Major Copenhagen 2024",
+   "stage": "Playoffs",
+   "model": "ensemble+maps",
+   "match_ll": 0.718477731599523,
+   "match_acc": 0.42857142857142855,
+   "n_matches": 7,
+   "bracket_correct": 2,
+   "bracket_expected": 3.11775,
+   "bracket_picks": [
+    "Vitality",
+    "Spirit",
+    "Natus Vincere",
+    "MOUZ",
+    "Spirit",
+    "MOUZ",
+    "Spirit"
+   ],
+   "actual": [
+    "Vitality",
+    "FaZe",
+    "Natus Vincere",
+    "G2",
+    "FaZe",
+    "Natus Vincere",
+    "Natus Vincere"
+   ],
+   "champion_pick": "Spirit",
+   "champion_actual": "Natus Vincere",
+   "p_actual_champion": 0.096375
   },
   {
    "major": "Perfect World Shanghai Major 2024",
@@ -1419,7 +1656,7 @@
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Opening Stage",
    "model": "linear",
-   "match_ll": 0.6172154396793199,
+   "match_ll": 0.614859993120009,
    "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 5,
@@ -1441,9 +1678,9 @@
     "Passion UA": "2-3",
     "fnatic": "0-3"
    },
-   "rec_ll_s0.0": 1.5677084429786166,
+   "rec_ll_s0.0": 1.5703308917830445,
    "picks_s0.0": 3,
-   "p_pass_s0.0": 0.374375,
+   "p_pass_s0.0": 0.3645,
    "card_s0.0": {
     "3-0": [
      "FURIA",
@@ -1462,9 +1699,9 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.589592996767832,
+   "rec_ll_s0.25": 1.5865508375298623,
    "picks_s0.25": 3,
-   "p_pass_s0.25": 0.346375,
+   "p_pass_s0.25": 0.340875,
    "card_s0.25": {
     "3-0": [
      "FURIA",
@@ -1483,9 +1720,9 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.605960189297041,
+   "rec_ll_s0.5": 1.602169016226599,
    "picks_s0.5": 3,
-   "p_pass_s0.5": 0.30125,
+   "p_pass_s0.5": 0.29475,
    "card_s0.5": {
     "3-0": [
      "FURIA",
@@ -1509,7 +1746,7 @@
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Opening Stage",
    "model": "mlp",
-   "match_ll": 0.6245169785263502,
+   "match_ll": 0.6223787390816339,
    "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 5,
@@ -1531,9 +1768,9 @@
     "Passion UA": "2-3",
     "fnatic": "0-3"
    },
-   "rec_ll_s0.0": 1.5872997580627475,
+   "rec_ll_s0.0": 1.5883418365180293,
    "picks_s0.0": 3,
-   "p_pass_s0.0": 0.345,
+   "p_pass_s0.0": 0.326875,
    "card_s0.0": {
     "3-0": [
      "FURIA",
@@ -1552,9 +1789,9 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.6112110269364897,
+   "rec_ll_s0.25": 1.6033953953591489,
    "picks_s0.25": 3,
-   "p_pass_s0.25": 0.32,
+   "p_pass_s0.25": 0.312125,
    "card_s0.25": {
     "3-0": [
      "FURIA",
@@ -1565,7 +1802,7 @@
      "Liquid",
      "Complexity",
      "paiN",
-     "MIBR",
+     "Wildcard",
      "FlyQuest"
     ],
     "0-3": [
@@ -1573,9 +1810,9 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.6242678604226923,
+   "rec_ll_s0.5": 1.6199984984169031,
    "picks_s0.5": 3,
-   "p_pass_s0.5": 0.273125,
+   "p_pass_s0.5": 0.26675,
    "card_s0.5": {
     "3-0": [
      "FURIA",
@@ -1599,8 +1836,8 @@
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Opening Stage",
    "model": "ensemble",
-   "match_ll": 0.6152940906485405,
-   "match_acc": 0.6666666666666666,
+   "match_ll": 0.6140937685201823,
+   "match_acc": 0.696969696969697,
    "n_matches": 33,
    "seed_card_correct": 5,
    "actual": {
@@ -1621,9 +1858,9 @@
     "Passion UA": "2-3",
     "fnatic": "0-3"
    },
-   "rec_ll_s0.0": 1.57419981561524,
+   "rec_ll_s0.0": 1.5742551680079975,
    "picks_s0.0": 3,
-   "p_pass_s0.0": 0.32825,
+   "p_pass_s0.0": 0.324,
    "card_s0.0": {
     "3-0": [
      "FURIA",
@@ -1642,9 +1879,9 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.5930497707656983,
+   "rec_ll_s0.25": 1.583714811453866,
    "picks_s0.25": 3,
-   "p_pass_s0.25": 0.305,
+   "p_pass_s0.25": 0.301875,
    "card_s0.25": {
     "3-0": [
      "FURIA",
@@ -1663,9 +1900,99 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.6088813723452149,
+   "rec_ll_s0.5": 1.6092200066249847,
    "picks_s0.5": 3,
-   "p_pass_s0.5": 0.26125,
+   "p_pass_s0.5": 0.257875,
+   "card_s0.5": {
+    "3-0": [
+     "FURIA",
+     "The MongolZ"
+    ],
+    "adv": [
+     "Virtus.pro",
+     "Liquid",
+     "Complexity",
+     "paiN",
+     "MIBR",
+     "FlyQuest"
+    ],
+    "0-3": [
+     "Rare Atom",
+     "Passion UA"
+    ]
+   }
+  },
+  {
+   "major": "Perfect World Shanghai Major 2024",
+   "stage": "Opening Stage",
+   "model": "ensemble+maps",
+   "match_ll": 0.6139530263095855,
+   "match_acc": 0.696969696969697,
+   "n_matches": 33,
+   "seed_card_correct": 5,
+   "actual": {
+    "FURIA": "3-1",
+    "The MongolZ": "3-0",
+    "Virtus.pro": "1-3",
+    "Liquid": "3-0",
+    "Complexity": "2-3",
+    "paiN": "3-1",
+    "BIG": "3-2",
+    "Wildcard": "3-2",
+    "GamerLegion": "3-1",
+    "Rare Atom": "1-3",
+    "MIBR": "3-2",
+    "Cloud9": "1-3",
+    "FlyQuest": "2-3",
+    "Imperial": "0-3",
+    "Passion UA": "2-3",
+    "fnatic": "0-3"
+   },
+   "rec_ll_s0.0": 1.5747070011470106,
+   "picks_s0.0": 3,
+   "p_pass_s0.0": 0.321375,
+   "card_s0.0": {
+    "3-0": [
+     "FURIA",
+     "The MongolZ"
+    ],
+    "adv": [
+     "Virtus.pro",
+     "Liquid",
+     "Complexity",
+     "paiN",
+     "Wildcard",
+     "FlyQuest"
+    ],
+    "0-3": [
+     "Rare Atom",
+     "Passion UA"
+    ]
+   },
+   "rec_ll_s0.25": 1.5820406594393062,
+   "picks_s0.25": 3,
+   "p_pass_s0.25": 0.30175,
+   "card_s0.25": {
+    "3-0": [
+     "FURIA",
+     "The MongolZ"
+    ],
+    "adv": [
+     "Virtus.pro",
+     "Liquid",
+     "Complexity",
+     "paiN",
+     "Wildcard",
+     "FlyQuest"
+    ],
+    "0-3": [
+     "Rare Atom",
+     "Passion UA"
+    ]
+   },
+   "rec_ll_s0.5": 1.6084879985855371,
+   "picks_s0.5": 3,
+   "p_pass_s0.5": 0.25725,
    "card_s0.5": {
     "3-0": [
      "FURIA",
@@ -1869,7 +2196,7 @@
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Elimination Stage",
    "model": "linear",
-   "match_ll": 0.5877211704694868,
+   "match_ll": 0.5938351856083589,
    "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 5,
@@ -1891,9 +2218,9 @@
     "BIG": "0-3",
     "MIBR": "2-3"
    },
-   "rec_ll_s0.0": 1.5523748236128827,
+   "rec_ll_s0.0": 1.5608318737712215,
    "picks_s0.0": 7,
-   "p_pass_s0.0": 0.3625,
+   "p_pass_s0.0": 0.364125,
    "card_s0.0": {
     "3-0": [
      "Natus Vincere",
@@ -1912,9 +2239,9 @@
      "BIG"
     ]
    },
-   "rec_ll_s0.25": 1.5527588803548167,
+   "rec_ll_s0.25": 1.5627669082713116,
    "picks_s0.25": 7,
-   "p_pass_s0.25": 0.343,
+   "p_pass_s0.25": 0.339875,
    "card_s0.25": {
     "3-0": [
      "Natus Vincere",
@@ -1933,9 +2260,9 @@
      "BIG"
     ]
    },
-   "rec_ll_s0.5": 1.5637590677613904,
-   "picks_s0.5": 6,
-   "p_pass_s0.5": 0.291625,
+   "rec_ll_s0.5": 1.5726259964302445,
+   "picks_s0.5": 7,
+   "p_pass_s0.5": 0.293625,
    "card_s0.5": {
     "3-0": [
      "Natus Vincere",
@@ -1946,8 +2273,8 @@
      "Spirit",
      "MOUZ",
      "FaZe",
-     "The MongolZ",
-     "FURIA"
+     "HEROIC",
+     "The MongolZ"
     ],
     "0-3": [
      "GamerLegion",
@@ -1959,7 +2286,97 @@
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Elimination Stage",
    "model": "mlp",
-   "match_ll": 0.6018368205977642,
+   "match_ll": 0.6033382901100205,
+   "match_acc": 0.6060606060606061,
+   "n_matches": 33,
+   "seed_card_correct": 5,
+   "actual": {
+    "Natus Vincere": "2-3",
+    "G2": "3-1",
+    "Vitality": "3-0",
+    "Spirit": "3-1",
+    "MOUZ": "3-2",
+    "FaZe": "3-2",
+    "HEROIC": "3-2",
+    "3DMAX": "1-3",
+    "Liquid": "3-1",
+    "The MongolZ": "3-0",
+    "GamerLegion": "1-3",
+    "FURIA": "2-3",
+    "paiN": "1-3",
+    "Wildcard": "0-3",
+    "BIG": "0-3",
+    "MIBR": "2-3"
+   },
+   "rec_ll_s0.0": 1.5769471381575595,
+   "picks_s0.0": 7,
+   "p_pass_s0.0": 0.315875,
+   "card_s0.0": {
+    "3-0": [
+     "Natus Vincere",
+     "Vitality"
+    ],
+    "adv": [
+     "G2",
+     "Spirit",
+     "MOUZ",
+     "FaZe",
+     "HEROIC",
+     "The MongolZ"
+    ],
+    "0-3": [
+     "GamerLegion",
+     "BIG"
+    ]
+   },
+   "rec_ll_s0.25": 1.5853930554357483,
+   "picks_s0.25": 7,
+   "p_pass_s0.25": 0.303625,
+   "card_s0.25": {
+    "3-0": [
+     "Natus Vincere",
+     "Vitality"
+    ],
+    "adv": [
+     "G2",
+     "Spirit",
+     "MOUZ",
+     "FaZe",
+     "HEROIC",
+     "The MongolZ"
+    ],
+    "0-3": [
+     "GamerLegion",
+     "BIG"
+    ]
+   },
+   "rec_ll_s0.5": 1.6010597170870366,
+   "picks_s0.5": 7,
+   "p_pass_s0.5": 0.25275,
+   "card_s0.5": {
+    "3-0": [
+     "Natus Vincere",
+     "Vitality"
+    ],
+    "adv": [
+     "G2",
+     "Spirit",
+     "MOUZ",
+     "FaZe",
+     "HEROIC",
+     "The MongolZ"
+    ],
+    "0-3": [
+     "GamerLegion",
+     "BIG"
+    ]
+   }
+  },
+  {
+   "major": "Perfect World Shanghai Major 2024",
+   "stage": "Elimination Stage",
+   "model": "ensemble",
+   "match_ll": 0.5970539072232091,
    "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 5,
@@ -1981,9 +2398,9 @@
     "BIG": "0-3",
     "MIBR": "2-3"
    },
-   "rec_ll_s0.0": 1.5704223244891407,
-   "picks_s0.0": 7,
-   "p_pass_s0.0": 0.2925,
+   "rec_ll_s0.0": 1.5619522398290815,
+   "picks_s0.0": 6,
+   "p_pass_s0.0": 0.321,
    "card_s0.0": {
     "3-0": [
      "Natus Vincere",
@@ -1994,17 +2411,17 @@
      "Spirit",
      "MOUZ",
      "FaZe",
-     "HEROIC",
-     "The MongolZ"
+     "The MongolZ",
+     "paiN"
     ],
     "0-3": [
      "GamerLegion",
      "BIG"
     ]
    },
-   "rec_ll_s0.25": 1.5795812041459794,
+   "rec_ll_s0.25": 1.5640527896100291,
    "picks_s0.25": 7,
-   "p_pass_s0.25": 0.287625,
+   "p_pass_s0.25": 0.311,
    "card_s0.25": {
     "3-0": [
      "Natus Vincere",
@@ -2023,9 +2440,9 @@
      "BIG"
     ]
    },
-   "rec_ll_s0.5": 1.603613994879801,
-   "picks_s0.5": 6,
-   "p_pass_s0.5": 0.24075,
+   "rec_ll_s0.5": 1.5912817184279837,
+   "picks_s0.5": 7,
+   "p_pass_s0.5": 0.262875,
    "card_s0.5": {
     "3-0": [
      "Natus Vincere",
@@ -2035,9 +2452,9 @@
      "G2",
      "Spirit",
      "MOUZ",
-     "HEROIC",
-     "The MongolZ",
-     "FURIA"
+     "FaZe",
+     "Liquid",
+     "The MongolZ"
     ],
     "0-3": [
      "GamerLegion",
@@ -2048,9 +2465,9 @@
   {
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Elimination Stage",
-   "model": "ensemble",
-   "match_ll": 0.5941576794480539,
-   "match_acc": 0.6666666666666666,
+   "model": "ensemble+maps",
+   "match_ll": 0.5979615175992208,
+   "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 5,
    "actual": {
@@ -2071,9 +2488,9 @@
     "BIG": "0-3",
     "MIBR": "2-3"
    },
-   "rec_ll_s0.0": 1.5539098366116129,
-   "picks_s0.0": 7,
-   "p_pass_s0.0": 0.314125,
+   "rec_ll_s0.0": 1.5628651812166643,
+   "picks_s0.0": 6,
+   "p_pass_s0.0": 0.319,
    "card_s0.0": {
     "3-0": [
      "Natus Vincere",
@@ -2084,17 +2501,17 @@
      "Spirit",
      "MOUZ",
      "FaZe",
-     "HEROIC",
-     "The MongolZ"
+     "The MongolZ",
+     "paiN"
     ],
     "0-3": [
      "GamerLegion",
      "BIG"
     ]
    },
-   "rec_ll_s0.25": 1.5614846975265064,
+   "rec_ll_s0.25": 1.5677690863926657,
    "picks_s0.25": 7,
-   "p_pass_s0.25": 0.304625,
+   "p_pass_s0.25": 0.310125,
    "card_s0.25": {
     "3-0": [
      "Natus Vincere",
@@ -2113,9 +2530,9 @@
      "BIG"
     ]
    },
-   "rec_ll_s0.5": 1.5910953052766712,
+   "rec_ll_s0.5": 1.5933522523254782,
    "picks_s0.5": 6,
-   "p_pass_s0.5": 0.256,
+   "p_pass_s0.5": 0.261625,
    "card_s0.5": {
     "3-0": [
      "Natus Vincere",
@@ -2127,7 +2544,7 @@
      "MOUZ",
      "FaZe",
      "The MongolZ",
-     "FURIA"
+     "paiN"
     ],
     "0-3": [
      "GamerLegion",
@@ -2201,11 +2618,11 @@
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Playoffs",
    "model": "linear",
-   "match_ll": 0.7014702442227192,
+   "match_ll": 0.6987490255860512,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
    "bracket_correct": 4,
-   "bracket_expected": 3.672,
+   "bracket_expected": 3.562625,
    "bracket_picks": [
     "MOUZ",
     "Spirit",
@@ -2226,17 +2643,17 @@
    ],
    "champion_pick": "G2",
    "champion_actual": "Spirit",
-   "p_actual_champion": 0.147625
+   "p_actual_champion": 0.14875
   },
   {
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Playoffs",
    "model": "mlp",
-   "match_ll": 0.6740323800997098,
+   "match_ll": 0.6921336582770233,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
    "bracket_correct": 4,
-   "bracket_expected": 3.398125,
+   "bracket_expected": 3.484875,
    "bracket_picks": [
     "MOUZ",
     "Spirit",
@@ -2257,17 +2674,17 @@
    ],
    "champion_pick": "G2",
    "champion_actual": "Spirit",
-   "p_actual_champion": 0.1535
+   "p_actual_champion": 0.150125
   },
   {
    "major": "Perfect World Shanghai Major 2024",
    "stage": "Playoffs",
    "model": "ensemble",
-   "match_ll": 0.6977235192901967,
+   "match_ll": 0.7039052618650167,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
    "bracket_correct": 4,
-   "bracket_expected": 3.489375,
+   "bracket_expected": 3.48125,
    "bracket_picks": [
     "MOUZ",
     "Spirit",
@@ -2288,7 +2705,38 @@
    ],
    "champion_pick": "G2",
    "champion_actual": "Spirit",
-   "p_actual_champion": 0.14525
+   "p_actual_champion": 0.14475
+  },
+  {
+   "major": "Perfect World Shanghai Major 2024",
+   "stage": "Playoffs",
+   "model": "ensemble+maps",
+   "match_ll": 0.7028270170080672,
+   "match_acc": 0.7142857142857143,
+   "n_matches": 7,
+   "bracket_correct": 4,
+   "bracket_expected": 3.481,
+   "bracket_picks": [
+    "MOUZ",
+    "Spirit",
+    "G2",
+    "Vitality",
+    "Spirit",
+    "G2",
+    "G2"
+   ],
+   "actual": [
+    "MOUZ",
+    "Spirit",
+    "G2",
+    "FaZe",
+    "Spirit",
+    "FaZe",
+    "Spirit"
+   ],
+   "champion_pick": "G2",
+   "champion_actual": "Spirit",
+   "p_actual_champion": 0.145125
   },
   {
    "major": "BLAST.tv Austin Major 2025",
@@ -2474,7 +2922,7 @@
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Stage 1",
    "model": "linear",
-   "match_ll": 0.6749818922730898,
+   "match_ll": 0.6647594387010054,
    "match_acc": 0.5757575757575758,
    "n_matches": 33,
    "seed_card_correct": 4,
@@ -2496,51 +2944,51 @@
     "Legacy": "3-2",
     "Nemiga": "3-1"
    },
-   "rec_ll_s0.0": 1.7093777688073732,
+   "rec_ll_s0.0": 1.6989105707472811,
    "picks_s0.0": 4,
-   "p_pass_s0.0": 0.29075,
+   "p_pass_s0.0": 0.355125,
    "card_s0.0": {
     "3-0": [
      "HEROIC",
-     "Wildcard"
+     "Complexity"
     ],
     "adv": [
-     "Complexity",
-     "FlyQuest",
      "B8",
      "TYLOO",
+     "Fluxo",
+     "Imperial",
      "NRG",
      "Legacy"
     ],
     "0-3": [
-     "Chinggis Warriors",
-     "Metizport"
+     "Metizport",
+     "Nemiga"
     ]
    },
-   "rec_ll_s0.25": 1.7021268676966566,
-   "picks_s0.25": 4,
-   "p_pass_s0.25": 0.2835,
+   "rec_ll_s0.25": 1.6944547225203466,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.338125,
    "card_s0.25": {
     "3-0": [
      "HEROIC",
      "Complexity"
     ],
     "adv": [
-     "FlyQuest",
      "B8",
      "TYLOO",
+     "Lynn Vision",
      "Fluxo",
      "NRG",
      "Legacy"
     ],
     "0-3": [
-     "Chinggis Warriors",
-     "Metizport"
+     "Metizport",
+     "Nemiga"
     ]
    },
-   "rec_ll_s0.5": 1.6955848590329554,
-   "picks_s0.5": 4,
-   "p_pass_s0.5": 0.24175,
+   "rec_ll_s0.5": 1.698217273263778,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.286375,
    "card_s0.5": {
     "3-0": [
      "HEROIC",
@@ -2548,15 +2996,15 @@
     ],
     "adv": [
      "B8",
-     "Wildcard",
      "TYLOO",
-     "Fluxo",
+     "Lynn Vision",
      "Imperial",
+     "NRG",
      "Legacy"
     ],
     "0-3": [
-     "Chinggis Warriors",
-     "Metizport"
+     "Metizport",
+     "Nemiga"
     ]
    }
   },
@@ -2564,97 +3012,7 @@
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Stage 1",
    "model": "mlp",
-   "match_ll": 0.6786642651247389,
-   "match_acc": 0.5757575757575758,
-   "n_matches": 33,
-   "seed_card_correct": 4,
-   "actual": {
-    "HEROIC": "3-0",
-    "Complexity": "1-3",
-    "FlyQuest": "2-3",
-    "B8": "3-0",
-    "Wildcard": "2-3",
-    "TYLOO": "3-2",
-    "Lynn Vision": "3-2",
-    "BETBOOM": "3-1",
-    "Chinggis Warriors": "1-3",
-    "OG": "3-1",
-    "Fluxo": "0-3",
-    "Imperial": "1-3",
-    "Metizport": "0-3",
-    "NRG": "2-3",
-    "Legacy": "3-2",
-    "Nemiga": "3-1"
-   },
-   "rec_ll_s0.0": 1.7162916060927031,
-   "picks_s0.0": 4,
-   "p_pass_s0.0": 0.302125,
-   "card_s0.0": {
-    "3-0": [
-     "HEROIC",
-     "Complexity"
-    ],
-    "adv": [
-     "FlyQuest",
-     "B8",
-     "Wildcard",
-     "TYLOO",
-     "Fluxo",
-     "Legacy"
-    ],
-    "0-3": [
-     "Chinggis Warriors",
-     "Metizport"
-    ]
-   },
-   "rec_ll_s0.25": 1.7092873186246518,
-   "picks_s0.25": 4,
-   "p_pass_s0.25": 0.2915,
-   "card_s0.25": {
-    "3-0": [
-     "HEROIC",
-     "Complexity"
-    ],
-    "adv": [
-     "FlyQuest",
-     "B8",
-     "TYLOO",
-     "Fluxo",
-     "NRG",
-     "Legacy"
-    ],
-    "0-3": [
-     "Chinggis Warriors",
-     "Metizport"
-    ]
-   },
-   "rec_ll_s0.5": 1.69880123789217,
-   "picks_s0.5": 4,
-   "p_pass_s0.5": 0.249625,
-   "card_s0.5": {
-    "3-0": [
-     "HEROIC",
-     "Complexity"
-    ],
-    "adv": [
-     "B8",
-     "Wildcard",
-     "TYLOO",
-     "Fluxo",
-     "Imperial",
-     "Legacy"
-    ],
-    "0-3": [
-     "Chinggis Warriors",
-     "Metizport"
-    ]
-   }
-  },
-  {
-   "major": "BLAST.tv Austin Major 2025",
-   "stage": "Stage 1",
-   "model": "ensemble",
-   "match_ll": 0.6791425871026051,
+   "match_ll": 0.6774291150092048,
    "match_acc": 0.5454545454545454,
    "n_matches": 33,
    "seed_card_correct": 4,
@@ -2676,9 +3034,99 @@
     "Legacy": "3-2",
     "Nemiga": "3-1"
    },
-   "rec_ll_s0.0": 1.7207907187187497,
+   "rec_ll_s0.0": 1.7240954407218327,
+   "picks_s0.0": 5,
+   "p_pass_s0.0": 0.38375,
+   "card_s0.0": {
+    "3-0": [
+     "HEROIC",
+     "Complexity"
+    ],
+    "adv": [
+     "B8",
+     "TYLOO",
+     "Lynn Vision",
+     "Fluxo",
+     "NRG",
+     "Legacy"
+    ],
+    "0-3": [
+     "Metizport",
+     "Nemiga"
+    ]
+   },
+   "rec_ll_s0.25": 1.7161965991965777,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.3625,
+   "card_s0.25": {
+    "3-0": [
+     "HEROIC",
+     "Complexity"
+    ],
+    "adv": [
+     "B8",
+     "TYLOO",
+     "Lynn Vision",
+     "Fluxo",
+     "NRG",
+     "Legacy"
+    ],
+    "0-3": [
+     "Metizport",
+     "Nemiga"
+    ]
+   },
+   "rec_ll_s0.5": 1.7134442897143545,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.305875,
+   "card_s0.5": {
+    "3-0": [
+     "HEROIC",
+     "Complexity"
+    ],
+    "adv": [
+     "B8",
+     "TYLOO",
+     "Lynn Vision",
+     "Fluxo",
+     "NRG",
+     "Legacy"
+    ],
+    "0-3": [
+     "Metizport",
+     "Nemiga"
+    ]
+   }
+  },
+  {
+   "major": "BLAST.tv Austin Major 2025",
+   "stage": "Stage 1",
+   "model": "ensemble",
+   "match_ll": 0.6743326261400453,
+   "match_acc": 0.48484848484848486,
+   "n_matches": 33,
+   "seed_card_correct": 4,
+   "actual": {
+    "HEROIC": "3-0",
+    "Complexity": "1-3",
+    "FlyQuest": "2-3",
+    "B8": "3-0",
+    "Wildcard": "2-3",
+    "TYLOO": "3-2",
+    "Lynn Vision": "3-2",
+    "BETBOOM": "3-1",
+    "Chinggis Warriors": "1-3",
+    "OG": "3-1",
+    "Fluxo": "0-3",
+    "Imperial": "1-3",
+    "Metizport": "0-3",
+    "NRG": "2-3",
+    "Legacy": "3-2",
+    "Nemiga": "3-1"
+   },
+   "rec_ll_s0.0": 1.712082863049217,
    "picks_s0.0": 4,
-   "p_pass_s0.0": 0.294125,
+   "p_pass_s0.0": 0.3465,
    "card_s0.0": {
     "3-0": [
      "HEROIC",
@@ -2697,9 +3145,9 @@
      "Metizport"
     ]
    },
-   "rec_ll_s0.25": 1.7159308929036703,
+   "rec_ll_s0.25": 1.7087277573144766,
    "picks_s0.25": 4,
-   "p_pass_s0.25": 0.285875,
+   "p_pass_s0.25": 0.3265,
    "card_s0.25": {
     "3-0": [
      "HEROIC",
@@ -2718,9 +3166,9 @@
      "Metizport"
     ]
    },
-   "rec_ll_s0.5": 1.7105925386847103,
+   "rec_ll_s0.5": 1.7078631199109577,
    "picks_s0.5": 4,
-   "p_pass_s0.5": 0.2495,
+   "p_pass_s0.5": 0.276,
    "card_s0.5": {
     "3-0": [
      "HEROIC",
@@ -2728,8 +3176,98 @@
     ],
     "adv": [
      "B8",
-     "Wildcard",
      "TYLOO",
+     "Fluxo",
+     "Imperial",
+     "NRG",
+     "Legacy"
+    ],
+    "0-3": [
+     "Chinggis Warriors",
+     "Metizport"
+    ]
+   }
+  },
+  {
+   "major": "BLAST.tv Austin Major 2025",
+   "stage": "Stage 1",
+   "model": "ensemble+maps",
+   "match_ll": 0.6752967066375654,
+   "match_acc": 0.5151515151515151,
+   "n_matches": 33,
+   "seed_card_correct": 4,
+   "actual": {
+    "HEROIC": "3-0",
+    "Complexity": "1-3",
+    "FlyQuest": "2-3",
+    "B8": "3-0",
+    "Wildcard": "2-3",
+    "TYLOO": "3-2",
+    "Lynn Vision": "3-2",
+    "BETBOOM": "3-1",
+    "Chinggis Warriors": "1-3",
+    "OG": "3-1",
+    "Fluxo": "0-3",
+    "Imperial": "1-3",
+    "Metizport": "0-3",
+    "NRG": "2-3",
+    "Legacy": "3-2",
+    "Nemiga": "3-1"
+   },
+   "rec_ll_s0.0": 1.7112770961600878,
+   "picks_s0.0": 4,
+   "p_pass_s0.0": 0.341625,
+   "card_s0.0": {
+    "3-0": [
+     "HEROIC",
+     "Complexity"
+    ],
+    "adv": [
+     "B8",
+     "TYLOO",
+     "Fluxo",
+     "Imperial",
+     "NRG",
+     "Legacy"
+    ],
+    "0-3": [
+     "Chinggis Warriors",
+     "Metizport"
+    ]
+   },
+   "rec_ll_s0.25": 1.7070340988821866,
+   "picks_s0.25": 4,
+   "p_pass_s0.25": 0.3265,
+   "card_s0.25": {
+    "3-0": [
+     "HEROIC",
+     "Complexity"
+    ],
+    "adv": [
+     "B8",
+     "TYLOO",
+     "Fluxo",
+     "Imperial",
+     "NRG",
+     "Legacy"
+    ],
+    "0-3": [
+     "Chinggis Warriors",
+     "Metizport"
+    ]
+   },
+   "rec_ll_s0.5": 1.7086028683805887,
+   "picks_s0.5": 4,
+   "p_pass_s0.5": 0.27475,
+   "card_s0.5": {
+    "3-0": [
+     "HEROIC",
+     "Complexity"
+    ],
+    "adv": [
+     "B8",
+     "TYLOO",
+     "Fluxo",
      "Imperial",
      "NRG",
      "Legacy"
@@ -2924,8 +3462,8 @@
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Stage 2",
    "model": "linear",
-   "match_ll": 0.7573532896035952,
-   "match_acc": 0.5454545454545454,
+   "match_ll": 0.8113947373285699,
+   "match_acc": 0.45454545454545453,
    "n_matches": 33,
    "seed_card_correct": 3,
    "actual": {
@@ -2946,51 +3484,51 @@
     "Nemiga": "3-2",
     "M80": "1-3"
    },
-   "rec_ll_s0.0": 1.884207384833457,
+   "rec_ll_s0.0": 1.9691976015402914,
    "picks_s0.0": 2,
-   "p_pass_s0.0": 0.302875,
+   "p_pass_s0.0": 0.3765,
    "card_s0.0": {
     "3-0": [
      "Falcons",
-     "3DMAX"
-    ],
-    "adv": [
-     "FaZe",
-     "Virtus.pro",
-     "FURIA",
-     "MIBR",
-     "TYLOO",
-     "HEROIC"
-    ],
-    "0-3": [
-     "Lynn Vision",
-     "Nemiga"
-    ]
-   },
-   "rec_ll_s0.25": 1.8699913376435475,
-   "picks_s0.25": 4,
-   "p_pass_s0.25": 0.2865,
-   "card_s0.25": {
-    "3-0": [
-     "Falcons",
-     "Virtus.pro"
+     "FURIA"
     ],
     "adv": [
      "FaZe",
      "3DMAX",
-     "FURIA",
-     "MIBR",
+     "TYLOO",
+     "B8",
      "HEROIC",
      "Legacy"
     ],
     "0-3": [
-     "Lynn Vision",
-     "Nemiga"
+     "Nemiga",
+     "M80"
     ]
    },
-   "rec_ll_s0.5": 1.8475112223222594,
+   "rec_ll_s0.25": 1.9597995788386773,
+   "picks_s0.25": 2,
+   "p_pass_s0.25": 0.3595,
+   "card_s0.25": {
+    "3-0": [
+     "Falcons",
+     "FURIA"
+    ],
+    "adv": [
+     "FaZe",
+     "3DMAX",
+     "TYLOO",
+     "B8",
+     "HEROIC",
+     "Legacy"
+    ],
+    "0-3": [
+     "Nemiga",
+     "M80"
+    ]
+   },
+   "rec_ll_s0.5": 1.918052638816527,
    "picks_s0.5": 2,
-   "p_pass_s0.5": 0.24525,
+   "p_pass_s0.5": 0.304625,
    "card_s0.5": {
     "3-0": [
      "Falcons",
@@ -2998,15 +3536,15 @@
     ],
     "adv": [
      "FaZe",
-     "Virtus.pro",
      "3DMAX",
-     "MIBR",
      "TYLOO",
-     "HEROIC"
+     "B8",
+     "HEROIC",
+     "Legacy"
     ],
     "0-3": [
-     "Lynn Vision",
-     "Nemiga"
+     "Nemiga",
+     "M80"
     ]
    }
   },
@@ -3014,8 +3552,8 @@
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Stage 2",
    "model": "mlp",
-   "match_ll": 0.7419870249501047,
-   "match_acc": 0.5151515151515151,
+   "match_ll": 0.8089599352246915,
+   "match_acc": 0.45454545454545453,
    "n_matches": 33,
    "seed_card_correct": 3,
    "actual": {
@@ -3036,120 +3574,30 @@
     "Nemiga": "3-2",
     "M80": "1-3"
    },
-   "rec_ll_s0.0": 1.848444933289346,
-   "picks_s0.0": 5,
-   "p_pass_s0.0": 0.293875,
+   "rec_ll_s0.0": 1.9642654873114835,
+   "picks_s0.0": 2,
+   "p_pass_s0.0": 0.377625,
    "card_s0.0": {
     "3-0": [
      "Falcons",
-     "Virtus.pro"
+     "FURIA"
     ],
     "adv": [
      "FaZe",
      "3DMAX",
-     "FURIA",
-     "MIBR",
-     "HEROIC",
-     "Legacy"
-    ],
-    "0-3": [
-     "OG",
-     "Nemiga"
-    ]
-   },
-   "rec_ll_s0.25": 1.8462371228742955,
-   "picks_s0.25": 5,
-   "p_pass_s0.25": 0.269625,
-   "card_s0.25": {
-    "3-0": [
-     "Falcons",
-     "Virtus.pro"
-    ],
-    "adv": [
-     "FaZe",
-     "3DMAX",
-     "FURIA",
-     "MIBR",
-     "HEROIC",
-     "Legacy"
-    ],
-    "0-3": [
-     "OG",
-     "Nemiga"
-    ]
-   },
-   "rec_ll_s0.5": 1.8259793397870738,
-   "picks_s0.5": 5,
-   "p_pass_s0.5": 0.23625,
-   "card_s0.5": {
-    "3-0": [
-     "Falcons",
-     "Virtus.pro"
-    ],
-    "adv": [
-     "FaZe",
-     "3DMAX",
-     "FURIA",
-     "MIBR",
-     "HEROIC",
-     "Legacy"
-    ],
-    "0-3": [
-     "OG",
-     "Nemiga"
-    ]
-   }
-  },
-  {
-   "major": "BLAST.tv Austin Major 2025",
-   "stage": "Stage 2",
-   "model": "ensemble",
-   "match_ll": 0.7540584461015087,
-   "match_acc": 0.5454545454545454,
-   "n_matches": 33,
-   "seed_card_correct": 3,
-   "actual": {
-    "Falcons": "1-3",
-    "FaZe": "3-2",
-    "Virtus.pro": "3-0",
-    "3DMAX": "3-1",
-    "FURIA": "3-1",
-    "MIBR": "2-3",
-    "paiN": "3-1",
-    "TYLOO": "1-3",
-    "B8": "2-3",
-    "HEROIC": "2-3",
-    "OG": "0-3",
-    "BETBOOM": "0-3",
-    "Lynn Vision": "3-2",
-    "Legacy": "3-0",
-    "Nemiga": "3-2",
-    "M80": "1-3"
-   },
-   "rec_ll_s0.0": 1.8725050811590873,
-   "picks_s0.0": 3,
-   "p_pass_s0.0": 0.257875,
-   "card_s0.0": {
-    "3-0": [
-     "Falcons",
-     "TYLOO"
-    ],
-    "adv": [
-     "FaZe",
-     "Virtus.pro",
-     "3DMAX",
-     "FURIA",
+     "TYLOO",
      "B8",
-     "HEROIC"
+     "HEROIC",
+     "Legacy"
     ],
     "0-3": [
-     "Lynn Vision",
+     "MIBR",
      "Nemiga"
     ]
    },
-   "rec_ll_s0.25": 1.881969531744657,
+   "rec_ll_s0.25": 1.9721338022260004,
    "picks_s0.25": 2,
-   "p_pass_s0.25": 0.249875,
+   "p_pass_s0.25": 0.35825,
    "card_s0.25": {
     "3-0": [
      "Falcons",
@@ -3157,36 +3605,216 @@
     ],
     "adv": [
      "FaZe",
-     "Virtus.pro",
      "3DMAX",
      "TYLOO",
+     "B8",
      "HEROIC",
      "Legacy"
     ],
     "0-3": [
-     "Lynn Vision",
+     "Nemiga",
+     "M80"
+    ]
+   },
+   "rec_ll_s0.5": 1.9167961238704394,
+   "picks_s0.5": 3,
+   "p_pass_s0.5": 0.309625,
+   "card_s0.5": {
+    "3-0": [
+     "Falcons",
+     "TYLOO"
+    ],
+    "adv": [
+     "FaZe",
+     "3DMAX",
+     "FURIA",
+     "B8",
+     "HEROIC",
+     "Legacy"
+    ],
+    "0-3": [
+     "Nemiga",
+     "M80"
+    ]
+   }
+  },
+  {
+   "major": "BLAST.tv Austin Major 2025",
+   "stage": "Stage 2",
+   "model": "ensemble",
+   "match_ll": 0.7928166334706163,
+   "match_acc": 0.48484848484848486,
+   "n_matches": 33,
+   "seed_card_correct": 3,
+   "actual": {
+    "Falcons": "1-3",
+    "FaZe": "3-2",
+    "Virtus.pro": "3-0",
+    "3DMAX": "3-1",
+    "FURIA": "3-1",
+    "MIBR": "2-3",
+    "paiN": "3-1",
+    "TYLOO": "1-3",
+    "B8": "2-3",
+    "HEROIC": "2-3",
+    "OG": "0-3",
+    "BETBOOM": "0-3",
+    "Lynn Vision": "3-2",
+    "Legacy": "3-0",
+    "Nemiga": "3-2",
+    "M80": "1-3"
+   },
+   "rec_ll_s0.0": 1.9469160819562643,
+   "picks_s0.0": 3,
+   "p_pass_s0.0": 0.320625,
+   "card_s0.0": {
+    "3-0": [
+     "Falcons",
+     "TYLOO"
+    ],
+    "adv": [
+     "FaZe",
+     "3DMAX",
+     "FURIA",
+     "B8",
+     "HEROIC",
+     "Legacy"
+    ],
+    "0-3": [
+     "MIBR",
      "Nemiga"
     ]
    },
-   "rec_ll_s0.5": 1.853207628214559,
-   "picks_s0.5": 2,
-   "p_pass_s0.5": 0.213,
+   "rec_ll_s0.25": 1.9465333956183426,
+   "picks_s0.25": 2,
+   "p_pass_s0.25": 0.302,
+   "card_s0.25": {
+    "3-0": [
+     "Falcons",
+     "FURIA"
+    ],
+    "adv": [
+     "FaZe",
+     "3DMAX",
+     "TYLOO",
+     "B8",
+     "HEROIC",
+     "Legacy"
+    ],
+    "0-3": [
+     "Nemiga",
+     "M80"
+    ]
+   },
+   "rec_ll_s0.5": 1.9062121974488437,
+   "picks_s0.5": 1,
+   "p_pass_s0.5": 0.25925,
    "card_s0.5": {
+    "3-0": [
+     "Falcons",
+     "FURIA"
+    ],
+    "adv": [
+     "FaZe",
+     "Virtus.pro",
+     "TYLOO",
+     "B8",
+     "HEROIC",
+     "Legacy"
+    ],
+    "0-3": [
+     "MIBR",
+     "Nemiga"
+    ]
+   }
+  },
+  {
+   "major": "BLAST.tv Austin Major 2025",
+   "stage": "Stage 2",
+   "model": "ensemble+maps",
+   "match_ll": 0.7930756471284534,
+   "match_acc": 0.48484848484848486,
+   "n_matches": 33,
+   "seed_card_correct": 3,
+   "actual": {
+    "Falcons": "1-3",
+    "FaZe": "3-2",
+    "Virtus.pro": "3-0",
+    "3DMAX": "3-1",
+    "FURIA": "3-1",
+    "MIBR": "2-3",
+    "paiN": "3-1",
+    "TYLOO": "1-3",
+    "B8": "2-3",
+    "HEROIC": "2-3",
+    "OG": "0-3",
+    "BETBOOM": "0-3",
+    "Lynn Vision": "3-2",
+    "Legacy": "3-0",
+    "Nemiga": "3-2",
+    "M80": "1-3"
+   },
+   "rec_ll_s0.0": 1.9447672520334025,
+   "picks_s0.0": 2,
+   "p_pass_s0.0": 0.321375,
+   "card_s0.0": {
     "3-0": [
      "Falcons",
      "3DMAX"
     ],
     "adv": [
      "FaZe",
-     "Virtus.pro",
      "FURIA",
      "TYLOO",
+     "B8",
      "HEROIC",
      "Legacy"
     ],
     "0-3": [
-     "Lynn Vision",
-     "Nemiga"
+     "MIBR",
+     "M80"
+    ]
+   },
+   "rec_ll_s0.25": 1.941228061302852,
+   "picks_s0.25": 2,
+   "p_pass_s0.25": 0.299,
+   "card_s0.25": {
+    "3-0": [
+     "Falcons",
+     "FURIA"
+    ],
+    "adv": [
+     "FaZe",
+     "3DMAX",
+     "TYLOO",
+     "B8",
+     "HEROIC",
+     "Legacy"
+    ],
+    "0-3": [
+     "Nemiga",
+     "M80"
+    ]
+   },
+   "rec_ll_s0.5": 1.9038003505739678,
+   "picks_s0.5": 2,
+   "p_pass_s0.5": 0.259625,
+   "card_s0.5": {
+    "3-0": [
+     "Falcons",
+     "FURIA"
+    ],
+    "adv": [
+     "FaZe",
+     "3DMAX",
+     "TYLOO",
+     "B8",
+     "HEROIC",
+     "Legacy"
+    ],
+    "0-3": [
+     "Nemiga",
+     "M80"
     ]
    }
   },
@@ -3374,8 +4002,8 @@
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Stage 3",
    "model": "linear",
-   "match_ll": 0.6159084321317005,
-   "match_acc": 0.6666666666666666,
+   "match_ll": 0.6037738332964963,
+   "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 2,
    "actual": {
@@ -3396,9 +4024,9 @@
     "3DMAX": "1-3",
     "Lynn Vision": "1-3"
    },
-   "rec_ll_s0.0": 1.6450321988557268,
-   "picks_s0.0": 6,
-   "p_pass_s0.0": 0.547375,
+   "rec_ll_s0.0": 1.6223644771408516,
+   "picks_s0.0": 5,
+   "p_pass_s0.0": 0.660375,
    "card_s0.0": {
     "3-0": [
      "Vitality",
@@ -3410,16 +4038,16 @@
      "Aurora",
      "Natus Vincere",
      "G2",
-     "FaZe"
+     "FURIA"
     ],
     "0-3": [
      "paiN",
      "Nemiga"
     ]
    },
-   "rec_ll_s0.25": 1.6335064319027006,
-   "picks_s0.25": 6,
-   "p_pass_s0.25": 0.518625,
+   "rec_ll_s0.25": 1.6112838602986865,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.6305,
    "card_s0.25": {
     "3-0": [
      "Vitality",
@@ -3431,16 +4059,16 @@
      "Aurora",
      "Natus Vincere",
      "G2",
-     "FaZe"
+     "FURIA"
     ],
     "0-3": [
      "paiN",
      "Nemiga"
     ]
    },
-   "rec_ll_s0.5": 1.630801284681881,
-   "picks_s0.5": 6,
-   "p_pass_s0.5": 0.437,
+   "rec_ll_s0.5": 1.6066300964037423,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.537125,
    "card_s0.5": {
     "3-0": [
      "Vitality",
@@ -3452,11 +4080,11 @@
      "Aurora",
      "Natus Vincere",
      "G2",
-     "FaZe"
+     "FURIA"
     ],
     "0-3": [
-     "Nemiga",
-     "Lynn Vision"
+     "paiN",
+     "Nemiga"
     ]
    }
   },
@@ -3464,8 +4092,8 @@
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Stage 3",
    "model": "mlp",
-   "match_ll": 0.6117966800423289,
-   "match_acc": 0.6666666666666666,
+   "match_ll": 0.6006048765752772,
+   "match_acc": 0.696969696969697,
    "n_matches": 33,
    "seed_card_correct": 2,
    "actual": {
@@ -3486,9 +4114,9 @@
     "3DMAX": "1-3",
     "Lynn Vision": "1-3"
    },
-   "rec_ll_s0.0": 1.6170906072129299,
-   "picks_s0.0": 6,
-   "p_pass_s0.0": 0.48975,
+   "rec_ll_s0.0": 1.589053640437673,
+   "picks_s0.0": 5,
+   "p_pass_s0.0": 0.5215,
    "card_s0.0": {
     "3-0": [
      "Vitality",
@@ -3500,16 +4128,16 @@
      "Aurora",
      "Natus Vincere",
      "G2",
-     "FaZe"
+     "FURIA"
     ],
     "0-3": [
      "paiN",
      "Nemiga"
     ]
    },
-   "rec_ll_s0.25": 1.6119899850960075,
-   "picks_s0.25": 6,
-   "p_pass_s0.25": 0.456,
+   "rec_ll_s0.25": 1.5851207889555317,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.495375,
    "card_s0.25": {
     "3-0": [
      "Vitality",
@@ -3521,16 +4149,16 @@
      "Aurora",
      "Natus Vincere",
      "G2",
-     "FaZe"
+     "FURIA"
     ],
     "0-3": [
      "paiN",
      "Nemiga"
     ]
    },
-   "rec_ll_s0.5": 1.6198891072955384,
+   "rec_ll_s0.5": 1.5933056801477206,
    "picks_s0.5": 6,
-   "p_pass_s0.5": 0.388625,
+   "p_pass_s0.5": 0.414125,
    "card_s0.5": {
     "3-0": [
      "Vitality",
@@ -3554,7 +4182,7 @@
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Stage 3",
    "model": "ensemble",
-   "match_ll": 0.6139404522914038,
+   "match_ll": 0.6043752425851018,
    "match_acc": 0.6666666666666666,
    "n_matches": 33,
    "seed_card_correct": 2,
@@ -3576,9 +4204,9 @@
     "3DMAX": "1-3",
     "Lynn Vision": "1-3"
    },
-   "rec_ll_s0.0": 1.6255490429701462,
+   "rec_ll_s0.0": 1.5989764119927918,
    "picks_s0.0": 6,
-   "p_pass_s0.0": 0.50675,
+   "p_pass_s0.0": 0.54925,
    "card_s0.0": {
     "3-0": [
      "Vitality",
@@ -3597,9 +4225,9 @@
      "Nemiga"
     ]
    },
-   "rec_ll_s0.25": 1.6178764302831397,
-   "picks_s0.25": 6,
-   "p_pass_s0.25": 0.47225,
+   "rec_ll_s0.25": 1.5971303886207378,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.52225,
    "card_s0.25": {
     "3-0": [
      "Vitality",
@@ -3611,16 +4239,16 @@
      "Aurora",
      "Natus Vincere",
      "G2",
-     "FaZe"
+     "FURIA"
     ],
     "0-3": [
      "paiN",
      "Nemiga"
     ]
    },
-   "rec_ll_s0.5": 1.6189058388745523,
-   "picks_s0.5": 6,
-   "p_pass_s0.5": 0.401875,
+   "rec_ll_s0.5": 1.591933491113008,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.437,
    "card_s0.5": {
     "3-0": [
      "Vitality",
@@ -3632,7 +4260,97 @@
      "Aurora",
      "Natus Vincere",
      "G2",
-     "FaZe"
+     "FURIA"
+    ],
+    "0-3": [
+     "paiN",
+     "Nemiga"
+    ]
+   }
+  },
+  {
+   "major": "BLAST.tv Austin Major 2025",
+   "stage": "Stage 3",
+   "model": "ensemble+maps",
+   "match_ll": 0.6040041563655169,
+   "match_acc": 0.6666666666666666,
+   "n_matches": 33,
+   "seed_card_correct": 2,
+   "actual": {
+    "Vitality": "3-1",
+    "MOUZ": "3-2",
+    "Spirit": "3-0",
+    "The MongolZ": "3-2",
+    "Aurora": "1-3",
+    "Natus Vincere": "3-1",
+    "G2": "2-3",
+    "Liquid": "0-3",
+    "Legacy": "2-3",
+    "Virtus.pro": "2-3",
+    "paiN": "3-2",
+    "FURIA": "3-0",
+    "FaZe": "3-1",
+    "Nemiga": "0-3",
+    "3DMAX": "1-3",
+    "Lynn Vision": "1-3"
+   },
+   "rec_ll_s0.0": 1.5982572718807488,
+   "picks_s0.0": 5,
+   "p_pass_s0.0": 0.550125,
+   "card_s0.0": {
+    "3-0": [
+     "Vitality",
+     "Spirit"
+    ],
+    "adv": [
+     "MOUZ",
+     "The MongolZ",
+     "Aurora",
+     "Natus Vincere",
+     "G2",
+     "FURIA"
+    ],
+    "0-3": [
+     "paiN",
+     "Nemiga"
+    ]
+   },
+   "rec_ll_s0.25": 1.5928023747014444,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.523,
+   "card_s0.25": {
+    "3-0": [
+     "Vitality",
+     "Spirit"
+    ],
+    "adv": [
+     "MOUZ",
+     "The MongolZ",
+     "Aurora",
+     "Natus Vincere",
+     "G2",
+     "FURIA"
+    ],
+    "0-3": [
+     "paiN",
+     "Nemiga"
+    ]
+   },
+   "rec_ll_s0.5": 1.5877756958937788,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.438,
+   "card_s0.5": {
+    "3-0": [
+     "Vitality",
+     "Spirit"
+    ],
+    "adv": [
+     "MOUZ",
+     "The MongolZ",
+     "Aurora",
+     "Natus Vincere",
+     "G2",
+     "FURIA"
     ],
     "0-3": [
      "paiN",
@@ -3706,18 +4424,18 @@
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Playoffs",
    "model": "linear",
-   "match_ll": 0.4943484771121436,
+   "match_ll": 0.567386158716096,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
-   "bracket_correct": 5,
-   "bracket_expected": 4.093625,
+   "bracket_correct": 4,
+   "bracket_expected": 4.664375,
    "bracket_picks": [
     "Spirit",
     "Vitality",
     "FURIA",
     "The MongolZ",
     "Vitality",
-    "The MongolZ",
+    "FURIA",
     "Vitality"
    ],
    "actual": [
@@ -3731,24 +4449,24 @@
    ],
    "champion_pick": "Vitality",
    "champion_actual": "Vitality",
-   "p_actual_champion": 0.47475
+   "p_actual_champion": 0.607625
   },
   {
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Playoffs",
    "model": "mlp",
-   "match_ll": 0.5013398768462044,
+   "match_ll": 0.5641664735042767,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
-   "bracket_correct": 5,
-   "bracket_expected": 3.986375,
+   "bracket_correct": 4,
+   "bracket_expected": 4.3325,
    "bracket_picks": [
     "Spirit",
     "Vitality",
     "FURIA",
     "The MongolZ",
     "Vitality",
-    "The MongolZ",
+    "FURIA",
     "Vitality"
    ],
    "actual": [
@@ -3762,24 +4480,24 @@
    ],
    "champion_pick": "Vitality",
    "champion_actual": "Vitality",
-   "p_actual_champion": 0.44475
+   "p_actual_champion": 0.499875
   },
   {
    "major": "BLAST.tv Austin Major 2025",
    "stage": "Playoffs",
    "model": "ensemble",
-   "match_ll": 0.5018831480400179,
+   "match_ll": 0.5447258115256559,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
-   "bracket_correct": 5,
-   "bracket_expected": 4.101625,
+   "bracket_correct": 4,
+   "bracket_expected": 4.375375,
    "bracket_picks": [
     "Spirit",
     "Vitality",
     "FURIA",
     "The MongolZ",
     "Vitality",
-    "The MongolZ",
+    "FURIA",
     "Vitality"
    ],
    "actual": [
@@ -3793,7 +4511,38 @@
    ],
    "champion_pick": "Vitality",
    "champion_actual": "Vitality",
-   "p_actual_champion": 0.47325
+   "p_actual_champion": 0.545
+  },
+  {
+   "major": "BLAST.tv Austin Major 2025",
+   "stage": "Playoffs",
+   "model": "ensemble+maps",
+   "match_ll": 0.5429410323957163,
+   "match_acc": 0.7142857142857143,
+   "n_matches": 7,
+   "bracket_correct": 4,
+   "bracket_expected": 4.37375,
+   "bracket_picks": [
+    "Spirit",
+    "Vitality",
+    "FURIA",
+    "The MongolZ",
+    "Vitality",
+    "FURIA",
+    "Vitality"
+   ],
+   "actual": [
+    "MOUZ",
+    "Vitality",
+    "paiN",
+    "The MongolZ",
+    "Vitality",
+    "The MongolZ",
+    "Vitality"
+   ],
+   "champion_pick": "Vitality",
+   "champion_actual": "Vitality",
+   "p_actual_champion": 0.54425
   },
   {
    "major": "StarLadder Budapest Major 2025",
@@ -3979,8 +4728,8 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 1",
    "model": "linear",
-   "match_ll": 0.6861190198874575,
-   "match_acc": 0.5151515151515151,
+   "match_ll": 0.6732889616702602,
+   "match_acc": 0.5757575757575758,
    "n_matches": 33,
    "seed_card_correct": 6,
    "actual": {
@@ -4001,9 +4750,9 @@
     "The Huns": "1-3",
     "Rare Atom": "0-3"
    },
-   "rec_ll_s0.0": 1.76621025177816,
-   "picks_s0.0": 2,
-   "p_pass_s0.0": 0.343875,
+   "rec_ll_s0.0": 1.738182748094598,
+   "picks_s0.0": 3,
+   "p_pass_s0.0": 0.34325,
    "card_s0.0": {
     "3-0": [
      "Legacy",
@@ -4012,19 +4761,19 @@
     "adv": [
      "FaZe",
      "GamerLegion",
-     "B8",
+     "fnatic",
      "Lynn Vision",
      "M80",
      "NRG"
     ],
     "0-3": [
-     "RED Canids",
-     "The Huns"
+     "The Huns",
+     "Rare Atom"
     ]
    },
-   "rec_ll_s0.25": 1.7520421595981097,
-   "picks_s0.25": 2,
-   "p_pass_s0.25": 0.32275,
+   "rec_ll_s0.25": 1.7350344921665668,
+   "picks_s0.25": 3,
+   "p_pass_s0.25": 0.331625,
    "card_s0.25": {
     "3-0": [
      "Legacy",
@@ -4039,29 +4788,29 @@
      "NRG"
     ],
     "0-3": [
-     "RED Canids",
-     "The Huns"
+     "The Huns",
+     "Rare Atom"
     ]
    },
-   "rec_ll_s0.5": 1.743157355905372,
-   "picks_s0.5": 2,
-   "p_pass_s0.5": 0.277875,
+   "rec_ll_s0.5": 1.7286474090829642,
+   "picks_s0.5": 3,
+   "p_pass_s0.5": 0.2835,
    "card_s0.5": {
     "3-0": [
-     "FaZe",
-     "Legacy"
+     "Legacy",
+     "PARIVISION"
     ],
     "adv": [
+     "FaZe",
      "GamerLegion",
      "B8",
-     "PARIVISION",
      "Lynn Vision",
      "M80",
      "NRG"
     ],
     "0-3": [
-     "RED Canids",
-     "The Huns"
+     "The Huns",
+     "Rare Atom"
     ]
    }
   },
@@ -4069,8 +4818,8 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 1",
    "model": "mlp",
-   "match_ll": 0.6853245034136068,
-   "match_acc": 0.5151515151515151,
+   "match_ll": 0.673922573224627,
+   "match_acc": 0.5757575757575758,
    "n_matches": 33,
    "seed_card_correct": 6,
    "actual": {
@@ -4091,9 +4840,9 @@
     "The Huns": "1-3",
     "Rare Atom": "0-3"
    },
-   "rec_ll_s0.0": 1.7621655080751926,
-   "picks_s0.0": 2,
-   "p_pass_s0.0": 0.337125,
+   "rec_ll_s0.0": 1.7424979784882262,
+   "picks_s0.0": 3,
+   "p_pass_s0.0": 0.348375,
    "card_s0.0": {
     "3-0": [
      "Legacy",
@@ -4102,19 +4851,19 @@
     "adv": [
      "FaZe",
      "GamerLegion",
-     "B8",
+     "fnatic",
      "Lynn Vision",
      "M80",
      "NRG"
     ],
     "0-3": [
-     "RED Canids",
-     "The Huns"
+     "The Huns",
+     "Rare Atom"
     ]
    },
-   "rec_ll_s0.25": 1.7517338997882042,
-   "picks_s0.25": 2,
-   "p_pass_s0.25": 0.317125,
+   "rec_ll_s0.25": 1.7363786692898209,
+   "picks_s0.25": 3,
+   "p_pass_s0.25": 0.336625,
    "card_s0.25": {
     "3-0": [
      "Legacy",
@@ -4129,29 +4878,29 @@
      "NRG"
     ],
     "0-3": [
-     "RED Canids",
-     "The Huns"
+     "The Huns",
+     "Rare Atom"
     ]
    },
-   "rec_ll_s0.5": 1.7433875618068364,
-   "picks_s0.5": 2,
-   "p_pass_s0.5": 0.274125,
+   "rec_ll_s0.5": 1.7340119432741323,
+   "picks_s0.5": 3,
+   "p_pass_s0.5": 0.28675,
    "card_s0.5": {
     "3-0": [
-     "FaZe",
-     "Legacy"
+     "Legacy",
+     "PARIVISION"
     ],
     "adv": [
+     "FaZe",
      "GamerLegion",
      "B8",
-     "PARIVISION",
      "Lynn Vision",
      "M80",
      "NRG"
     ],
     "0-3": [
-     "RED Canids",
-     "The Huns"
+     "The Huns",
+     "Rare Atom"
     ]
    }
   },
@@ -4159,7 +4908,7 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 1",
    "model": "ensemble",
-   "match_ll": 0.6819132232619531,
+   "match_ll": 0.6732076460948482,
    "match_acc": 0.5151515151515151,
    "n_matches": 33,
    "seed_card_correct": 6,
@@ -4181,9 +4930,9 @@
     "The Huns": "1-3",
     "Rare Atom": "0-3"
    },
-   "rec_ll_s0.0": 1.7576912184918374,
+   "rec_ll_s0.0": 1.7480255062399939,
    "picks_s0.0": 3,
-   "p_pass_s0.0": 0.325125,
+   "p_pass_s0.0": 0.334125,
    "card_s0.0": {
     "3-0": [
      "Legacy",
@@ -4202,9 +4951,9 @@
      "The Huns"
     ]
    },
-   "rec_ll_s0.25": 1.7435658410980988,
+   "rec_ll_s0.25": 1.7326594508828106,
    "picks_s0.25": 3,
-   "p_pass_s0.25": 0.300875,
+   "p_pass_s0.25": 0.314625,
    "card_s0.25": {
     "3-0": [
      "Legacy",
@@ -4223,9 +4972,99 @@
      "The Huns"
     ]
    },
-   "rec_ll_s0.5": 1.739385316248017,
+   "rec_ll_s0.5": 1.7321828393500527,
+   "picks_s0.5": 3,
+   "p_pass_s0.5": 0.267125,
+   "card_s0.5": {
+    "3-0": [
+     "Legacy",
+     "PARIVISION"
+    ],
+    "adv": [
+     "FaZe",
+     "GamerLegion",
+     "B8",
+     "Lynn Vision",
+     "M80",
+     "NRG"
+    ],
+    "0-3": [
+     "The Huns",
+     "Rare Atom"
+    ]
+   }
+  },
+  {
+   "major": "StarLadder Budapest Major 2025",
+   "stage": "Stage 1",
+   "model": "ensemble+maps",
+   "match_ll": 0.6729652734343305,
+   "match_acc": 0.5151515151515151,
+   "n_matches": 33,
+   "seed_card_correct": 6,
+   "actual": {
+    "FaZe": "3-2",
+    "Legacy": "2-3",
+    "GamerLegion": "1-3",
+    "B8": "3-1",
+    "fnatic": "3-1",
+    "Ninjas in Pyjamas": "3-1",
+    "PARIVISION": "3-2",
+    "Imperial": "3-2",
+    "Lynn Vision": "0-3",
+    "FlyQuest": "3-0",
+    "Fluxo": "2-3",
+    "M80": "3-0",
+    "RED Canids": "1-3",
+    "NRG": "2-3",
+    "The Huns": "1-3",
+    "Rare Atom": "0-3"
+   },
+   "rec_ll_s0.0": 1.7490575505348116,
+   "picks_s0.0": 3,
+   "p_pass_s0.0": 0.335,
+   "card_s0.0": {
+    "3-0": [
+     "Legacy",
+     "PARIVISION"
+    ],
+    "adv": [
+     "FaZe",
+     "GamerLegion",
+     "B8",
+     "fnatic",
+     "M80",
+     "NRG"
+    ],
+    "0-3": [
+     "RED Canids",
+     "The Huns"
+    ]
+   },
+   "rec_ll_s0.25": 1.7333990275848037,
+   "picks_s0.25": 3,
+   "p_pass_s0.25": 0.314625,
+   "card_s0.25": {
+    "3-0": [
+     "Legacy",
+     "PARIVISION"
+    ],
+    "adv": [
+     "FaZe",
+     "GamerLegion",
+     "B8",
+     "fnatic",
+     "M80",
+     "NRG"
+    ],
+    "0-3": [
+     "RED Canids",
+     "The Huns"
+    ]
+   },
+   "rec_ll_s0.5": 1.7291183326312836,
    "picks_s0.5": 2,
-   "p_pass_s0.5": 0.263375,
+   "p_pass_s0.5": 0.26875,
    "card_s0.5": {
     "3-0": [
      "Legacy",
@@ -4429,8 +5268,8 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 2",
    "model": "linear",
-   "match_ll": 0.6662955086521318,
-   "match_acc": 0.5454545454545454,
+   "match_ll": 0.6554390551169174,
+   "match_acc": 0.5757575757575758,
    "n_matches": 33,
    "seed_card_correct": 3,
    "actual": {
@@ -4451,9 +5290,9 @@
     "PARIVISION": "3-1",
     "Imperial": "3-1"
    },
-   "rec_ll_s0.0": 1.7027402073138012,
+   "rec_ll_s0.0": 1.6732003267295987,
    "picks_s0.0": 6,
-   "p_pass_s0.0": 0.294875,
+   "p_pass_s0.0": 0.29175,
    "card_s0.0": {
     "3-0": [
      "Natus Vincere",
@@ -4465,16 +5304,16 @@
      "3DMAX",
      "Liquid",
      "M80",
-     "B8"
+     "PARIVISION"
     ],
     "0-3": [
      "FlyQuest",
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.7004113200937165,
+   "rec_ll_s0.25": 1.6648164114472994,
    "picks_s0.25": 6,
-   "p_pass_s0.25": 0.283125,
+   "p_pass_s0.25": 0.288,
    "card_s0.25": {
     "3-0": [
      "Natus Vincere",
@@ -4493,9 +5332,9 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.7059734838969354,
+   "rec_ll_s0.5": 1.6881007831442871,
    "picks_s0.5": 6,
-   "p_pass_s0.5": 0.246625,
+   "p_pass_s0.5": 0.248625,
    "card_s0.5": {
     "3-0": [
      "Natus Vincere",
@@ -4507,7 +5346,7 @@
      "3DMAX",
      "Liquid",
      "M80",
-     "B8"
+     "PARIVISION"
     ],
     "0-3": [
      "FlyQuest",
@@ -4519,8 +5358,8 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 2",
    "model": "mlp",
-   "match_ll": 0.6629953712298863,
-   "match_acc": 0.5454545454545454,
+   "match_ll": 0.6546911966168564,
+   "match_acc": 0.5757575757575758,
    "n_matches": 33,
    "seed_card_correct": 3,
    "actual": {
@@ -4541,9 +5380,9 @@
     "PARIVISION": "3-1",
     "Imperial": "3-1"
    },
-   "rec_ll_s0.0": 1.700376424787951,
+   "rec_ll_s0.0": 1.6754334702143925,
    "picks_s0.0": 6,
-   "p_pass_s0.0": 0.287875,
+   "p_pass_s0.0": 0.2845,
    "card_s0.0": {
     "3-0": [
      "Natus Vincere",
@@ -4555,16 +5394,16 @@
      "3DMAX",
      "Liquid",
      "M80",
-     "B8"
+     "PARIVISION"
     ],
     "0-3": [
      "FlyQuest",
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.697555228794978,
+   "rec_ll_s0.25": 1.6633981885888511,
    "picks_s0.25": 6,
-   "p_pass_s0.25": 0.276125,
+   "p_pass_s0.25": 0.283625,
    "card_s0.25": {
     "3-0": [
      "Natus Vincere",
@@ -4583,9 +5422,9 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.7034573874659293,
+   "rec_ll_s0.5": 1.6864563412661902,
    "picks_s0.5": 6,
-   "p_pass_s0.5": 0.24025,
+   "p_pass_s0.5": 0.242875,
    "card_s0.5": {
     "3-0": [
      "Natus Vincere",
@@ -4597,7 +5436,7 @@
      "3DMAX",
      "Liquid",
      "M80",
-     "B8"
+     "PARIVISION"
     ],
     "0-3": [
      "FlyQuest",
@@ -4609,8 +5448,8 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 2",
    "model": "ensemble",
-   "match_ll": 0.6672075603316872,
-   "match_acc": 0.5454545454545454,
+   "match_ll": 0.6605327246521929,
+   "match_acc": 0.5757575757575758,
    "n_matches": 33,
    "seed_card_correct": 3,
    "actual": {
@@ -4631,9 +5470,9 @@
     "PARIVISION": "3-1",
     "Imperial": "3-1"
    },
-   "rec_ll_s0.0": 1.6922002020793547,
+   "rec_ll_s0.0": 1.6777428033967805,
    "picks_s0.0": 6,
-   "p_pass_s0.0": 0.286375,
+   "p_pass_s0.0": 0.2875,
    "card_s0.0": {
     "3-0": [
      "Natus Vincere",
@@ -4652,9 +5491,9 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.6878980004917852,
+   "rec_ll_s0.25": 1.6700410346800756,
    "picks_s0.25": 6,
-   "p_pass_s0.25": 0.277625,
+   "p_pass_s0.25": 0.278375,
    "card_s0.25": {
     "3-0": [
      "Natus Vincere",
@@ -4673,9 +5512,99 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.7023840934884298,
+   "rec_ll_s0.5": 1.6922206126340302,
    "picks_s0.5": 6,
-   "p_pass_s0.5": 0.242625,
+   "p_pass_s0.5": 0.24275,
+   "card_s0.5": {
+    "3-0": [
+     "Natus Vincere",
+     "FaZe"
+    ],
+    "adv": [
+     "Aurora",
+     "Astralis",
+     "3DMAX",
+     "Liquid",
+     "M80",
+     "PARIVISION"
+    ],
+    "0-3": [
+     "FlyQuest",
+     "Passion UA"
+    ]
+   }
+  },
+  {
+   "major": "StarLadder Budapest Major 2025",
+   "stage": "Stage 2",
+   "model": "ensemble+maps",
+   "match_ll": 0.6603473407732263,
+   "match_acc": 0.5757575757575758,
+   "n_matches": 33,
+   "seed_card_correct": 3,
+   "actual": {
+    "Aurora": "1-3",
+    "Natus Vincere": "3-0",
+    "Astralis": "2-3",
+    "3DMAX": "3-2",
+    "FaZe": "3-0",
+    "Liquid": "3-2",
+    "TYLOO": "1-3",
+    "MIBR": "0-3",
+    "M80": "2-3",
+    "FlyQuest": "0-3",
+    "Ninjas in Pyjamas": "2-3",
+    "fnatic": "1-3",
+    "Passion UA": "3-2",
+    "B8": "3-1",
+    "PARIVISION": "3-1",
+    "Imperial": "3-1"
+   },
+   "rec_ll_s0.0": 1.6775768618965174,
+   "picks_s0.0": 6,
+   "p_pass_s0.0": 0.28475,
+   "card_s0.0": {
+    "3-0": [
+     "Natus Vincere",
+     "FaZe"
+    ],
+    "adv": [
+     "Aurora",
+     "Astralis",
+     "3DMAX",
+     "Liquid",
+     "M80",
+     "PARIVISION"
+    ],
+    "0-3": [
+     "FlyQuest",
+     "Passion UA"
+    ]
+   },
+   "rec_ll_s0.25": 1.6678982781418217,
+   "picks_s0.25": 6,
+   "p_pass_s0.25": 0.2785,
+   "card_s0.25": {
+    "3-0": [
+     "Natus Vincere",
+     "FaZe"
+    ],
+    "adv": [
+     "Aurora",
+     "Astralis",
+     "3DMAX",
+     "Liquid",
+     "M80",
+     "PARIVISION"
+    ],
+    "0-3": [
+     "FlyQuest",
+     "Passion UA"
+    ]
+   },
+   "rec_ll_s0.5": 1.6898897971439895,
+   "picks_s0.5": 6,
+   "p_pass_s0.5": 0.241625,
    "card_s0.5": {
     "3-0": [
      "Natus Vincere",
@@ -4879,7 +5808,7 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 3",
    "model": "linear",
-   "match_ll": 0.5707337350508968,
+   "match_ll": 0.5640820652331737,
    "match_acc": 0.7272727272727273,
    "n_matches": 33,
    "seed_card_correct": 4,
@@ -4901,9 +5830,9 @@
     "Passion UA": "2-3",
     "3DMAX": "1-3"
    },
-   "rec_ll_s0.0": 1.4495049964135194,
+   "rec_ll_s0.0": 1.4347129313392788,
    "picks_s0.0": 5,
-   "p_pass_s0.0": 0.469875,
+   "p_pass_s0.0": 0.483125,
    "card_s0.0": {
     "3-0": [
      "FURIA",
@@ -4918,13 +5847,13 @@
      "Natus Vincere"
     ],
     "0-3": [
-     "Imperial",
+     "B8",
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.4437202615711096,
+   "rec_ll_s0.25": 1.4297907836156007,
    "picks_s0.25": 5,
-   "p_pass_s0.25": 0.4355,
+   "p_pass_s0.25": 0.452875,
    "card_s0.25": {
     "3-0": [
      "FURIA",
@@ -4939,13 +5868,13 @@
      "Natus Vincere"
     ],
     "0-3": [
-     "Imperial",
+     "B8",
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.4786096892722114,
+   "rec_ll_s0.5": 1.4593396915858252,
    "picks_s0.5": 5,
-   "p_pass_s0.5": 0.363625,
+   "p_pass_s0.5": 0.386875,
    "card_s0.5": {
     "3-0": [
      "FURIA",
@@ -4960,7 +5889,7 @@
      "Natus Vincere"
     ],
     "0-3": [
-     "Imperial",
+     "B8",
      "Passion UA"
     ]
    }
@@ -4969,7 +5898,7 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 3",
    "model": "mlp",
-   "match_ll": 0.566957958737217,
+   "match_ll": 0.5632477494995082,
    "match_acc": 0.7272727272727273,
    "n_matches": 33,
    "seed_card_correct": 4,
@@ -4991,9 +5920,9 @@
     "Passion UA": "2-3",
     "3DMAX": "1-3"
    },
-   "rec_ll_s0.0": 1.4441137747489163,
+   "rec_ll_s0.0": 1.4333185111410336,
    "picks_s0.0": 5,
-   "p_pass_s0.0": 0.473375,
+   "p_pass_s0.0": 0.484375,
    "card_s0.0": {
     "3-0": [
      "FURIA",
@@ -5008,13 +5937,13 @@
      "Natus Vincere"
     ],
     "0-3": [
-     "Imperial",
+     "B8",
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.4340224065562484,
+   "rec_ll_s0.25": 1.426989938174899,
    "picks_s0.25": 5,
-   "p_pass_s0.25": 0.4375,
+   "p_pass_s0.25": 0.452875,
    "card_s0.25": {
     "3-0": [
      "FURIA",
@@ -5033,16 +5962,16 @@
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.4725919303550157,
+   "rec_ll_s0.5": 1.4570492956555385,
    "picks_s0.5": 5,
-   "p_pass_s0.5": 0.36725,
+   "p_pass_s0.5": 0.38525,
    "card_s0.5": {
     "3-0": [
      "FURIA",
-     "Vitality"
+     "Falcons"
     ],
     "adv": [
-     "Falcons",
+     "Vitality",
      "MOUZ",
      "The MongolZ",
      "Spirit",
@@ -5050,7 +5979,7 @@
      "Natus Vincere"
     ],
     "0-3": [
-     "Imperial",
+     "B8",
      "Passion UA"
     ]
    }
@@ -5059,7 +5988,7 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Stage 3",
    "model": "ensemble",
-   "match_ll": 0.577131650269204,
+   "match_ll": 0.5735656221939973,
    "match_acc": 0.696969696969697,
    "n_matches": 33,
    "seed_card_correct": 4,
@@ -5081,16 +6010,16 @@
     "Passion UA": "2-3",
     "3DMAX": "1-3"
    },
-   "rec_ll_s0.0": 1.4641905787811844,
+   "rec_ll_s0.0": 1.4549929407616624,
    "picks_s0.0": 5,
-   "p_pass_s0.0": 0.4505,
+   "p_pass_s0.0": 0.461,
    "card_s0.0": {
     "3-0": [
      "FURIA",
-     "Vitality"
+     "Falcons"
     ],
     "adv": [
-     "Falcons",
+     "Vitality",
      "MOUZ",
      "The MongolZ",
      "Spirit",
@@ -5098,20 +6027,20 @@
      "Natus Vincere"
     ],
     "0-3": [
-     "Imperial",
+     "B8",
      "Passion UA"
     ]
    },
-   "rec_ll_s0.25": 1.4556331258206474,
-   "picks_s0.25": 3,
-   "p_pass_s0.25": 0.41525,
+   "rec_ll_s0.25": 1.4472026791768844,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.42825,
    "card_s0.25": {
     "3-0": [
-     "Vitality",
+     "FURIA",
      "Falcons"
     ],
     "adv": [
-     "FURIA",
+     "Vitality",
      "MOUZ",
      "The MongolZ",
      "Spirit",
@@ -5119,20 +6048,20 @@
      "Natus Vincere"
     ],
     "0-3": [
-     "Imperial",
+     "B8",
      "Passion UA"
     ]
    },
-   "rec_ll_s0.5": 1.4895079797197979,
-   "picks_s0.5": 3,
-   "p_pass_s0.5": 0.350375,
+   "rec_ll_s0.5": 1.4812969708546526,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.36975,
    "card_s0.5": {
     "3-0": [
-     "Vitality",
+     "FURIA",
      "Falcons"
     ],
     "adv": [
-     "FURIA",
+     "Vitality",
      "MOUZ",
      "The MongolZ",
      "Spirit",
@@ -5140,7 +6069,97 @@
      "Natus Vincere"
     ],
     "0-3": [
-     "Imperial",
+     "B8",
+     "Passion UA"
+    ]
+   }
+  },
+  {
+   "major": "StarLadder Budapest Major 2025",
+   "stage": "Stage 3",
+   "model": "ensemble+maps",
+   "match_ll": 0.5745071950476319,
+   "match_acc": 0.6666666666666666,
+   "n_matches": 33,
+   "seed_card_correct": 4,
+   "actual": {
+    "FURIA": "3-0",
+    "Vitality": "3-1",
+    "Falcons": "3-2",
+    "MOUZ": "3-1",
+    "The MongolZ": "3-1",
+    "Spirit": "3-0",
+    "G2": "2-3",
+    "paiN": "1-3",
+    "Natus Vincere": "3-2",
+    "FaZe": "3-2",
+    "B8": "2-3",
+    "PARIVISION": "0-3",
+    "Imperial": "1-3",
+    "Liquid": "0-3",
+    "Passion UA": "2-3",
+    "3DMAX": "1-3"
+   },
+   "rec_ll_s0.0": 1.4588289345815486,
+   "picks_s0.0": 5,
+   "p_pass_s0.0": 0.4605,
+   "card_s0.0": {
+    "3-0": [
+     "FURIA",
+     "Falcons"
+    ],
+    "adv": [
+     "Vitality",
+     "MOUZ",
+     "The MongolZ",
+     "Spirit",
+     "G2",
+     "Natus Vincere"
+    ],
+    "0-3": [
+     "B8",
+     "Passion UA"
+    ]
+   },
+   "rec_ll_s0.25": 1.4485287857352385,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.429,
+   "card_s0.25": {
+    "3-0": [
+     "FURIA",
+     "Falcons"
+    ],
+    "adv": [
+     "Vitality",
+     "MOUZ",
+     "The MongolZ",
+     "Spirit",
+     "G2",
+     "Natus Vincere"
+    ],
+    "0-3": [
+     "B8",
+     "Passion UA"
+    ]
+   },
+   "rec_ll_s0.5": 1.4820115274979597,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.369,
+   "card_s0.5": {
+    "3-0": [
+     "FURIA",
+     "Falcons"
+    ],
+    "adv": [
+     "Vitality",
+     "MOUZ",
+     "The MongolZ",
+     "Spirit",
+     "G2",
+     "Natus Vincere"
+    ],
+    "0-3": [
+     "B8",
      "Passion UA"
     ]
    }
@@ -5211,11 +6230,11 @@
    "major": "StarLadder Budapest Major 2025",
    "stage": "Playoffs",
    "model": "linear",
-   "match_ll": 0.7990030922205976,
+   "match_ll": 0.7708434960784291,
    "match_acc": 0.42857142857142855,
    "n_matches": 7,
    "bracket_correct": 2,
-   "bracket_expected": 4.040625,
+   "bracket_expected": 4.094625,
    "bracket_picks": [
     "Falcons",
     "Vitality",
@@ -5236,17 +6255,17 @@
    ],
    "champion_pick": "FURIA",
    "champion_actual": "Vitality",
-   "p_actual_champion": 0.2135
+   "p_actual_champion": 0.22475
   },
   {
    "major": "StarLadder Budapest Major 2025",
    "stage": "Playoffs",
    "model": "mlp",
-   "match_ll": 0.777766598177215,
+   "match_ll": 0.7704337416445839,
    "match_acc": 0.42857142857142855,
    "n_matches": 7,
    "bracket_correct": 2,
-   "bracket_expected": 3.853125,
+   "bracket_expected": 4.075,
    "bracket_picks": [
     "Falcons",
     "Vitality",
@@ -5267,17 +6286,17 @@
    ],
    "champion_pick": "FURIA",
    "champion_actual": "Vitality",
-   "p_actual_champion": 0.216875
+   "p_actual_champion": 0.21625
   },
   {
    "major": "StarLadder Budapest Major 2025",
    "stage": "Playoffs",
    "model": "ensemble",
-   "match_ll": 0.7835580090168213,
+   "match_ll": 0.771512534459383,
    "match_acc": 0.42857142857142855,
    "n_matches": 7,
    "bracket_correct": 2,
-   "bracket_expected": 3.87675,
+   "bracket_expected": 3.97575,
    "bracket_picks": [
     "Falcons",
     "Vitality",
@@ -5298,7 +6317,38 @@
    ],
    "champion_pick": "FURIA",
    "champion_actual": "Vitality",
-   "p_actual_champion": 0.208125
+   "p_actual_champion": 0.21175
+  },
+  {
+   "major": "StarLadder Budapest Major 2025",
+   "stage": "Playoffs",
+   "model": "ensemble+maps",
+   "match_ll": 0.7689784006384691,
+   "match_acc": 0.42857142857142855,
+   "n_matches": 7,
+   "bracket_correct": 2,
+   "bracket_expected": 3.968125,
+   "bracket_picks": [
+    "Falcons",
+    "Vitality",
+    "MOUZ",
+    "FURIA",
+    "Vitality",
+    "FURIA",
+    "FURIA"
+   ],
+   "actual": [
+    "Spirit",
+    "Vitality",
+    "FaZe",
+    "Natus Vincere",
+    "Vitality",
+    "FaZe",
+    "Vitality"
+   ],
+   "champion_pick": "FURIA",
+   "champion_actual": "Vitality",
+   "p_actual_champion": 0.210625
   },
   {
    "major": "IEM Cologne Major 2026",
@@ -5484,7 +6534,7 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 1",
    "model": "linear",
-   "match_ll": 0.6099940447523831,
+   "match_ll": 0.6061226778799186,
    "match_acc": 0.7272727272727273,
    "n_matches": 33,
    "seed_card_correct": 3,
@@ -5506,17 +6556,17 @@
     "Lynn Vision": "2-3",
     "FlyQuest": "3-2"
    },
-   "rec_ll_s0.0": 1.5716994973087615,
+   "rec_ll_s0.0": 1.5629168943901983,
    "picks_s0.0": 5,
-   "p_pass_s0.0": 0.29675,
+   "p_pass_s0.0": 0.302125,
    "card_s0.0": {
     "3-0": [
-     "GamerLegion",
+     "MIBR",
      "BETBOOM"
     ],
     "adv": [
+     "GamerLegion",
      "B8",
-     "MIBR",
      "HEROIC",
      "M80",
      "TYLOO",
@@ -5527,9 +6577,9 @@
      "Gaimin Gladiators"
     ]
    },
-   "rec_ll_s0.25": 1.5834633040344737,
+   "rec_ll_s0.25": 1.5753998663582545,
    "picks_s0.25": 5,
-   "p_pass_s0.25": 0.292,
+   "p_pass_s0.25": 0.285875,
    "card_s0.25": {
     "3-0": [
      "GamerLegion",
@@ -5548,17 +6598,17 @@
      "Gaimin Gladiators"
     ]
    },
-   "rec_ll_s0.5": 1.5982965186418752,
+   "rec_ll_s0.5": 1.5951784877200974,
    "picks_s0.5": 5,
-   "p_pass_s0.5": 0.246625,
+   "p_pass_s0.5": 0.24875,
    "card_s0.5": {
     "3-0": [
-     "GamerLegion",
+     "MIBR",
      "BETBOOM"
     ],
     "adv": [
+     "GamerLegion",
      "B8",
-     "MIBR",
      "HEROIC",
      "M80",
      "TYLOO",
@@ -5574,7 +6624,7 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 1",
    "model": "mlp",
-   "match_ll": 0.6048598449645061,
+   "match_ll": 0.6051472245405605,
    "match_acc": 0.7272727272727273,
    "n_matches": 33,
    "seed_card_correct": 3,
@@ -5596,10 +6646,31 @@
     "Lynn Vision": "2-3",
     "FlyQuest": "3-2"
    },
-   "rec_ll_s0.0": 1.562298270459741,
+   "rec_ll_s0.0": 1.5668044791619509,
    "picks_s0.0": 5,
-   "p_pass_s0.0": 0.324625,
+   "p_pass_s0.0": 0.294625,
    "card_s0.0": {
+    "3-0": [
+     "MIBR",
+     "BETBOOM"
+    ],
+    "adv": [
+     "GamerLegion",
+     "B8",
+     "HEROIC",
+     "M80",
+     "TYLOO",
+     "Lynn Vision"
+    ],
+    "0-3": [
+     "THUNDER dOWNUNDER",
+     "Gaimin Gladiators"
+    ]
+   },
+   "rec_ll_s0.25": 1.5715800952108596,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.281125,
+   "card_s0.25": {
     "3-0": [
      "GamerLegion",
      "BETBOOM"
@@ -5617,30 +6688,9 @@
      "Gaimin Gladiators"
     ]
    },
-   "rec_ll_s0.25": 1.5689126238689246,
-   "picks_s0.25": 5,
-   "p_pass_s0.25": 0.313375,
-   "card_s0.25": {
-    "3-0": [
-     "GamerLegion",
-     "BETBOOM"
-    ],
-    "adv": [
-     "B8",
-     "MIBR",
-     "HEROIC",
-     "M80",
-     "TYLOO",
-     "Lynn Vision"
-    ],
-    "0-3": [
-     "Gaimin Gladiators",
-     "FlyQuest"
-    ]
-   },
-   "rec_ll_s0.5": 1.585104602116758,
+   "rec_ll_s0.5": 1.5954201449812628,
    "picks_s0.5": 5,
-   "p_pass_s0.5": 0.266625,
+   "p_pass_s0.5": 0.24375,
    "card_s0.5": {
     "3-0": [
      "GamerLegion",
@@ -5664,8 +6714,8 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 1",
    "model": "ensemble",
-   "match_ll": 0.6049811326997961,
-   "match_acc": 0.7878787878787878,
+   "match_ll": 0.6045599560855647,
+   "match_acc": 0.7272727272727273,
    "n_matches": 33,
    "seed_card_correct": 3,
    "actual": {
@@ -5686,9 +6736,9 @@
     "Lynn Vision": "2-3",
     "FlyQuest": "3-2"
    },
-   "rec_ll_s0.0": 1.561501478887922,
+   "rec_ll_s0.0": 1.561447117523374,
    "picks_s0.0": 5,
-   "p_pass_s0.0": 0.3015,
+   "p_pass_s0.0": 0.28575,
    "card_s0.0": {
     "3-0": [
      "GamerLegion",
@@ -5707,9 +6757,9 @@
      "Gaimin Gladiators"
     ]
    },
-   "rec_ll_s0.25": 1.5713022601062883,
+   "rec_ll_s0.25": 1.5738389667845372,
    "picks_s0.25": 5,
-   "p_pass_s0.25": 0.293,
+   "p_pass_s0.25": 0.276375,
    "card_s0.25": {
     "3-0": [
      "GamerLegion",
@@ -5728,9 +6778,99 @@
      "Gaimin Gladiators"
     ]
    },
-   "rec_ll_s0.5": 1.5934317219446028,
+   "rec_ll_s0.5": 1.5947153618949472,
    "picks_s0.5": 5,
-   "p_pass_s0.5": 0.24775,
+   "p_pass_s0.5": 0.24025,
+   "card_s0.5": {
+    "3-0": [
+     "GamerLegion",
+     "BETBOOM"
+    ],
+    "adv": [
+     "B8",
+     "MIBR",
+     "HEROIC",
+     "M80",
+     "TYLOO",
+     "Lynn Vision"
+    ],
+    "0-3": [
+     "THUNDER dOWNUNDER",
+     "Gaimin Gladiators"
+    ]
+   }
+  },
+  {
+   "major": "IEM Cologne Major 2026",
+   "stage": "Stage 1",
+   "model": "ensemble+maps",
+   "match_ll": 0.6050784259463031,
+   "match_acc": 0.7272727272727273,
+   "n_matches": 33,
+   "seed_card_correct": 3,
+   "actual": {
+    "GamerLegion": "3-1",
+    "B8": "3-0",
+    "MIBR": "3-1",
+    "BETBOOM": "3-0",
+    "Liquid": "2-3",
+    "HEROIC": "1-3",
+    "M80": "3-1",
+    "SINNERS": "0-3",
+    "NRG": "2-3",
+    "TYLOO": "3-2",
+    "THUNDER dOWNUNDER": "1-3",
+    "Gaimin Gladiators": "0-3",
+    "BIG": "3-2",
+    "Sharks": "1-3",
+    "Lynn Vision": "2-3",
+    "FlyQuest": "3-2"
+   },
+   "rec_ll_s0.0": 1.5622640927828524,
+   "picks_s0.0": 5,
+   "p_pass_s0.0": 0.285125,
+   "card_s0.0": {
+    "3-0": [
+     "GamerLegion",
+     "BETBOOM"
+    ],
+    "adv": [
+     "B8",
+     "MIBR",
+     "HEROIC",
+     "M80",
+     "TYLOO",
+     "Lynn Vision"
+    ],
+    "0-3": [
+     "THUNDER dOWNUNDER",
+     "Gaimin Gladiators"
+    ]
+   },
+   "rec_ll_s0.25": 1.5782612379265206,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.273375,
+   "card_s0.25": {
+    "3-0": [
+     "GamerLegion",
+     "BETBOOM"
+    ],
+    "adv": [
+     "B8",
+     "MIBR",
+     "HEROIC",
+     "M80",
+     "TYLOO",
+     "Lynn Vision"
+    ],
+    "0-3": [
+     "THUNDER dOWNUNDER",
+     "Gaimin Gladiators"
+    ]
+   },
+   "rec_ll_s0.5": 1.5969376900601022,
+   "picks_s0.5": 5,
+   "p_pass_s0.5": 0.239625,
    "card_s0.5": {
     "3-0": [
      "GamerLegion",
@@ -5934,8 +7074,8 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 2",
    "model": "linear",
-   "match_ll": 0.6091701624354412,
-   "match_acc": 0.6060606060606061,
+   "match_ll": 0.6117363676928701,
+   "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 5,
    "actual": {
@@ -5956,9 +7096,9 @@
     "FlyQuest": "0-3",
     "BIG": "2-3"
    },
-   "rec_ll_s0.0": 1.576207055606861,
-   "picks_s0.0": 5,
-   "p_pass_s0.0": 0.366125,
+   "rec_ll_s0.0": 1.57377251663024,
+   "picks_s0.0": 4,
+   "p_pass_s0.0": 0.361875,
    "card_s0.0": {
     "3-0": [
      "Spirit",
@@ -5969,39 +7109,18 @@
      "FUT",
      "G2",
      "9z",
-     "Astralis",
-     "B8"
+     "MIBR",
+     "Astralis"
     ],
     "0-3": [
      "FlyQuest",
      "BIG"
     ]
    },
-   "rec_ll_s0.25": 1.5970258945091051,
-   "picks_s0.25": 5,
-   "p_pass_s0.25": 0.343,
+   "rec_ll_s0.25": 1.5949450768275142,
+   "picks_s0.25": 4,
+   "p_pass_s0.25": 0.335875,
    "card_s0.25": {
-    "3-0": [
-     "Spirit",
-     "9z"
-    ],
-    "adv": [
-     "Legacy",
-     "GamerLegion",
-     "FUT",
-     "G2",
-     "Astralis",
-     "B8"
-    ],
-    "0-3": [
-     "FlyQuest",
-     "BIG"
-    ]
-   },
-   "rec_ll_s0.5": 1.6014187866939327,
-   "picks_s0.5": 5,
-   "p_pass_s0.5": 0.300125,
-   "card_s0.5": {
     "3-0": [
      "Spirit",
      "Legacy"
@@ -6011,8 +7130,29 @@
      "FUT",
      "G2",
      "9z",
-     "Astralis",
-     "B8"
+     "MIBR",
+     "Astralis"
+    ],
+    "0-3": [
+     "FlyQuest",
+     "BIG"
+    ]
+   },
+   "rec_ll_s0.5": 1.6095551539878086,
+   "picks_s0.5": 6,
+   "p_pass_s0.5": 0.29475,
+   "card_s0.5": {
+    "3-0": [
+     "Spirit",
+     "FUT"
+    ],
+    "adv": [
+     "Legacy",
+     "GamerLegion",
+     "G2",
+     "9z",
+     "MIBR",
+     "Astralis"
     ],
     "0-3": [
      "FlyQuest",
@@ -6024,8 +7164,8 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 2",
    "model": "mlp",
-   "match_ll": 0.6097807798743211,
-   "match_acc": 0.6060606060606061,
+   "match_ll": 0.61359256517393,
+   "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 5,
    "actual": {
@@ -6046,9 +7186,9 @@
     "FlyQuest": "0-3",
     "BIG": "2-3"
    },
-   "rec_ll_s0.0": 1.5787880954719253,
-   "picks_s0.0": 5,
-   "p_pass_s0.0": 0.36625,
+   "rec_ll_s0.0": 1.5772664265808767,
+   "picks_s0.0": 4,
+   "p_pass_s0.0": 0.357,
    "card_s0.0": {
     "3-0": [
      "Spirit",
@@ -6059,50 +7199,50 @@
      "FUT",
      "G2",
      "9z",
-     "Astralis",
-     "B8"
+     "MIBR",
+     "Astralis"
     ],
     "0-3": [
      "FlyQuest",
      "BIG"
     ]
    },
-   "rec_ll_s0.25": 1.5945760239672835,
-   "picks_s0.25": 5,
-   "p_pass_s0.25": 0.342375,
+   "rec_ll_s0.25": 1.5982318516863678,
+   "picks_s0.25": 4,
+   "p_pass_s0.25": 0.331375,
    "card_s0.25": {
     "3-0": [
      "Spirit",
-     "9z"
+     "Legacy"
     ],
     "adv": [
-     "Legacy",
      "GamerLegion",
      "FUT",
      "G2",
-     "Astralis",
-     "B8"
+     "9z",
+     "MIBR",
+     "Astralis"
     ],
     "0-3": [
      "FlyQuest",
      "BIG"
     ]
    },
-   "rec_ll_s0.5": 1.602116030026757,
-   "picks_s0.5": 5,
-   "p_pass_s0.5": 0.300875,
+   "rec_ll_s0.5": 1.6133669215042143,
+   "picks_s0.5": 6,
+   "p_pass_s0.5": 0.290625,
    "card_s0.5": {
     "3-0": [
      "Spirit",
-     "9z"
+     "FUT"
     ],
     "adv": [
      "Legacy",
      "GamerLegion",
-     "FUT",
      "G2",
-     "Astralis",
-     "B8"
+     "9z",
+     "MIBR",
+     "Astralis"
     ],
     "0-3": [
      "FlyQuest",
@@ -6114,8 +7254,8 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 2",
    "model": "ensemble",
-   "match_ll": 0.60859762800717,
-   "match_acc": 0.6060606060606061,
+   "match_ll": 0.6109159525440344,
+   "match_acc": 0.6363636363636364,
    "n_matches": 33,
    "seed_card_correct": 5,
    "actual": {
@@ -6136,9 +7276,9 @@
     "FlyQuest": "0-3",
     "BIG": "2-3"
    },
-   "rec_ll_s0.0": 1.5779264914595608,
-   "picks_s0.0": 5,
-   "p_pass_s0.0": 0.33925,
+   "rec_ll_s0.0": 1.5771190692251538,
+   "picks_s0.0": 4,
+   "p_pass_s0.0": 0.329625,
    "card_s0.0": {
     "3-0": [
      "Spirit",
@@ -6149,27 +7289,27 @@
      "FUT",
      "G2",
      "9z",
-     "Astralis",
-     "B8"
+     "MIBR",
+     "Astralis"
     ],
     "0-3": [
      "FlyQuest",
      "BIG"
     ]
    },
-   "rec_ll_s0.25": 1.5928174897203706,
+   "rec_ll_s0.25": 1.5974441224805696,
    "picks_s0.25": 5,
-   "p_pass_s0.25": 0.311125,
+   "p_pass_s0.25": 0.306375,
    "card_s0.25": {
     "3-0": [
      "Spirit",
-     "9z"
+     "Legacy"
     ],
     "adv": [
-     "Legacy",
      "GamerLegion",
      "FUT",
      "G2",
+     "9z",
      "BETBOOM",
      "Astralis"
     ],
@@ -6178,9 +7318,9 @@
      "BIG"
     ]
    },
-   "rec_ll_s0.5": 1.6036297782428508,
-   "picks_s0.5": 5,
-   "p_pass_s0.5": 0.2775,
+   "rec_ll_s0.5": 1.6074253188645227,
+   "picks_s0.5": 4,
+   "p_pass_s0.5": 0.26775,
    "card_s0.5": {
     "3-0": [
      "Spirit",
@@ -6191,8 +7331,98 @@
      "FUT",
      "G2",
      "9z",
-     "Astralis",
-     "B8"
+     "MIBR",
+     "Astralis"
+    ],
+    "0-3": [
+     "FlyQuest",
+     "BIG"
+    ]
+   }
+  },
+  {
+   "major": "IEM Cologne Major 2026",
+   "stage": "Stage 2",
+   "model": "ensemble+maps",
+   "match_ll": 0.6102072267021743,
+   "match_acc": 0.6666666666666666,
+   "n_matches": 33,
+   "seed_card_correct": 5,
+   "actual": {
+    "Spirit": "3-0",
+    "Legacy": "3-2",
+    "GamerLegion": "0-3",
+    "FUT": "3-0",
+    "G2": "3-1",
+    "paiN": "2-3",
+    "9z": "3-1",
+    "Monte": "3-2",
+    "BETBOOM": "3-1",
+    "MIBR": "1-3",
+    "Astralis": "1-3",
+    "B8": "3-2",
+    "M80": "1-3",
+    "TYLOO": "2-3",
+    "FlyQuest": "0-3",
+    "BIG": "2-3"
+   },
+   "rec_ll_s0.0": 1.5776705562296416,
+   "picks_s0.0": 4,
+   "p_pass_s0.0": 0.33125,
+   "card_s0.0": {
+    "3-0": [
+     "Spirit",
+     "Legacy"
+    ],
+    "adv": [
+     "GamerLegion",
+     "FUT",
+     "G2",
+     "9z",
+     "MIBR",
+     "Astralis"
+    ],
+    "0-3": [
+     "FlyQuest",
+     "BIG"
+    ]
+   },
+   "rec_ll_s0.25": 1.597063367885661,
+   "picks_s0.25": 5,
+   "p_pass_s0.25": 0.310125,
+   "card_s0.25": {
+    "3-0": [
+     "Spirit",
+     "Legacy"
+    ],
+    "adv": [
+     "GamerLegion",
+     "FUT",
+     "G2",
+     "9z",
+     "BETBOOM",
+     "Astralis"
+    ],
+    "0-3": [
+     "FlyQuest",
+     "BIG"
+    ]
+   },
+   "rec_ll_s0.5": 1.6047060647090114,
+   "picks_s0.5": 4,
+   "p_pass_s0.5": 0.2685,
+   "card_s0.5": {
+    "3-0": [
+     "Spirit",
+     "Legacy"
+    ],
+    "adv": [
+     "GamerLegion",
+     "FUT",
+     "G2",
+     "9z",
+     "MIBR",
+     "Astralis"
     ],
     "0-3": [
      "FlyQuest",
@@ -6384,7 +7614,7 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 3",
    "model": "linear",
-   "match_ll": 0.6443377576209472,
+   "match_ll": 0.6286706063436398,
    "match_acc": 0.6060606060606061,
    "n_matches": 33,
    "seed_card_correct": 2,
@@ -6406,9 +7636,9 @@
     "BETBOOM": "3-2",
     "9z": "3-2"
    },
-   "rec_ll_s0.0": 1.6522442131537938,
+   "rec_ll_s0.0": 1.6214337695685221,
    "picks_s0.0": 2,
-   "p_pass_s0.0": 0.5295,
+   "p_pass_s0.0": 0.5865,
    "card_s0.0": {
     "3-0": [
      "Vitality",
@@ -6427,10 +7657,31 @@
      "Monte"
     ]
    },
-   "rec_ll_s0.25": 1.6457897697639425,
-   "picks_s0.25": 4,
-   "p_pass_s0.25": 0.474875,
+   "rec_ll_s0.25": 1.6269325275458368,
+   "picks_s0.25": 2,
+   "p_pass_s0.25": 0.528875,
    "card_s0.25": {
+    "3-0": [
+     "Vitality",
+     "Aurora"
+    ],
+    "adv": [
+     "Natus Vincere",
+     "Falcons",
+     "FURIA",
+     "Legacy",
+     "Spirit",
+     "MOUZ"
+    ],
+    "0-3": [
+     "B8",
+     "Monte"
+    ]
+   },
+   "rec_ll_s0.5": 1.6171656077064172,
+   "picks_s0.5": 3,
+   "p_pass_s0.5": 0.427125,
+   "card_s0.5": {
     "3-0": [
      "Vitality",
      "Spirit"
@@ -6439,29 +7690,8 @@
      "Natus Vincere",
      "Falcons",
      "FURIA",
-     "Aurora",
      "Legacy",
-     "MOUZ"
-    ],
-    "0-3": [
-     "B8",
-     "Monte"
-    ]
-   },
-   "rec_ll_s0.5": 1.6411548669295635,
-   "picks_s0.5": 2,
-   "p_pass_s0.5": 0.3845,
-   "card_s0.5": {
-    "3-0": [
-     "Vitality",
-     "The MongolZ"
-    ],
-    "adv": [
-     "Natus Vincere",
-     "Falcons",
-     "FURIA",
-     "Legacy",
-     "Spirit",
+     "FUT",
      "MOUZ"
     ],
     "0-3": [
@@ -6474,7 +7704,7 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 3",
    "model": "mlp",
-   "match_ll": 0.6397183576801773,
+   "match_ll": 0.6262590421666936,
    "match_acc": 0.6060606060606061,
    "n_matches": 33,
    "seed_card_correct": 2,
@@ -6496,9 +7726,9 @@
     "BETBOOM": "3-2",
     "9z": "3-2"
    },
-   "rec_ll_s0.0": 1.64890861345076,
+   "rec_ll_s0.0": 1.6165049015859,
    "picks_s0.0": 2,
-   "p_pass_s0.0": 0.465375,
+   "p_pass_s0.0": 0.55725,
    "card_s0.0": {
     "3-0": [
      "Vitality",
@@ -6517,31 +7747,10 @@
      "Monte"
     ]
    },
-   "rec_ll_s0.25": 1.6401648377383227,
-   "picks_s0.25": 4,
-   "p_pass_s0.25": 0.415625,
+   "rec_ll_s0.25": 1.6189849203308704,
+   "picks_s0.25": 2,
+   "p_pass_s0.25": 0.50875,
    "card_s0.25": {
-    "3-0": [
-     "Vitality",
-     "Spirit"
-    ],
-    "adv": [
-     "Natus Vincere",
-     "Falcons",
-     "FURIA",
-     "Aurora",
-     "Legacy",
-     "MOUZ"
-    ],
-    "0-3": [
-     "B8",
-     "Monte"
-    ]
-   },
-   "rec_ll_s0.5": 1.6423883670531865,
-   "picks_s0.5": 1,
-   "p_pass_s0.5": 0.34025,
-   "card_s0.5": {
     "3-0": [
      "Vitality",
      "Aurora"
@@ -6555,8 +7764,29 @@
      "MOUZ"
     ],
     "0-3": [
-     "Monte",
-     "BETBOOM"
+     "B8",
+     "Monte"
+    ]
+   },
+   "rec_ll_s0.5": 1.6149162878051582,
+   "picks_s0.5": 3,
+   "p_pass_s0.5": 0.40775,
+   "card_s0.5": {
+    "3-0": [
+     "Vitality",
+     "Spirit"
+    ],
+    "adv": [
+     "Natus Vincere",
+     "Falcons",
+     "FURIA",
+     "Legacy",
+     "FUT",
+     "MOUZ"
+    ],
+    "0-3": [
+     "B8",
+     "Monte"
     ]
    }
   },
@@ -6564,8 +7794,8 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Stage 3",
    "model": "ensemble",
-   "match_ll": 0.6333609624071704,
-   "match_acc": 0.5757575757575758,
+   "match_ll": 0.6239135531892704,
+   "match_acc": 0.6060606060606061,
    "n_matches": 33,
    "seed_card_correct": 2,
    "actual": {
@@ -6586,13 +7816,13 @@
     "BETBOOM": "3-2",
     "9z": "3-2"
    },
-   "rec_ll_s0.0": 1.6264748329506373,
+   "rec_ll_s0.0": 1.6074809014875675,
    "picks_s0.0": 2,
-   "p_pass_s0.0": 0.47275,
+   "p_pass_s0.0": 0.522875,
    "card_s0.0": {
     "3-0": [
      "Vitality",
-     "The MongolZ"
+     "Aurora"
     ],
     "adv": [
      "Natus Vincere",
@@ -6607,9 +7837,9 @@
      "Monte"
     ]
    },
-   "rec_ll_s0.25": 1.6248939336235462,
+   "rec_ll_s0.25": 1.6100179839236874,
    "picks_s0.25": 4,
-   "p_pass_s0.25": 0.430625,
+   "p_pass_s0.25": 0.4755,
    "card_s0.25": {
     "3-0": [
      "Vitality",
@@ -6628,9 +7858,9 @@
      "Monte"
     ]
    },
-   "rec_ll_s0.5": 1.6278983912850706,
+   "rec_ll_s0.5": 1.6169402469972949,
    "picks_s0.5": 3,
-   "p_pass_s0.5": 0.34275,
+   "p_pass_s0.5": 0.3895,
    "card_s0.5": {
     "3-0": [
      "Vitality",
@@ -6641,7 +7871,97 @@
      "Falcons",
      "FURIA",
      "Legacy",
-     "The MongolZ",
+     "FUT",
+     "MOUZ"
+    ],
+    "0-3": [
+     "B8",
+     "Monte"
+    ]
+   }
+  },
+  {
+   "major": "IEM Cologne Major 2026",
+   "stage": "Stage 3",
+   "model": "ensemble+maps",
+   "match_ll": 0.6246307713863417,
+   "match_acc": 0.6060606060606061,
+   "n_matches": 33,
+   "seed_card_correct": 2,
+   "actual": {
+    "Vitality": "3-1",
+    "Natus Vincere": "2-3",
+    "Falcons": "3-1",
+    "FURIA": "3-0",
+    "Aurora": "3-1",
+    "Legacy": "1-3",
+    "The MongolZ": "2-3",
+    "PARIVISION": "0-3",
+    "FUT": "2-3",
+    "Spirit": "3-0",
+    "G2": "3-2",
+    "B8": "0-3",
+    "Monte": "1-3",
+    "MOUZ": "1-3",
+    "BETBOOM": "3-2",
+    "9z": "3-2"
+   },
+   "rec_ll_s0.0": 1.609723750012522,
+   "picks_s0.0": 2,
+   "p_pass_s0.0": 0.522625,
+   "card_s0.0": {
+    "3-0": [
+     "Vitality",
+     "Aurora"
+    ],
+    "adv": [
+     "Natus Vincere",
+     "Falcons",
+     "FURIA",
+     "Legacy",
+     "Spirit",
+     "MOUZ"
+    ],
+    "0-3": [
+     "B8",
+     "Monte"
+    ]
+   },
+   "rec_ll_s0.25": 1.6097920933922425,
+   "picks_s0.25": 4,
+   "p_pass_s0.25": 0.471875,
+   "card_s0.25": {
+    "3-0": [
+     "Vitality",
+     "Spirit"
+    ],
+    "adv": [
+     "Natus Vincere",
+     "Falcons",
+     "FURIA",
+     "Aurora",
+     "Legacy",
+     "MOUZ"
+    ],
+    "0-3": [
+     "B8",
+     "Monte"
+    ]
+   },
+   "rec_ll_s0.5": 1.6202339437452737,
+   "picks_s0.5": 3,
+   "p_pass_s0.5": 0.3895,
+   "card_s0.5": {
+    "3-0": [
+     "Vitality",
+     "Spirit"
+    ],
+    "adv": [
+     "Natus Vincere",
+     "Falcons",
+     "FURIA",
+     "Legacy",
+     "FUT",
      "MOUZ"
     ],
     "0-3": [
@@ -6716,11 +8036,11 @@
    "major": "IEM Cologne Major 2026",
    "stage": "Playoffs",
    "model": "linear",
-   "match_ll": 0.6576088506599405,
+   "match_ll": 0.7096177493416354,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
    "bracket_correct": 4,
-   "bracket_expected": 3.948,
+   "bracket_expected": 4.069375,
    "bracket_picks": [
     "Aurora",
     "FURIA",
@@ -6741,17 +8061,17 @@
    ],
    "champion_pick": "Vitality",
    "champion_actual": "Falcons",
-   "p_actual_champion": 0.08325
+   "p_actual_champion": 0.066125
   },
   {
    "major": "IEM Cologne Major 2026",
    "stage": "Playoffs",
    "model": "mlp",
-   "match_ll": 0.651798264779168,
+   "match_ll": 0.7039627282195385,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
    "bracket_correct": 4,
-   "bracket_expected": 3.894125,
+   "bracket_expected": 4.00525,
    "bracket_picks": [
     "Aurora",
     "FURIA",
@@ -6772,17 +8092,17 @@
    ],
    "champion_pick": "Vitality",
    "champion_actual": "Falcons",
-   "p_actual_champion": 0.087
+   "p_actual_champion": 0.06825
   },
   {
    "major": "IEM Cologne Major 2026",
    "stage": "Playoffs",
    "model": "ensemble",
-   "match_ll": 0.6696498562047835,
+   "match_ll": 0.7042597574197064,
    "match_acc": 0.7142857142857143,
    "n_matches": 7,
    "bracket_correct": 4,
-   "bracket_expected": 3.873375,
+   "bracket_expected": 3.946625,
    "bracket_picks": [
     "Aurora",
     "FURIA",
@@ -6803,7 +8123,38 @@
    ],
    "champion_pick": "Vitality",
    "champion_actual": "Falcons",
-   "p_actual_champion": 0.08125
+   "p_actual_champion": 0.069625
+  },
+  {
+   "major": "IEM Cologne Major 2026",
+   "stage": "Playoffs",
+   "model": "ensemble+maps",
+   "match_ll": 0.7031487678680082,
+   "match_acc": 0.7142857142857143,
+   "n_matches": 7,
+   "bracket_correct": 4,
+   "bracket_expected": 3.95475,
+   "bracket_picks": [
+    "Aurora",
+    "FURIA",
+    "Spirit",
+    "Vitality",
+    "FURIA",
+    "Vitality",
+    "Vitality"
+   ],
+   "actual": [
+    "Aurora",
+    "FURIA",
+    "Spirit",
+    "Falcons",
+    "FURIA",
+    "Falcons",
+    "Falcons"
+   ],
+   "champion_pick": "Vitality",
+   "champion_actual": "Falcons",
+   "p_actual_champion": 0.069125
   }
  ]
 }
