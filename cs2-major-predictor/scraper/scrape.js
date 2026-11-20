@@ -289,7 +289,7 @@ async function main() {
   }
   if (PROBE) {
     console.log('\nProbe finished. If the counts above look sane (results ~100, rankings 30+), run without --probe.');
-  } else {
+  } else if (!process.env.HLTV_NO_GIT_HINT) {
     console.log('\nNext: git add data/raw && git commit -m "HLTV data" && git push');
   }
 }
