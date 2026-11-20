@@ -1,0 +1,36 @@
+{
+  "_note": "Inputs for predict.py. Team lists come from the scraped HLTV event pages; the lists here are only a fallback. Seed hints are from press coverage (Strafe / esport.vision, Nov 2026) and are only used to place teams in Valve's 1v9..8v16 round-1 slots, so the Buchholz pairing in later rounds is right. They are overridden by the actual round-1 pairings when HLTV lists them.",
+  "event_id": 8302,
+  "stage_event_ids": {},
+  "stage3_all_bo3": true,
+  "aliases": {
+    "PVISION": "PARIVISION",
+    "NiP": "Ninjas in Pyjamas",
+    "Team Liquid": "Liquid",
+    "FaZe Clan": "FaZe",
+    "GOSH": "BC.Game",
+    "Team Vitality": "Vitality",
+    "Team Spirit": "Spirit",
+    "Natus Vincere": "Natus Vincere",
+    "NAVI": "Natus Vincere"
+  },
+  "stage1_seed_hints": {
+    "Ninjas in Pyjamas": 1,
+    "PARIVISION": 2,
+    "HEROIC": 3,
+    "FaZe": 4,
+    "Liquid": 5,
+    "9z": 8,
+    "M80": 9,
+    "DENDELE": 10,
+    "Imperial": 11,
+    "Wildcard": 12,
+    "FlyQuest": 14,
+    "Chinggis Warriors": 15,
+    "Lynn Vision": 16
+  },
+  "stage1_teams": ["Ninjas in Pyjamas", "PARIVISION", "HEROIC", "FaZe", "Liquid", "Eternal Fire", "100 Thieves", "9z",
+                   "M80", "DENDELE", "Imperial", "Wildcard", "BC.Game", "FlyQuest", "Chinggis Warriors", "Lynn Vision"],
+  "stage2_invited": [],
+  "stage3_invited": ["MOUZ", "Vitality", "FURIA", "Spirit", "Aurora", "BetBoom", "Falcons", "Legacy"]
+}

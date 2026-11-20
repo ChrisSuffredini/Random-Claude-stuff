@@ -23,7 +23,8 @@ def load_tables(parsed_dir=PARSED):
     m = pd.read_csv(os.path.join(parsed_dir, "matches.csv"), keep_default_na=False)
     r = pd.read_csv(os.path.join(parsed_dir, "rankings.csv"), keep_default_na=False)
     m["t"] = m["unix_ms"].astype("int64") / DAY_MS  # days since epoch
-    r["t"] = pd.to_datetime(r["date"]).astype("int64") / 1e9 / 86400
+    # days since epoch; unit-agnostic (pandas 3 parses dates to ms, not ns)
+    r["t"] = (pd.to_datetime(r["date"]) - pd.Timestamp("1970-01-01")).dt.total_seconds() / 86400
     r["team_id"] = pd.to_numeric(r["team_id"], errors="coerce")
     r["points"] = pd.to_numeric(r["points"], errors="coerce").fillna(0)
     return m, r

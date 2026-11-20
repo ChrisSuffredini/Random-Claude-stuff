@@ -75,11 +75,12 @@ class FeatureBuilder:
         self.hist = defaultdict(deque)  # key -> (t, maps, residual)
         self.form_days, self.act_days, self.cont_days = form_days, act_days, cont_days
         self.prev_lineup = {}
+        self._ri = 0
 
     # --- roster shocks, applied as ranking snapshots go by
     def apply_rankings_until(self, t):
         rl = self.rl
-        while getattr(self, "_ri", 0) < len(rl.dates) and rl.dates[self._ri] <= t:
+        while self._ri < len(rl.dates) and rl.dates[self._ri] <= t:
             d = rl.dates[self._ri]
             for k, (_, _, lineup) in rl.by_date[d].items():
                 old = self.prev_lineup.get(k)
@@ -89,7 +90,7 @@ class FeatureBuilder:
                     self.lan.shock(k, d, changed)
                 if lineup:
                     self.prev_lineup[k] = lineup
-            self._ri = getattr(self, "_ri", 0) + 1
+            self._ri += 1
 
     def team_features(self, k, t, lan_ctx):
         ra, va = self.all.get(k, t)
