@@ -15,13 +15,15 @@ import numpy as np
 
 from sim import REC_INDEX, SwissState
 
-STAGE_RE = re.compile(r"^(?P<base>.*\bMajor\b.*?\b20\d\d)\s*[-:]?\s*(?P<stage>Opening Stage|Elimination Stage|Stage [123]|Playoffs?)$",
+STAGE_RE = re.compile(r"^(?P<base>.*\bMajor\b.*?\b20\d\d)\s*[-:]?\s*(?P<stage>Opening Stage|Elimination Stage|Stage [123]|(?:New )?Challengers Stage|(?:New )?Legends Stage|Champions Stage|Playoffs?)$",
                       re.I)
-EXCLUDE = re.compile(r"RMR|Qualifier|Closed|Open Qual|Regional|Showmatch|Academy|Challengers|Legends|Champions Stage", re.I)
-STAGE_ORDER = {"opening stage": 1, "stage 1": 1, "elimination stage": 2, "stage 2": 2, "stage 3": 3}
+EXCLUDE = re.compile(r"RMR|Qualifier|Closed|Open Qual|Regional|Showmatch|Academy", re.I)
+STAGE_ORDER = {"opening stage": 1, "stage 1": 1, "challengers stage": 1, "new challengers stage": 1,
+               "elimination stage": 2, "stage 2": 2, "legends stage": 2, "new legends stage": 2, "stage 3": 3}
+MIN_HISTORY_DAYS = 240  # a stage is only backtested with this much match history before it
 
 
-def discover(m, min_year=2024):
+def discover(m, min_year=2019):
     """Returns a list of stage dicts in chronological order."""
     by_event = defaultdict(list)
     for i, ev in enumerate(m["event"].values):
@@ -31,7 +33,7 @@ def discover(m, min_year=2024):
         if EXCLUDE.search(ev):
             continue
         mm = STAGE_RE.match(ev.strip())
-        if mm and mm.group("stage").lower().startswith("playoff"):
+        if mm and (mm.group("stage").lower().startswith("playoff") or mm.group("stage").lower() == "champions stage"):
             bases.setdefault(mm.group("base").strip(), {})["playoffs"] = ev
         elif mm:
             bases.setdefault(mm.group("base").strip(), {})[mm.group("stage").lower()] = ev
@@ -51,7 +53,8 @@ def discover(m, min_year=2024):
                 if len(sub) >= 40:
                     # HLTV files the last Swiss stage and the playoffs under the bare name:
                     # 33 Swiss matches, then the 7-match bracket.
-                    last = "elimination stage" if "opening stage" in evs else "stage 3"
+                    last = ("elimination stage" if "opening stage" in evs else
+                            "legends stage" if any("challengers" in k for k in evs) else "stage 3")
                     st = swiss_stage(base, ev, last, sub.iloc[:-7])
                     if st:
                         stages.append(st)
@@ -61,6 +64,8 @@ def discover(m, min_year=2024):
                 st = swiss_stage(base, ev, key, sub)
             if st:
                 stages.append(st)
+    first_t = float(m["t"].min())
+    stages = [s for s in stages if s["t_start"] - first_t >= MIN_HISTORY_DAYS]
     stages.sort(key=lambda s: s["t_start"])
     return stages
 

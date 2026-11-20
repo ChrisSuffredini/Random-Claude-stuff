@@ -19,7 +19,8 @@ import numpy as np
 PI2 = math.pi ** 2
 
 FEATURES = ["r_all", "sd_all", "r_lan", "sd_lan", "log_pts", "rank_score",
-            "continuity", "activity", "form", "lan", "plr_all", "plr_top50"]
+            "continuity", "activity", "form", "lan", "plr_all", "plr_top50", "cs2"]
+CS2_START = 19627.0  # 2023-09-27, CS2 release (days since epoch)
 
 
 def g(v):
@@ -111,7 +112,7 @@ class FeatureBuilder:
         form = sum(x[2] for x in res) / (sum(x[1] for x in res) + 5.0)
         return [ra, math.sqrt(va), rl_, math.sqrt(vl), math.log1p(pts),
                 -math.log(min(rank, 400)), cont, math.log1p(act), form, float(lan_ctx),
-                *(self.players.features(k, t) if self.players else (0.0, 0.0))]
+                *(self.players.features(k, t) if self.players else (0.0, 0.0)), float(t >= CS2_START)]
 
     def run(self, matches, queries=None):
         """matches: DataFrame sorted by t with a, b, maps1, maps2, lan, t.

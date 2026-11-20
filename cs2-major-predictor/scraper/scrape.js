@@ -9,7 +9,8 @@
 //   --probe              fetch one page of each kind, print what was found, stop
 //   --only a,b           subset of: events,results,lan,rankings,maps,players
 //                        (default: events,results,lan,rankings; maps/players are opt-in)
-//   --from YYYY-MM       first month of results (default 2023-01)
+//   --from YYYY-MM       first month of results and rankings (default 2023-01)
+//   --to YYYY-MM         last month of results and rankings (default: this month)
 //   --refresh            refetch everything, ignoring what is already saved
 //   --event ID           HLTV event id of the Major to predict (default 8302, PGL Singapore 2026)
 //
@@ -47,6 +48,12 @@ const PROBE = flag('probe');
 const REFRESH = flag('refresh');
 const ONLY = opt('only', 'events,results,lan,rankings').split(',');
 const FROM = opt('from', '2023-01');
+const TO = opt('to', null); // e.g. 2022-12 to pull an older era only
+const toDate = () => {
+  if (!TO) return new Date();
+  const [y, m] = TO.split('-').map(Number);
+  return new Date(Date.UTC(y, m, 0));
+};
 const STATS_FROM = opt('stats-from', '2023-10'); // CS2 era only for map/player stats
 const EVENT_ID = Number(opt('event', 8302));
 
@@ -126,7 +133,7 @@ async function fetchAndSave(rel, url, selectors, extra = {}) {
 
 // ---------------------------------------------------------------- results
 async function scrapeResults(kind) {
-  const now = new Date();
+  const now = toDate();
   const months = monthList(FROM, now).reverse(); // newest first
   const extraQuery = kind === 'lan' ? '&matchType=Lan' : '';
   const dir = kind === 'lan' ? 'results-lan' : 'results';
@@ -177,10 +184,12 @@ async function scrapeResults(kind) {
 
 // --------------------------------------------------------------- rankings
 function rankingDates() {
-  // Every other Monday from the first Monday of 2023, plus the latest Monday.
+  // Every other Monday from the first Monday of --from, plus the latest Monday.
   const out = [];
-  const d = new Date(Date.UTC(2023, 0, 2)); // Monday 2023-01-02
-  const today = new Date();
+  const [fy, fm] = FROM.split('-').map(Number);
+  const d = new Date(Date.UTC(fy, fm - 1, 1));
+  while (d.getUTCDay() !== 1) d.setUTCDate(d.getUTCDate() + 1);
+  const today = toDate();
   while (d <= today) {
     out.push(new Date(d));
     d.setUTCDate(d.getUTCDate() + 14);

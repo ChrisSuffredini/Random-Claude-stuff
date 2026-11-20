@@ -19,8 +19,12 @@ const ROOT = path.join(__dirname, '..');
 // e.g. node scraper/run.js --only maps,players  (second laptop)
 const onlyIdx = process.argv.indexOf('--only');
 const ONLY = onlyIdx > 0 ? process.argv[onlyIdx + 1] : null;
-const PASS = ONLY ? ['--only', ONLY] : [];
-const OUT_NAME = ONLY ? `hltv-data-${ONLY.replace(/[^a-z,]/gi, '').split(',').join('-')}` : 'hltv-data';
+const argOf = (f) => { const i = process.argv.indexOf(f); return i > 0 ? process.argv[i + 1] : null; };
+const FROM = argOf('--from');
+const TO = argOf('--to');
+const PASS = [...(ONLY ? ['--only', ONLY] : []), ...(FROM ? ['--from', FROM] : []), ...(TO ? ['--to', TO] : [])];
+const OUT_NAME = ['hltv-data', ...(ONLY ? ONLY.replace(/[^a-z,]/gi, '').split(',') : []),
+  ...(FROM ? [FROM] : []), ...(TO ? [TO] : [])].join('-');
 const PORT = Number(process.env.PORT || 9222);
 const CDP = `http://127.0.0.1:${PORT}`;
 const UPLOAD_URL =
