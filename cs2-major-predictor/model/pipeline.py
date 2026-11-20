@@ -19,10 +19,12 @@ LAN_COL = FEATURES.index("lan")
 RELEVANT_RANK = 150
 
 
-def build_features(m, r, queries, params=None):
+def build_features(m, r, queries, params=None, players=None):
     """queries: list of (t, [teams]). Returns (Xa, Xb, p_glicko, {query_index: {team: x}})."""
     rl = RankingLookup(r)
-    fb = FeatureBuilder(rl, **(params or DEFAULT_PARAMS))
+    if players is not None:
+        players.rl = rl
+    fb = FeatureBuilder(rl, **(params or DEFAULT_PARAMS), players=players)
     order = sorted(range(len(queries)), key=lambda i: queries[i][0])
     Xa, Xb, pg, q = fb.run(m, [queries[i] for i in order])
     snaps = {order[j]: q[j] for j in range(len(order))}

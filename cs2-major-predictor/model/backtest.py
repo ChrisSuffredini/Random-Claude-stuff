@@ -34,7 +34,10 @@ from majors import discover, infer_seeds  # noqa: E402
 from pickem import card_stats, indicators, optimise_bracket, optimise_card, score_card  # noqa: E402
 from pipeline import (DEFAULT_PARAMS, Ensemble, LAN_COL, build_features, fit_models,  # noqa: E402
                       relevant_mask, save_params, team_strengths, tune_glicko)
-from sim import REC_INDEX, RECORDS, series_prob, sigmoid, simulate_playoffs, simulate_swiss  # noqa: E402
+from sim import (REC_INDEX, RECORDS, series_from_deltas, series_prob, sigmoid,  # noqa: E402
+                 simulate_playoffs, simulate_swiss)
+from data import RankingLookup  # noqa: E402
+from extras import load_extras, veto_deltas  # noqa: E402
 
 
 def seed_card(n=16):
@@ -46,11 +49,15 @@ def bo_of(fmt):
     return {"bo1": 1, "bo3": 3, "bo5": 5}.get(fmt, 3)
 
 
-def stage_match_metrics(stage, s_of):
+def stage_match_metrics(stage, s_of, deltas_fn=None):
     ll, hit, n = 0.0, 0, 0
     for a, b, w1, w2, fmt in zip(stage["matches"]["a"], stage["matches"]["b"], stage["matches"]["maps1"],
                                  stage["matches"]["maps2"], stage["matches"]["format"]):
-        p = series_prob(sigmoid(s_of[a] - s_of[b]), bo_of(fmt))
+        bo = bo_of(fmt)
+        if deltas_fn:
+            p = series_from_deltas(s_of[a] - s_of[b], deltas_fn(a, b, bo), bo)
+        else:
+            p = series_prob(sigmoid(s_of[a] - s_of[b]), bo)
         y = 1 if w1 > w2 else 0
         p = min(max(p, 1e-6), 1 - 1e-6)
         ll += -(y * math.log(p) + (1 - y) * math.log(1 - p))
@@ -103,10 +110,28 @@ def eval_stage(si):
     sigmas, sims = G["sigmas"], G["sims"]
     rank_pts = {k: snap[k][4] for k in st["teams"]}
     rows = []
-    for name, mdl in models.items():
+    variants = [(name, mdl, False) for name, mdl in models.items()]
+    mm = G.get("mapmodel")
+    if mm is not None:
+        variants.append(("ensemble+maps", models["ensemble"], True))
+        offsets = mm.offsets(st["teams"], st["t_start"])
+        pool = mm.pool(st["t_start"])
+    for name, mdl, use_maps in variants:
         s_vec = team_strengths(mdl, snap, st["teams"])
         s_of = dict(zip(st["teams"], s_vec))
-        ll, hit, n = stage_match_metrics(st, s_of)
+        order = (infer_seeds(st["r1_pairs"], rank_pts) if st["kind"] == "swiss"
+                 else sorted(st["teams"], key=lambda k: -s_of[k]))
+        D = veto_deltas(order, offsets, pool, G["map_params"]["scale"]) if use_maps else None
+        pos_o = {k: i for i, k in enumerate(order)}
+
+        def dfn(a, b, bo):
+            i, j = pos_o[a], pos_o[b]
+            if i < j:
+                return D[(i, j, bo)]
+            return -D[(j, i, bo)]  # same maps seen from b's side
+        if use_maps and D is None:
+            continue
+        ll, hit, n = stage_match_metrics(st, s_of, dfn if use_maps else None)
         row = {"major": st["major"], "stage": st["stage"], "model": name, "match_ll": ll / n,
                "match_acc": hit / n, "n_matches": n}
         if st["kind"] == "swiss":
@@ -117,7 +142,7 @@ def eval_stage(si):
             row["seed_card_correct"] = int(score_card(act_ind, seed_card())[0])
             row["actual"] = {t: "%d-%d" % st["record"][t] for t in seeds}
             for sg in sigmas:
-                cat, _ = simulate_swiss(L, sims, sigma=sg, all_bo3=st["all_bo3"], seed=si)
+                cat, _ = simulate_swiss(L, sims, sigma=sg, all_bo3=st["all_bo3"], seed=si, maps=D)
                 probs = np.stack([(cat == c).mean(0) for c in range(6)], 1)
                 row[f"rec_ll_s{sg}"] = float(-np.log(np.clip(probs[np.arange(16), actual], 1e-3, 1)).mean())
                 card, cs = optimise_card(indicators(cat), restarts=4, seed=si)
@@ -126,11 +151,11 @@ def eval_stage(si):
                 row[f"card_s{sg}"] = {"3-0": [seeds[i] for i in card[0]], "adv": [seeds[i] for i in card[1]],
                                       "0-3": [seeds[i] for i in card[2]]}
         else:
-            teams = st["teams"]
+            teams = order
             pos = {t: i for i, t in enumerate(teams)}
             L = np.array([[s_of[a] - s_of[b] for b in teams] for a in teams])
             qf = [(pos[a], pos[b]) for a, b in st["qf_pairs"]]
-            w = simulate_playoffs(L, sims, sigma=sigmas[min(1, len(sigmas) - 1)], qf=qf, seed=si)
+            w = simulate_playoffs(L, sims, sigma=sigmas[min(1, len(sigmas) - 1)], qf=qf, seed=si, maps=D)
             best = optimise_bracket(w, qf)
             picks = [teams[i] for i in best["picks"]]
             row.update({"bracket_correct": sum(int(p == a) for p, a in zip(picks, st["actual"])),
@@ -148,6 +173,8 @@ def main():
     ap.add_argument("--quick", action="store_true", help="skip Glicko tuning and the rolling LAN test")
     ap.add_argument("--sigmas", default="0,0.25,0.5")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--no-players", action="store_true", help="leave player ratings out of the features")
+    ap.add_argument("--no-extras", action="store_true", help="ignore map and player data entirely")
     args = ap.parse_args()
     t0 = time.time()
 
@@ -171,8 +198,32 @@ def main():
         print(f"  -> {params} (map log loss {ll:.4f})")
     save_params(params, os.path.join(args.parsed, "params.json"))
 
+    players, mapmodel = (None, None) if args.no_extras else load_extras(args.parsed, idx, RankingLookup(r), r)
+    if args.no_players:
+        players = None
+    print(f"\nExtras: player ratings {'on' if players else 'off'}, map model {'on' if mapmodel else 'off'}")
+    map_params = {"half_life": 180.0, "ridge": 6.0, "scale": 1.0}
+    if mapmodel is not None:
+        split = 20089.0  # 2025-01-01: map settings tuned on 2024, judged on 2025-26
+        t0m = mapmodel.T.min() + 90
+        best = None
+        for hl in (90.0, 180.0, 365.0):
+            for rg in (3.0, 6.0, 12.0):
+                mapmodel.half_life, mapmodel.ridge = hl, rg
+                for sc in (0.5, 0.75, 1.0):
+                    l0, l1, nn = mapmodel.eval_logloss(t0m, split, scale=sc)
+                    if best is None or l1 < best[0]:
+                        best = (l1, l0, hl, rg, sc, nn)
+        _, _, hl, rg, sc, _ = best
+        mapmodel.half_life, mapmodel.ridge = hl, rg
+        map_params = {"half_life": hl, "ridge": rg, "scale": sc}
+        l0, l1, nn = mapmodel.eval_logloss(split, mapmodel.T.max() + 1, scale=sc)
+        print(f"  map model: half-life {hl:.0f}d, ridge {rg}, scale {sc} | out-of-sample 2025-26 map log loss "
+              f"{l0:.4f} -> {l1:.4f} with map offsets (n={nn})")
+    G.update(mapmodel=mapmodel, map_params=map_params)
+
     queries = [(s["t_start"], s["teams"]) for s in stages]
-    Xa, Xb, pg, snaps = build_features(m, r, queries, params)
+    Xa, Xb, pg, snaps = build_features(m, r, queries, params, players=players)
 
     cache = {}
 
@@ -253,12 +304,18 @@ def main():
     else:
         best_model = min(summ, key=lambda k: summ[k]["match_ll"])
     best_sigma = min(sigmas, key=lambda sg: summ[best_model][f"s{sg}"]["rec_ll"])
+    # Map vetoes: keep them only if they helped both on held-out maps and at the Majors.
+    use_maps = ("ensemble+maps" in summ and best_model == "ensemble"
+                and summ["ensemble+maps"]["match_ll"] <= summ["ensemble"]["match_ll"])
+    if use_maps:
+        best_model = "ensemble+maps"
+        best_sigma = min(sigmas, key=lambda sg: summ[best_model][f"s{sg}"]["rec_ll"])
     chosen = {"model": best_model, "sigma": best_sigma}
     print(f"\nChosen for prediction: model={best_model}, tournament-form noise sigma={best_sigma}")
 
     out = args.out or os.path.join(args.parsed, "backtest.json")
     with open(out, "w") as f:
-        json.dump({"params": params, "chosen": chosen, "rolling_lan": rolling, "summary": summ, "rows": rows}, f,
+        json.dump({"params": params, "map_params": map_params, "chosen": chosen, "rolling_lan": rolling, "summary": summ, "rows": rows}, f,
                   indent=1, default=str)
     print(f"\nWrote {out} ({time.time() - t0:.0f}s)")
 

@@ -221,6 +221,82 @@ def parse_events():
     return events
 
 
+STATS_TEAM = re.compile(r"/stats/teams/(\d+)/")
+STATS_PLAYER = re.compile(r"/stats/players/(\d+)/")
+MAPSTATS = re.compile(r"/mapstatsid/(\d+)/")
+
+
+def num(s):
+    m = re.search(r"[-+]?\d+(?:\.\d+)?", s.replace(",", ""))
+    return float(m.group()) if m else None
+
+
+def parse_map_rows(soup):
+    out = []
+    for tr in soup.select(".matches-table tbody tr"):
+        a = tr.select_one(".date-col a") or tr.find("a", href=MAPSTATS)
+        mid = MAPSTATS.search(a["href"]) if a and a.get("href") else None
+        tm = tr.select_one("[data-unix]")
+        teams = tr.select(".team-col")
+        if not mid or not tm or len(teams) < 2:
+            continue
+        rec = {"mapstats_id": int(mid.group(1)), "unix_ms": int(tm["data-unix"])}
+        for i, td in enumerate(teams[:2], 1):
+            ta = td.find("a", href=STATS_TEAM)
+            rec[f"team{i}_id"] = int(STATS_TEAM.search(ta["href"]).group(1)) if ta else ""
+            rec[f"team{i}"] = text(ta) if ta else text(td)
+            sc = td.select_one(".score")
+            rec[f"score{i}"] = int(num(text(sc))) if sc and num(text(sc)) is not None else ""
+        full = tr.select_one(".dynamic-map-name-full")
+        short = tr.select_one(".dynamic-map-name-short")
+        rec["map"] = (text(full) or text(short) or text(tr.select_one(".statsDetail"))).strip().lower()
+        ev = tr.select_one(".event-col a")
+        em = re.search(r"event=(\d+)", ev["href"]) if ev and ev.get("href") else None
+        rec["event_id"] = int(em.group(1)) if em else ""
+        rec["event"] = text(ev)
+        out.append(rec)
+    return out
+
+
+def parse_player_rows(soup):
+    out = []
+    head = [text(th).lower() for th in soup.select(".player-ratings-table thead th")]
+    for tr in soup.select(".player-ratings-table tbody tr"):
+        a = tr.select_one(".playerCol a") or tr.find("a", href=STATS_PLAYER)
+        if not a or not STATS_PLAYER.search(a.get("href", "")):
+            continue
+        teams = tr.select(".teamCol a")
+        details = [num(text(td)) for td in tr.select("td.statsDetail")]
+        rating = tr.select_one("td.ratingCol")
+        out.append({
+            "player_id": int(STATS_PLAYER.search(a["href"]).group(1)),
+            "player": text(a),
+            "team_ids": ";".join(str(int(STATS_TEAM.search(t["href"]).group(1))) for t in teams
+                                 if STATS_TEAM.search(t.get("href", ""))),
+            "teams": ";".join((t.find("img").get("title", "") if t.find("img") else text(t)) for t in teams),
+            "maps": details[0] if len(details) > 0 else None,
+            "rounds": details[1] if len(details) > 1 else None,
+            "kd": details[2] if len(details) > 2 else None,
+            "kd_diff": num(text(tr.select_one("td.kdDiffCol"))),
+            "rating": num(text(rating)) if rating else None,
+        })
+    return out
+
+
+def parse_stats():
+    maps = {}
+    for f in sorted(glob.glob(os.path.join(RAW, "maps", "*.html.gz"))):
+        for r in parse_map_rows(load(f)):
+            maps[r["mapstats_id"]] = r
+    players = []
+    for f in sorted(glob.glob(os.path.join(RAW, "players", "*.html.gz"))):
+        base = os.path.basename(f).replace(".html.gz", "")
+        month, filt = base.split("_", 1)
+        for r in parse_player_rows(load(f)):
+            players.append({"month": month, "filter": filt, **r})
+    return list(maps.values()), players
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     rows, nfiles = parse_results("results")
@@ -262,6 +338,25 @@ def main():
         w.writerows(ranks)
     ndates = len(set(r["date"] for r in ranks))
     print(f"rankings: {len(ranks)} rows over {ndates} dates")
+
+    maps, players = parse_stats()
+    if maps:
+        fields = ["mapstats_id", "unix_ms", "team1_id", "team1", "score1", "team2_id", "team2", "score2",
+                  "map", "event_id", "event"]
+        with open(os.path.join(OUT, "maps.csv"), "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=fields)
+            w.writeheader()
+            w.writerows(sorted(maps, key=lambda r: r["unix_ms"]))
+        from collections import Counter
+        top = Counter(r["map"] for r in maps).most_common(10)
+        print(f"maps: {len(maps)} map results; most played: {', '.join(f'{k} {v}' for k, v in top)}")
+    if players:
+        fields = ["month", "filter", "player_id", "player", "team_ids", "teams", "maps", "rounds", "kd", "kd_diff", "rating"]
+        with open(os.path.join(OUT, "player_stats.csv"), "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=fields)
+            w.writeheader()
+            w.writerows(players)
+        print(f"players: {len(players)} player-month rows over {len(set(p['month'] for p in players))} months")
 
     events = parse_events()
     with open(os.path.join(OUT, "events.json"), "w") as f:

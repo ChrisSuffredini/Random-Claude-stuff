@@ -122,12 +122,39 @@ def standings(state: SwissState):
     )
 
 
-def simulate_swiss_once(L, rng, sigma=0.0, all_bo3=False, state=None, pending=None, shock=None):
+def series_from_deltas(x, deltas, bo):
+    """P(A wins) when map k is won with sigmoid(x + deltas[k]) (maps in veto order)."""
+    if deltas is None:
+        return series_prob(sigmoid(x), bo)
+    p = sigmoid(x + deltas)
+    if bo == 1:
+        return p[0]
+    if bo == 3:
+        p1, p2, p3 = p
+        return p1 * p2 + (p1 * (1 - p2) + (1 - p1) * p2) * p3
+    # Bo5: dynamic programming over the five maps
+    dp = {(0, 0): 1.0}
+    win = 0.0
+    for q in p:
+        nd = {}
+        for (wa, wb), pr in dp.items():
+            if wa + 1 == 3:
+                win += pr * q
+            else:
+                nd[(wa + 1, wb)] = nd.get((wa + 1, wb), 0.0) + pr * q
+            if wb + 1 < 3:
+                nd[(wa, wb + 1)] = nd.get((wa, wb + 1), 0.0) + pr * (1 - q)
+        dp = nd
+    return win
+
+
+def simulate_swiss_once(L, rng, sigma=0.0, all_bo3=False, state=None, pending=None, shock=None, maps=None):
     """One simulated Swiss stage. Returns (final state, standings order).
 
     L: (n, n) per-map logit matrix, team index == seed - 1.
     state: optional SwissState with results already played.
     pending: optional pairings already drawn for the current round.
+    maps: optional {(a, b, bo): deltas} map-veto adjustments, a = veto team A.
     """
     n = L.shape[0]
     st = state.copy() if state is not None else SwissState(n)
@@ -145,21 +172,22 @@ def simulate_swiss_once(L, rng, sigma=0.0, all_bo3=False, state=None, pending=No
         results = []
         for a, b in pairs:
             bo = match_bo(st, a, b, all_bo3)
-            p = series_prob(sigmoid(L[a, b] + shock[a] - shock[b]), bo)
+            x = L[a, b] + shock[a] - shock[b]
+            p = series_from_deltas(x, maps.get((a, b, bo)), bo) if maps else series_prob(sigmoid(x), bo)
             results.append((a, b) if rng.random() < p else (b, a))
         for w, l in results:
             st.record(w, l)
     return st, standings(st)
 
 
-def simulate_swiss(L, n_sims=20000, sigma=0.0, all_bo3=False, state=None, pending=None, seed=0):
+def simulate_swiss(L, n_sims=20000, sigma=0.0, all_bo3=False, state=None, pending=None, seed=0, maps=None):
     """Returns cat[s, t] (index into RECORDS) and order[s, :] (standings)."""
     rng = np.random.default_rng(seed)
     n = L.shape[0]
     cat = np.empty((n_sims, n), dtype=np.int8)
     order = np.empty((n_sims, n), dtype=np.int16)
     for s in range(n_sims):
-        st, o = simulate_swiss_once(L, rng, sigma, all_bo3, state, pending)
+        st, o = simulate_swiss_once(L, rng, sigma, all_bo3, state, pending, maps=maps)
         for t in range(n):
             cat[s, t] = REC_INDEX[(st.wins[t], st.losses[t])]
         order[s] = o
@@ -171,7 +199,7 @@ def simulate_swiss(L, n_sims=20000, sigma=0.0, all_bo3=False, state=None, pendin
 PLAYOFF_QF = [(0, 7), (3, 4), (1, 6), (2, 5)]
 
 
-def simulate_playoffs(L, n_sims=20000, sigma=0.0, qf=None, bo=(3, 3, 5), seed=0, shocks=None):
+def simulate_playoffs(L, n_sims=20000, sigma=0.0, qf=None, bo=(3, 3, 5), seed=0, shocks=None, maps=None):
     """L is the 8x8 logit matrix in bracket-seed order (or any order with qf
     giving index pairs). Returns winners[s, 7]: QF1..QF4, SF1, SF2, Final."""
     rng = np.random.default_rng(seed)
@@ -182,7 +210,8 @@ def simulate_playoffs(L, n_sims=20000, sigma=0.0, qf=None, bo=(3, 3, 5), seed=0,
         sh = shocks[s] if shocks is not None else (rng.normal(0, sigma, n) if sigma > 0 else np.zeros(n))
 
         def play(a, b, k):
-            p = series_prob(sigmoid(L[a, b] + sh[a] - sh[b]), k)
+            x = L[a, b] + sh[a] - sh[b]
+            p = series_from_deltas(x, maps.get((a, b, k)), k) if maps else series_prob(sigmoid(x), k)
             return a if rng.random() < p else b
 
         q = [play(a, b, bo[0]) for a, b in qf]

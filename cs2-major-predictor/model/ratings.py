@@ -19,7 +19,7 @@ import numpy as np
 PI2 = math.pi ** 2
 
 FEATURES = ["r_all", "sd_all", "r_lan", "sd_lan", "log_pts", "rank_score",
-            "continuity", "activity", "form", "lan"]
+            "continuity", "activity", "form", "lan", "plr_all", "plr_top50"]
 
 
 def g(v):
@@ -68,8 +68,9 @@ class Glicko:
 
 class FeatureBuilder:
     def __init__(self, rank_lookup, v0=1.2, c2=0.004, roster_v=0.15, lan_v0=1.2, lan_c2=0.002,
-                 form_days=45, act_days=90, cont_days=90):
+                 form_days=45, act_days=90, cont_days=90, players=None):
         self.rl = rank_lookup
+        self.players = players  # extras.PlayerLookup or None
         self.all = Glicko(v0, c2, roster_v)
         self.lan = Glicko(lan_v0, lan_c2, roster_v)
         self.hist = defaultdict(deque)  # key -> (t, maps, residual)
@@ -109,7 +110,8 @@ class FeatureBuilder:
         res = [x for x in h if x[0] >= t - self.form_days]
         form = sum(x[2] for x in res) / (sum(x[1] for x in res) + 5.0)
         return [ra, math.sqrt(va), rl_, math.sqrt(vl), math.log1p(pts),
-                -math.log(min(rank, 400)), cont, math.log1p(act), form, float(lan_ctx)]
+                -math.log(min(rank, 400)), cont, math.log1p(act), form, float(lan_ctx),
+                *(self.players.features(k, t) if self.players else (0.0, 0.0))]
 
     def run(self, matches, queries=None):
         """matches: DataFrame sorted by t with a, b, maps1, maps2, lan, t.

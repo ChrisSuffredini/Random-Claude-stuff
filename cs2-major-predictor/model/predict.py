@@ -21,12 +21,13 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from data import PARSED, prepare  # noqa: E402
+from data import PARSED, RankingLookup, prepare  # noqa: E402
+from extras import load_extras, veto_deltas  # noqa: E402
 from majors import discover  # noqa: E402
 from pickem import card_stats, indicators, optimise_bracket, optimise_card  # noqa: E402
 from pipeline import Ensemble, build_features, fit_models, load_params, team_strengths  # noqa: E402
-from sim import (PLAYOFF_QF, RECORDS, REC_INDEX, SwissState, series_prob, sigmoid,  # noqa: E402
-                 simulate_swiss_once, standings)
+from sim import (PLAYOFF_QF, RECORDS, REC_INDEX, SwissState, series_from_deltas, series_prob,  # noqa: E402
+                 sigmoid, simulate_swiss_once, standings)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -102,6 +103,20 @@ def seed_stage(teams, pairs, hints, pts):
         return [x[1] for x in known] + [x[2] for x in known]
     # no pairings: hints first, then ranking points
     return sorted(teams, key=lambda k: (hints.get(k, 99), -pts.get(k, 0)))
+
+
+class SubDeltas:
+    """View of the global veto table through a stage's local team indices."""
+
+    def __init__(self, gd, ix):
+        self.gd, self.ix = gd, ix
+
+    def __bool__(self):
+        return True
+
+    def get(self, key):
+        i, j, bo = key
+        return self.gd.get((self.ix[i], self.ix[j], bo))
 
 
 def live_state(seeds, played, upcoming):
@@ -186,11 +201,22 @@ def main():
         upcoming[k] = lst
 
     now_t = m["t"].max() + 0.01
-    Xa, Xb, pg, snaps = build_features(m, r, [(now_t, all_teams)], params)
+    players, mapmodel = load_extras(args.parsed, idx, RankingLookup(r), r)
+    use_maps = model_name.endswith("+maps") and mapmodel is not None
+    base_name = model_name.replace("+maps", "")
+    if use_maps:
+        mp = bt.get("map_params", {})
+        mapmodel.half_life = mp.get("half_life", 180.0)
+        mapmodel.ridge = mp.get("ridge", 6.0)
+        map_scale = mp.get("scale", 1.0)
+        offsets = mapmodel.offsets(all_teams, now_t)
+        pool = mapmodel.pool(now_t)
+        print(f"Map pool (last 60 days): {', '.join(pool)}")
+    Xa, Xb, pg, snaps = build_features(m, r, [(now_t, all_teams)], params, players=players)
     snap = snaps[0]
     models, n_train = fit_models(Xa, Xb, m, now_t)
     models["ensemble"] = Ensemble([models["linear"], models["mlp"], models["glicko"]])
-    model = models[model_name]
+    model = models[base_name]
     s_vec = team_strengths(model, snap, all_teams)
     S = dict(zip(all_teams, s_vec))
     pts = {k: snap[k][4] for k in all_teams}
@@ -211,6 +237,8 @@ def main():
     gi = {k: i for i, k in enumerate(all_teams)}
     G = np.array([[S[a] - S[b] for b in all_teams] for a in all_teams])
     n = len(all_teams)
+    # veto adjustments for every ordered pair (A = first team), global indices
+    GD = veto_deltas(all_teams, offsets, pool, map_scale) if use_maps else None
     reach = defaultdict(lambda: np.zeros(7))  # S2, S3, PO, SF, F, W  (index 1..6)
     s1_cat = np.empty((args.sims, 16), dtype=np.int8)
     st1, pend1 = live_state(seeds1, played["stage 1"], upcoming.get("stage 1", []))
@@ -221,7 +249,8 @@ def main():
         def run(seeds, state=None, pending=None, all_bo3=False):
             ix = [gi[k] for k in seeds]
             L = G[np.ix_(ix, ix)]
-            stt, order = simulate_swiss_once(L, rng, 0.0, all_bo3, state, pending, shock=shock[ix])
+            md = SubDeltas(GD, ix) if GD is not None else None
+            stt, order = simulate_swiss_once(L, rng, 0.0, all_bo3, state, pending, shock=shock[ix], maps=md)
             return stt, order
 
         stt, order = run(seeds1, st1, pend1)
@@ -243,7 +272,9 @@ def main():
             reach[k][3] += 1
 
         def play(a, b, bo):
-            p = series_prob(sigmoid(S[a] - S[b] + shock[gi[a]] - shock[gi[b]]), bo)
+            x = S[a] - S[b] + shock[gi[a]] - shock[gi[b]]
+            p = (series_from_deltas(x, GD[(gi[a], gi[b], bo)], bo) if GD is not None
+                 else series_prob(sigmoid(x), bo))
             return a if rng.random() < p else b
 
         qw = [play(po[a], po[b], 3) for a, b in PLAYOFF_QF]
