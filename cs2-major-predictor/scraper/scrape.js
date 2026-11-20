@@ -7,7 +7,8 @@
 //
 // Flags:
 //   --probe              fetch one page of each kind, print what was found, stop
-//   --only a,b           subset of: events,results,lan,rankings
+//   --only a,b           subset of: events,results,lan,rankings,maps,players
+//                        (default: events,results,lan,rankings; maps/players are opt-in)
 //   --from YYYY-MM       first month of results (default 2023-01)
 //   --refresh            refetch everything, ignoring what is already saved
 //   --event ID           HLTV event id of the Major to predict (default 8302, PGL Singapore 2026)
@@ -17,6 +18,10 @@
 //   results   /results month by month, 100 matches a page (all matches)
 //   lan       the same with matchType=Lan, used to tag which matches were LAN
 //   rankings  HLTV world ranking every other Monday (points, lineups)
+//   maps      /stats/matches month by month: every map vs top-50 teams, with
+//             map name, round score and team ids (~400-600 requests)
+//   players   /stats/players month by month: every player's rating, maps,
+//             K/D, overall and vs top-50 teams (~80 requests)
 //
 // Re-running skips what is saved, except the current and previous month,
 // the event pages and the latest ranking, which are always refreshed.
@@ -42,6 +47,7 @@ const PROBE = flag('probe');
 const REFRESH = flag('refresh');
 const ONLY = opt('only', 'events,results,lan,rankings').split(',');
 const FROM = opt('from', '2023-01');
+const STATS_FROM = opt('stats-from', '2023-10'); // CS2 era only for map/player stats
 const EVENT_ID = Number(opt('event', 8302));
 
 const manifest = fs.existsSync(MANIFEST) ? JSON.parse(fs.readFileSync(MANIFEST, 'utf8')) : {};
@@ -250,6 +256,69 @@ async function scrapeEvents() {
   }
 }
 
+// ------------------------------------------------- map stats (per map)
+async function scrapeMapStats() {
+  const now = new Date();
+  const months = monthList(STATS_FROM, now).reverse();
+  const list = PROBE ? months.slice(1, 2) : months;
+  for (const { y, m } of list) {
+    const start = `${y}-${pad(m)}-01`;
+    const last = new Date(Date.UTC(y, m, 0));
+    const firstKey = `maps/${y}-${pad(m)}_p00.html.gz`;
+    const prev = manifest[firstKey];
+    const isFinal = prev && new Date(prev.fetchedAt) > new Date(last.getTime() + 3 * 864e5);
+    if (have(firstKey) && isFinal) continue;
+    let total = 0;
+    let pageSize = 50;
+    for (let p = 0; p < 200; p++) {
+      const rel = `maps/${y}-${pad(m)}_p${pad(p)}.html.gz`;
+      const url = `${BASE}/stats/matches?csVersion=CS2&startDate=${start}&endDate=${isoDate(last)}` +
+        `&rankingFilter=Top50&offset=${p * pageSize}`;
+      const res = await fetchAndSave(rel, url, ['.matches-table', '.contentCol'], { kind: 'maps', month: `${y}-${pad(m)}`, page: p });
+      const n = res.$('.matches-table tbody tr').length;
+      manifest[rel].count = n;
+      total += n;
+      if (p === 0 && n === 100) pageSize = 100;
+      if (p === 0 && n === 0) stats.warnings.push(`${rel}: no map rows on first page`);
+      if (n < pageSize) {
+        for (let q = p + 1; q < 200; q++) {
+          const stale = `maps/${y}-${pad(m)}_p${pad(q)}.html.gz`;
+          if (!manifest[stale]) break;
+          fs.rmSync(path.join(ROOT, stale), { force: true });
+          delete manifest[stale];
+        }
+        break;
+      }
+    }
+    saveManifest();
+    console.log(`  maps ${y}-${pad(m)}: ${total} maps   (${stats.requests} requests so far)`);
+  }
+}
+
+// ---------------------------------------------- player stats (monthly)
+async function scrapePlayerStats() {
+  const now = new Date();
+  const months = monthList(STATS_FROM, now).reverse();
+  const list = PROBE ? months.slice(1, 2) : months;
+  for (const { y, m } of list) {
+    const start = `${y}-${pad(m)}-01`;
+    const last = new Date(Date.UTC(y, m, 0));
+    for (const [tag, extra] of [['all', ''], ['top50', '&rankingFilter=Top50']]) {
+      const rel = `players/${y}-${pad(m)}_${tag}.html.gz`;
+      const prev = manifest[rel];
+      const isFinal = prev && new Date(prev.fetchedAt) > new Date(last.getTime() + 3 * 864e5);
+      if (have(rel) && isFinal) continue;
+      const url = `${BASE}/stats/players?csVersion=CS2&startDate=${start}&endDate=${isoDate(last)}&minMapCount=3${extra}`;
+      const res = await fetchAndSave(rel, url, ['.player-ratings-table', '.contentCol'], { kind: 'players', month: `${y}-${pad(m)}`, filter: tag });
+      const n = res.$('.player-ratings-table tbody tr').length;
+      manifest[rel].count = n;
+      if (n === 0) stats.warnings.push(`${rel}: no player rows`);
+      console.log(`  players ${y}-${pad(m)} (${tag}): ${n} players`);
+    }
+    saveManifest();
+  }
+}
+
 async function main() {
   fs.mkdirSync(ROOT, { recursive: true });
   browser = new HltvBrowser({
@@ -275,6 +344,14 @@ async function main() {
     if (ONLY.includes('rankings')) {
       console.log('\n== HLTV world rankings');
       await scrapeRankings();
+    }
+    if (ONLY.includes('players')) {
+      console.log('\n== Player ratings (monthly, all opponents and vs top 50)');
+      await scrapePlayerStats();
+    }
+    if (ONLY.includes('maps')) {
+      console.log('\n== Map-level results vs top-50 teams (monthly)');
+      await scrapeMapStats();
     }
   } finally {
     saveManifest();

@@ -16,6 +16,11 @@ const http = require('http');
 const readline = require('readline');
 
 const ROOT = path.join(__dirname, '..');
+// e.g. node scraper/run.js --only maps,players  (second laptop)
+const onlyIdx = process.argv.indexOf('--only');
+const ONLY = onlyIdx > 0 ? process.argv[onlyIdx + 1] : null;
+const PASS = ONLY ? ['--only', ONLY] : [];
+const OUT_NAME = ONLY ? `hltv-data-${ONLY.replace(/[^a-z,]/gi, '').split(',').join('-')}` : 'hltv-data';
 const PORT = Number(process.env.PORT || 9222);
 const CDP = `http://127.0.0.1:${PORT}`;
 const UPLOAD_URL =
@@ -101,7 +106,7 @@ function runScrape(extra) {
 }
 
 function pack() {
-  const out = path.join(ROOT, 'hltv-data.tar.gz');
+  const out = path.join(ROOT, `${OUT_NAME}.tar.gz`);
   const r = spawnSync('tar', ['-czf', out, '-C', path.join(ROOT, 'data'), 'raw'], { stdio: 'inherit' });
   if (r.status === 0 && fs.existsSync(out)) return out;
   // No tar available: bundle every file into one gzipped JSON instead.
@@ -115,7 +120,7 @@ function pack() {
     }
   };
   walk(path.join(ROOT, 'data', 'raw'));
-  const alt = path.join(ROOT, 'hltv-data.json.gz');
+  const alt = path.join(ROOT, `${OUT_NAME}.json.gz`);
   fs.writeFileSync(alt, zlib.gzipSync(JSON.stringify(bundle)));
   return alt;
 }
@@ -149,14 +154,14 @@ async function main() {
   await ask('Then come back here and press Enter... ');
 
   console.log('\n== Step 1/2: quick test (about 30 pages)');
-  if (!runScrape(['--probe'])) {
+  if (!runScrape(['--probe', ...PASS])) {
     console.error('\nThe quick test failed. Copy the text above and send it to Claude.');
     process.exit(1);
   }
   await ask('\nIf the numbers above look non-zero, press Enter for the full download (20-30 min; leave the browser open)... ');
 
   console.log('\n== Step 2/2: full download');
-  if (!runScrape([])) {
+  if (!runScrape(PASS)) {
     console.error('\nThe download stopped early. Just run this same command again: it resumes where it left off.');
     process.exit(1);
   }
