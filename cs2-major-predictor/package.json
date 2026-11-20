@@ -1,0 +1,15 @@
+{
+  "name": "cs2-major-predictor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scrapes HLTV results/rankings for a CS2 Major prediction model (model itself is in model/, Python)",
+  "scripts": {
+    "scrape": "node scraper/scrape.js",
+    "probe": "node scraper/scrape.js --probe"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "puppeteer-core": "^25.10.0"
+  }
+}
