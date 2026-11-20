@@ -75,3 +75,57 @@ Flags: `--only events,results,lan,rankings`, `--from YYYY-MM`, `--refresh`,
 
 During the Major, re-running `--only events,results` picks up the stage
 results so far, and the model re-simulates from the live standings.
+
+### Easiest way on Windows/Mac (no git needed)
+
+`node scraper/run.js` does everything above in one go (opens Chrome, waits
+for you to clear Cloudflare, probes, scrapes) and packs the result into a
+single `hltv-data.tar.gz`. Upload that file on GitHub in this folder
+(**Add file → Upload files → Commit changes**); `python3 model/unpack.py`
+puts it back into `data/raw/`.
+
+## 2. Build the model, backtest, predict (Python)
+
+```bash
+pip install numpy pandas beautifulsoup4 lxml
+python3 model/unpack.py        # only if the data came as hltv-data.tar.gz
+python3 model/parse.py         # data/raw -> data/parsed/{matches,rankings}.csv, events.json
+python3 model/backtest.py      # every CS2 Major so far; picks the model + noise level
+python3 model/predict.py       # Singapore: Pick'Em card, odds for all 32 teams, bracket
+```
+
+### How it works
+
+- **Ratings.** A Glicko-style rating per team on the per-map logit scale
+  (a 2-1 Bo3 = two map wins and a loss), one over all matches and one
+  over LAN only. Uncertainty grows when a team is inactive and jumps when
+  HLTV's ranking shows a lineup change, so ratings re-learn fast after
+  roster moves. Team identity follows HLTV team ids, so renames keep history.
+- **Features per team** at match time (strictly pre-match): both ratings
+  and their uncertainty, HLTV ranking points and position, roster
+  continuity over 90 days, maps played in 90 days, recent form vs
+  expectation, and whether the match is on LAN.
+- **Models.** Each maps a team's features to one strength number, and
+  P(win a map) = sigmoid(strength A - strength B):
+  `glicko` (rating alone), `hltv_rank` (ranking points alone), `linear`
+  (logistic regression), `mlp` (small neural net with a linear skip) and
+  `ensemble` (average of linear, mlp, glicko). Trained on the two years
+  before each cutoff, on matches between top-150 teams, LAN weighted 1.5x.
+- **Simulation.** Valve's Swiss rules (1v9 round 1, Buchholz then seed
+  pairing, no rematches, Bo1 with Bo3 deciders, all-Bo3 Stage 3 where the
+  data shows it), then a seeded 8-team bracket (Bo3, Bo5 final). Each
+  simulated tournament gives every team a "form" shock (sigma, chosen by the
+  backtest) shared across all its matches, which correlates results.
+- **Pick'Em.** The card (two 3-0, six 3-1/3-2, two 0-3) is chosen by local
+  search to maximise P(at least 5 correct) over the simulated outcomes,
+  not the expected number correct. For playoffs, all 128 brackets are scored.
+- **Backtest.** For each stage of every CS2 Major the data contains,
+  everything is frozen at stage start: features, model fit, simulation,
+  card. Scored on match log loss/accuracy, record log loss, actual Pick'Em
+  correct picks vs. a naive seed-based card, and bracket picks. A rolling
+  quarterly refit over all LAN matches between ranked teams gives a bigger
+  sample for choosing the model.
+
+During the Major: re-run the scraper with `--only events,results` (or
+`node scraper/run.js` again), then `parse.py` and `predict.py`; the
+simulation resumes from the live standings.
