@@ -61,13 +61,13 @@ section { display: grid; gap: 14px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 16px; }
 .headline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 28px; }
 .big { font: 600 44px/1 var(--display); font-variant-numeric: tabular-nums; }
-.big small { font-size: 15px; color: var(--muted); font-family: var(--body); font-weight: 400; margin-left: 6px; }
+.big small { display: block; margin-top: 6px; font: 400 14px/1.3 var(--body); color: var(--muted); }
 .cols { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 14px; }
 .col { display: grid; gap: 8px; align-content: start; min-width: 0; }
 .col h3 { display: flex; justify-content: space-between; }
 .chip { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 8px 10px;
   background: var(--chip); border-radius: 6px; border-left: 3px solid var(--ct); min-width: 0; }
-.chip .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip .name { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
 .chip .p { font: 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .c30 .chip { border-left-color: var(--win); }
 .c03 .chip { border-left-color: var(--loss); }
