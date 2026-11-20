@@ -220,7 +220,7 @@ def main():
     summ = {}
     for name in names:
         rr = [x for x in rows if x["model"] == name]
-        sw = [x for x in rr if "picks_correct" in x]
+        sw = [x for x in rr if "seed_card_correct" in x]
         po = [x for x in rr if "bracket_correct" in x]
         nm = sum(x["n_matches"] for x in rr)
         d = {
